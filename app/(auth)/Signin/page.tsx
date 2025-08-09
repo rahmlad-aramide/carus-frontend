@@ -1,0 +1,281 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { FaCheckSquare, FaRegSquare } from "react-icons/fa";
+import Link from "next/link";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { Eye, EyeOff } from "lucide-react";
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+});
+
+type LoginSchema = z.infer<typeof loginSchema>;
+
+export default function LoginForm() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [remember, setRemember] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const form = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (values: LoginSchema) => {
+    setLoading(true);
+    setError("");
+    try {
+      console.log("Login values:", values);
+      if (
+        values.email === "text@example.com" &&
+        values.password === "12345678"
+      ) {
+        alert("Login successful!");
+      } else {
+        setError("Invalid email or password");
+      }
+    } catch (err) {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <div className="flex min-h-screen">
+        {/* flex form and bg image */}
+        <div className="w-full md:w-2/3 flex flex-col py-10 bg-white">
+          {/* Logo */}
+          <div className="px-3 md:px-5 mb-15">
+            <Image
+              aria-hidden
+              src="/logo.png"
+              alt="Carus Logo"
+              width={117}
+              height={32}
+              className="w-[117px] h-[32px]"
+            />
+          </div>
+
+          <div className="flex-1 flex items-center justify-center px-7 md:px-20">
+            <div className="w-full max-w-sm">
+              <h1 className="text-xl md:text-[28px] font-bold">
+                {" "}
+                Hi, Welcome Back! 👋{" "}
+              </h1>
+              <p className="text-gray text-base mb-10">You have been missed!</p>
+
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-4"
+                >
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-base font-bold">
+                          Email or Phone Number
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                            placeholder="example@mail.com"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-base font-bold">
+                          Password
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input
+                              className="w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Enter Password"
+                              {...field}
+                            />
+                            <div
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
+                            >
+                              {showPassword ? (
+                                <EyeOff size={20} />
+                              ) : (
+                                <Eye size={20} />
+                              )}
+                            </div>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Container for remember + forgot password */}
+                  <div className="w-full max-w-[340px] flex flex-col items-start">
+                    {/* Keep me logged in */}
+                    <div
+                      className="flex items-center gap-2 cursor-pointer"
+                      onClick={() => setRemember(!remember)}
+                    >
+                      {remember ? (
+                        <FaCheckSquare className="text-xl text-[#026937]" />
+                      ) : (
+                        <FaRegSquare className="text-xl" />
+                      )}
+                      <span className="text-base">Keep me logged in.</span>
+                    </div>
+
+                    <div className="w-full flex justify-center mt-10 mb-5">
+                      <Link
+                        href="/forgot-password"
+                        className="text-sm md:text-base text-[#026937] hover:underline"
+                      >
+                        Forgot password?
+                      </Link>
+                    </div>
+                  </div>
+
+                  {error && <p className="text-sm text-red-500">{error}</p>}
+
+                  <Button
+                    type="submit"
+                    className="w-full py-6 text-sm md:text-base font-bold"
+                    disabled={loading}
+                  >
+                    {loading ? "Signing in..." : "Sign in"}
+                  </Button>
+                </form>
+              </Form>
+
+              {/* Separator with lines */}
+              <div className="flex items-center mt-10 gap-x-4">
+                <div className="w-24">
+                  <Image
+                    src="/Line6.svg"
+                    alt="line6.png"
+                    width={500}
+                    height={500}
+                  />
+                </div>
+                <p className="text-center w-32">Or continue with</p>
+                <div className="w-24">
+                  <Image
+                    src="/Line7.svg"
+                    alt="line7.png"
+                    width={500}
+                    height={500}
+                  />
+                </div>
+              </div>
+
+              {/* Social buttons */}
+              <div className="flex mt-5 ">
+                <div className="flex gap-7 justify-center w-full">
+                  <Button
+                    variant="outline"
+                    className="bg-[#F3F3F3] border-none"
+                    onClick={() => signIn("google")}
+                  >
+                    <Image
+                      src="/google-icon.svg"
+                      alt="Google"
+                      width={20}
+                      height={20}
+                    />
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="bg-[#F3F3F3] border-none"
+                    onClick={() => signIn("apple")}
+                  >
+                    <Image
+                      src="/apple-icon.svg"
+                      alt="Apple"
+                      width={20}
+                      height={20}
+                    />
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="bg-[#F3F3F3] border-none"
+                    onClick={() => signIn("facebook")}
+                  >
+                    <Image
+                      src="/facebook-icon.svg"
+                      alt="Facebook"
+                      width={20}
+                      height={20}
+                    />
+                  </Button>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-center text-sm md:text-base mt-8">
+                  Don't have an account?
+                  <Link href="/Signup">
+                    <span className="text-primary text-sm md:text-base">
+                      {" "}
+                      Register
+                    </span>
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden md:block w-[50%] relative overflow-hidden bg-gradient-to-t from-[#C7DCD2] via-[#E5EFEA] to-[#F9FBFA]">
+          <div className="absolute inset-0">
+            <Image
+                src="/wastecan1.svg"
+                alt="Waste Bin"
+                fill
+                className="object-contain object-right bg-inherit"
+              />
+            </div>
+          </div>
+        </div>
+      
+    </>
+  );
+}
