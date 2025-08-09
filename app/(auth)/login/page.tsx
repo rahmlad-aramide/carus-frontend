@@ -22,7 +22,7 @@ import { signIn } from "next-auth/react";
 import { Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.email({ message: "Invalid email address" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
@@ -58,6 +58,7 @@ export default function LoginForm() {
         setError("Invalid email or password");
       }
     } catch (err) {
+      console.log(err);
       setError("Something went wrong");
     } finally {
       setLoading(false);
@@ -72,7 +73,7 @@ export default function LoginForm() {
           {/* Logo */}
           <div className="px-3 md:px-5 mb-15">
             <Image
-              aria-hidden
+              aria-hidden={false}
               src="/logo.png"
               alt="Carus Logo"
               width={117}
@@ -100,12 +101,12 @@ export default function LoginForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-base font-bold">
-                          Email or Phone Number
+                          Email address
                         </FormLabel>
                         <FormControl>
                           <Input
                             className="w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                            placeholder="example@mail.com"
+                            placeholder="e.g example@mail.com"
                             {...field}
                           />
                         </FormControl>
@@ -127,7 +128,7 @@ export default function LoginForm() {
                             <Input
                               className="w-full py-6 text-sm bg-[#F3F3F3] border-none"
                               type={showPassword ? "text" : "password"}
-                              placeholder="Enter Password"
+                              placeholder="Enter your password"
                               {...field}
                             />
                             <div
@@ -251,8 +252,8 @@ export default function LoginForm() {
 
               <div>
                 <p className="text-center text-sm md:text-base mt-8">
-                  Don't have an account?
-                  <Link href="/Signup">
+                  Don&apos;t have an account?
+                  <Link href="/register">
                     <span className="text-primary text-sm md:text-base">
                       {" "}
                       Register
@@ -267,15 +268,14 @@ export default function LoginForm() {
         <div className="hidden md:block w-[50%] relative overflow-hidden bg-gradient-to-t from-[#C7DCD2] via-[#E5EFEA] to-[#F9FBFA]">
           <div className="absolute inset-0">
             <Image
-                src="/wastecan1.svg"
-                alt="Waste Bin"
-                fill
-                className="object-contain object-right bg-inherit"
-              />
-            </div>
+              src="/wastecan1.svg"
+              alt="Waste Bin"
+              fill
+              className="object-contain object-right bg-inherit"
+            />
           </div>
         </div>
-      
+      </div>
     </>
   );
 }

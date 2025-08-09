@@ -34,10 +34,12 @@ export default function ForgotPassword() {
 
         <div className="flex-1 flex px-5 md:px-20">
           <div className="w-full max-w-sm">
-            <h2 className="text-[28px] font-bold">Forgot Password</h2>
-            <p className="text-base text-[#494949] mb-8">
-              Enter your registered Email or Phone Number to reset your password
-            </p>
+            <div className="flex flex-col gap-1.5">
+              <h2 className="text-[28px] font-bold">Forgot Password</h2>
+              <p className="text-base text-[#494949] mb-8">
+                Enter your registered Email address to receive reset link
+              </p>
+            </div>
 
             {sent ? (
               <p className="text-green-600 text-center">
@@ -46,12 +48,12 @@ export default function ForgotPassword() {
             ) : (
               <form onSubmit={handleSendLink}>
                 <label htmlFor="email" className="block text-base mb-2">
-                  Email or Phone Number
+                  Email address
                 </label>
                 <Input
                   type="email"
                   className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none mb-10"
-                  placeholder="example@mail.com"
+                  placeholder="e.g example@mail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

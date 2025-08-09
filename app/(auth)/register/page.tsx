@@ -31,10 +31,15 @@ const signupSchema = z.object({
   option: z.enum(["individual", "business"]),
   firstName: z.string().min(2, { message: "First name is too short" }),
   lastName: z.string().min(2, { message: "Last name is too short" }),
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.email({ message: "Invalid email address" }),
   phone: z
     .string()
-    .min(10, { message: "Phone Number must be at least 10 digits" }),
+    .min(10, {
+      message: "Phone Number must be 10 digits without the leading 0",
+    })
+    .max(10, {
+      message: "Phone Number must be 10 digits without the leading 0",
+    }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
@@ -74,17 +79,11 @@ export default function LoginForm() {
     },
   });
 
-  const handleOptionChange = (value: "individual" | "business") => {
-    setOption(value);
-    form.setValue("option", value);
-    setPage(1);
-  };
-
   const handleContinue = async () => {
     const isValid = await form.trigger(
       option === "individual"
         ? ["firstName", "lastName", "email", "phone", "password"]
-        : ["companyName", "email", "password"]
+        : ["companyName", "email", "password"],
     );
     if (isValid) setPage(2);
   };
@@ -98,7 +97,7 @@ export default function LoginForm() {
       {/* flex form and bg image */}
       <div className="w-full md:w-2/3 flex flex-col py-10 bg-white">
         {/* Logo */}
-        <div className="px-3 md:px-5 mb-15">
+        <Link href="/" className="px-3 md:px-5 mb-15">
           <Image
             aria-hidden
             src="/logo.png"
@@ -107,7 +106,7 @@ export default function LoginForm() {
             height={32}
             className="w-[117px] h-[32px]"
           />
-        </div>
+        </Link>
 
         <div className="flex-1 flex items-center justify-center px-5 md:px-20">
           <div className="w-full max-w-sm">
@@ -191,7 +190,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="John Champion"
+                              placeholder="e.g John"
                               {...field}
                             />
                           </FormControl>
@@ -211,7 +210,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="John Champion"
+                              placeholder="e.g Champion"
                               {...field}
                             />
                           </FormControl>
@@ -231,7 +230,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="example@mail.com"
+                              placeholder="e.g example@mail.com"
                               {...field}
                             />
                           </FormControl>
@@ -252,10 +251,12 @@ export default function LoginForm() {
                             <div className="relative">
                               {/* Nigeria Flag + Country Code */}
                               <div className="absolute inset-y-0 left-0 flex items-center pl-2 space-x-2">
-                                <img
+                                <Image
                                   src="/flag.svg"
                                   alt="Nigeria Flag"
                                   className="w-6 h-4 object-cover rounded-sm"
+                                  width={14}
+                                  height={10}
                                 />
                                 <span className="text-sm font-semibold text-gray-700">
                                   +234
@@ -265,7 +266,7 @@ export default function LoginForm() {
                               {/* Input field */}
                               <Input
                                 className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none pl-20"
-                                placeholder="812 345 6789"
+                                placeholder="e.g 812 345 6789"
                                 {...field}
                               />
                             </div>
@@ -323,7 +324,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="John Champion"
+                              placeholder="e.g Carus Recycling"
                               {...field}
                             />
                           </FormControl>
@@ -343,7 +344,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="example@mail.com"
+                              placeholder="e.g example@mail.com"
                               {...field}
                             />
                           </FormControl>
@@ -411,7 +412,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="2 Atunrase Estate, Gbagada, Lagos"
+                              placeholder="Enter your address"
                               {...field}
                             />
                           </FormControl>
@@ -438,7 +439,7 @@ export default function LoginForm() {
                               >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
                                 {date ? (
-                                  format(date, "MM/dd/yyyy")
+                                  format(date, "dd/MM/yyyy")
                                 ) : (
                                   <span className="text-gray-400">
                                     MM/DD/YYYY
@@ -454,7 +455,7 @@ export default function LoginForm() {
                                 mode="single"
                                 selected={date}
                                 onSelect={setDate}
-                                initialFocus
+                                autoFocus
                               />
                             </PopoverContent>
                           </Popover>
@@ -474,12 +475,12 @@ export default function LoginForm() {
                           <FormControl>
                             <select
                               {...field}
-                              className="rounded-[10px] w-full py-4 text-sm bg-[#F3F3F3] border-none"
+                              className="rounded-[10px] w-full py-4 text-sm bg-[#F3F3F3] border-none px-2"
                             >
-                              <option value="">--Select--</option>
+                              <option value="">--Select Gender--</option>
                               <option value="male">Male</option>
                               <option value="female">Female</option>
-                              <option value="other">Other</option>
+                              <option value="others">Others</option>
                             </select>
                           </FormControl>
                           <FormMessage />
@@ -523,10 +524,12 @@ export default function LoginForm() {
                             <div className="relative">
                               {/* Nigeria Flag + Country Code */}
                               <div className="absolute inset-y-0 left-0 flex items-center pl-2 space-x-2">
-                                <img
+                                <Image
                                   src="/flag.svg"
                                   alt="Nigeria Flag"
                                   className="w-6 h-4 object-cover rounded-sm"
+                                  width={14}
+                                  height={10}
                                 />
                                 <span className="text-sm font-semibold text-gray-700">
                                   +234
@@ -556,7 +559,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="2 Atunrase Estate, Gbagada, Lagos"
+                              placeholder="Enter your address"
                               {...field}
                             />
                           </FormControl>
@@ -602,7 +605,7 @@ export default function LoginForm() {
 
             <p className="text-center text-sm md:text-base mt-8">
               Have an account?
-              <Link href="/Signin">
+              <Link href="/login">
                 <span className="text-primary text-sm md:text-base">
                   {" "}
                   Sign in
@@ -622,7 +625,7 @@ export default function LoginForm() {
           <p className="text-primary mt-3">
             Register an account as an individual or business to access all the
             features of Carus. Join our community who are making a difference
-            for our planet. It's quick, easy and free!
+            for our planet. It&apos;s quick, easy and free!
           </p>
         </div>
 

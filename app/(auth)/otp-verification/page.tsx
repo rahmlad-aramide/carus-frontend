@@ -8,7 +8,8 @@ export default function VerifyRegistrationOTP() {
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
   const handleChange = (value: string, index: number) => {
-    if (/^\d?$/.test(value)) { // Allow only one digit
+    if (/^\d?$/.test(value)) {
+      // Allow only one digit
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
@@ -20,7 +21,10 @@ export default function VerifyRegistrationOTP() {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number,
+  ) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputsRef.current[index - 1]?.focus();
     }
@@ -46,7 +50,9 @@ export default function VerifyRegistrationOTP() {
           {otp.map((digit, index) => (
             <input
               key={index}
-             ref={(el) => {inputsRef.current[index] = el;}}
+              ref={(el) => {
+                inputsRef.current[index] = el;
+              }}
               type="text"
               inputMode="numeric"
               maxLength={1}
@@ -57,11 +63,12 @@ export default function VerifyRegistrationOTP() {
             />
           ))}
         </div>
-          <p className="mt-7 mb-7 text-base text-centr">Code expires in 10mins</p>
+        <p className="mt-7 mb-7 text-base text-centr">Code expires in 10mins</p>
         <Button
           type="submit"
-       className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
-           disabled={otp.some((digit) => !digit)} >
+          className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
+          disabled={otp.some((digit) => !digit)}
+        >
           Verify
         </Button>
       </form>

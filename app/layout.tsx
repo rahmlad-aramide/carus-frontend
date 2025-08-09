@@ -1,11 +1,16 @@
-  import type { Metadata } from "next";
-  import "./globals.css";
-
+import type { Metadata } from "next";
+import "./globals.css";
+import localFont from "next/font/local";
 
 export const metadata: Metadata = {
-  title: "Carus",
+  title: "Carus Recycling",
   description: "",
 };
+
+const satoshi = localFont({
+  src: "./Satoshi-Variable.woff2",
+  variable: "--font-satoshi",
+});
 
 export default function RootLayout({
   children,
@@ -13,11 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body 
-           >
-        {children}
-      </body>
+    <html lang="en" className={satoshi.className}>
+      <body>{children}</body>
     </html>
   );
 }

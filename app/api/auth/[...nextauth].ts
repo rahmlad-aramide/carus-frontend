@@ -4,7 +4,6 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import AppleProvider from "next-auth/providers/apple";
 
-
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -16,16 +15,15 @@ export const authOptions = {
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
 
-// AppleProvider({
-//   clientId: process.env.APPLE_CLIENT_ID!,
-//   clientSecret: {
-//     appleId: process.env.APPLE_CLIENT_ID!,
-//     teamId: process.env.APPLE_TEAM_ID!,
-//     privateKey: process.env.APPLE_PRIVATE_KEY!,
-//     keyId: process.env.APPLE_KEY_ID!,
-//   },
-// }),
-
+    // AppleProvider({
+    //   clientId: process.env.APPLE_CLIENT_ID!,
+    //   clientSecret: {
+    //     appleId: process.env.APPLE_CLIENT_ID!,
+    //     teamId: process.env.APPLE_TEAM_ID!,
+    //     privateKey: process.env.APPLE_PRIVATE_KEY!,
+    //     keyId: process.env.APPLE_KEY_ID!,
+    //   },
+    // }),
   ],
   pages: {
     signIn: "/login", // Optional: custom login page

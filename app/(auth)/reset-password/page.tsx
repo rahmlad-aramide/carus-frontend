@@ -9,7 +9,7 @@ import Image from "next/image";
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
-  const token = searchParams.get("token"); // from URL
+  const token = searchParams.get("token");
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -45,10 +45,12 @@ export default function ResetPasswordPage() {
 
         <div className="flex-1 flex px-5 md:px-20">
           <div className="w-full max-w-sm">
-            <h2 className="text-[28px] font-bold">Forgot Password</h2>
-            <p className="text-base text-[#494949] mb-8">
-              Enter your registered Email or Phone Number to reset your password
-            </p>
+            <div className="flex flex-col gap-1.5">
+              <h2 className="text-[28px] font-bold">Reset Password</h2>
+              <p className="text-base text-[#494949] mb-8">
+                Enter your new password to reset your password
+              </p>
+            </div>
 
             {done ? (
               <p className="text-green-600 text-center">
@@ -61,20 +63,20 @@ export default function ResetPasswordPage() {
                     Password
                   </label>
                   <div className="relative">
-                  <Input
-                    type="password"
-                    className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                    placeholder="Enter new password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                  />
-                  <div
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </div>
+                    <Input
+                      type="password"
+                      className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                      placeholder="Enter new password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                    />
+                    <div
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </div>
                   </div>
                 </div>
 
@@ -83,20 +85,20 @@ export default function ResetPasswordPage() {
                     Confirm Password
                   </label>
                   <div className="relative">
-                  <Input
-                    type="password"
-                    className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                    placeholder="Enter password"
-                    value={newPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                  <div
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </div>
+                    <Input
+                      type="password"
+                      className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                      placeholder="Enter password"
+                      value={newPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                    <div
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </div>
                   </div>
                 </div>
 
