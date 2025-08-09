@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function NavBar() {
   return (
-    <div className="w-full">
+    <header className="w-full">
       <div className="flex justify-between items-center px-10 mt-5 max-w-screen-xl mx-auto">
         {/* Logo */}
         <div className="flex items-center gap-30">
@@ -39,6 +39,6 @@ export default function NavBar() {
           </Link>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

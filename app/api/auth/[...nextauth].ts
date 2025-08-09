@@ -1,8 +1,6 @@
-// [...nextauth].ts or .js
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import AppleProvider from "next-auth/providers/apple";
 
 export const authOptions = {
   providers: [
@@ -26,7 +24,7 @@ export const authOptions = {
     // }),
   ],
   pages: {
-    signIn: "/login", // Optional: custom login page
+    signIn: "/login",
   },
 };
 
