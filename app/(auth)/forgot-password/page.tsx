@@ -1,20 +1,72 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+const schema = z.object({
+  contact: z
+    .string()
+    .min(1, "This field is required")
+    .refine(
+      (value) =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^0?\d{10}$/.test(value),
+      { message: "Enter a valid email or phone number" },
+    ),
+});
+
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSendLink = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Sending reset link to:", email);
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      contact: "",
+    },
+  });
 
-    setSent(true);
+  const onSubmit = () => {
+    try {
+      setIsSuccess(true);
+      form.reset();
+    } catch (error) {
+      console.error("Enter a valid email or phone number", error);
+    }
   };
+
+  if (isSuccess) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="max-w-md w-[500px] h-[300px] relative overflow-hidden bg-white shadow-[0_4px_20px_rgba(2,1,129,0.63)] rounded-xl shadow-lg flex items-center justify-center">
+          <Image
+            src="/waste.png"
+            alt="Waste Bin"
+            fill
+            className="object-contain object-center"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+            <h4>Successful!</h4>
+            <p className="text-base mt-3">
+              A reset link has been sent <br /> to your email.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -41,32 +93,39 @@ export default function ForgotPassword() {
               </p>
             </div>
 
-            {sent ? (
-              <p className="text-green-600 text-center">
-                A reset link has been sent to your email.
-              </p>
-            ) : (
-              <form onSubmit={handleSendLink}>
-                <label htmlFor="email" className="block text-base mb-2">
-                  Email address
-                </label>
-                <Input
-                  type="email"
-                  className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none mb-10"
-                  placeholder="e.g example@mail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="contact"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base font-bold">
+                        Email or Phone Number
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                          placeholder="e.g example@mail.com"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
 
                 <Button
                   type="submit"
-                  className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
+                  className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold mt-8"
                 >
                   Send Reset Link
                 </Button>
               </form>
-            )}
+            </Form>
           </div>
         </div>
       </div>

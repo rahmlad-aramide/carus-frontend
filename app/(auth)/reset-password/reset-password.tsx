@@ -1,37 +1,90 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
-import Image from "next/image";
 
-export default function ResetPasswordPage() {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+const schema = z
+  .object({
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+export default function PasswordResetPage() {
+  const [isSuccess, setIsSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [done, setDone] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
-    if (newPassword !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
+  const onSubmit = () => {
+    try {
+      setIsSuccess(true);
+      form.reset();
+    } catch (error) {
+      console.error("Password reset failed", error);
     }
-    console.log("Resetting password with token:", token);
-    setDone(true);
   };
+
+  if (isSuccess) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="max-w-md w-[500px] h-[300px] relative overflow-hidden bg-white shadow-[0_4px_20px_rgba(2,1,129,0.63)] rounded-xl shadow-lg flex items-center justify-center">
+          <Image
+            src="/waste.png"
+            alt="Waste Bin"
+            fill
+            className="object-contain object-center"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+            <h3>Successful!</h3>
+            <p className="text-base mt-3">
+              Your password has been
+              <br /> successfully reset.
+            </p>
+
+            <div className="mt-7">
+              <Link
+                href="/login"
+                className="px-4 py-2 bg-primary text-white rounded"
+              >
+                Log In
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen">
-      {/* flex form and bg image */}
       <div className="w-full md:w-2/3 flex flex-col py-10 bg-white">
-        {/* Logo */}
         <div className="px-3 md:px-5 mb-15">
           <Image
             aria-hidden
@@ -39,7 +92,6 @@ export default function ResetPasswordPage() {
             alt="Carus Logo"
             width={117}
             height={32}
-            className="w-[117px] h-[32px]"
           />
         </div>
 
@@ -52,55 +104,76 @@ export default function ResetPasswordPage() {
               </p>
             </div>
 
-            {done ? (
-              <p className="text-green-600 text-center">
-                Your password has been successfully reset.
-              </p>
-            ) : (
-              <form onSubmit={handleResetPassword} className="space-y-7">
-                <div>
-                  <label htmlFor="email" className="block text-base mb-3">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <Input
-                      type="password"
-                      className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                      placeholder="Enter new password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      required
-                    />
-                    <div
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
-                    >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </div>
-                  </div>
-                </div>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-5"
+              >
+                {/* New Password */}
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">New Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                            className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                          />
+                          <div
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
+                          >
+                            {showPassword ? (
+                              <EyeOff size={20} />
+                            ) : (
+                              <Eye size={20} />
+                            )}
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                <div>
-                  <label htmlFor="password" className="block text-base mb-3">
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <Input
-                      type="password"
-                      className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                      placeholder="Enter password"
-                      value={newPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                    />
-                    <div
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
-                    >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </div>
-                  </div>
-                </div>
+                {/* Confirm Password */}
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Confirm Password
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showConfirmPassword ? "text" : "password"}
+                            {...field}
+                            className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                          />
+                          <div
+                            onClick={() =>
+                              setShowConfirmPassword(!showConfirmPassword)
+                            }
+                            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff size={20} />
+                            ) : (
+                              <Eye size={20} />
+                            )}
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <Button
                   type="submit"
@@ -109,20 +182,18 @@ export default function ResetPasswordPage() {
                   Reset Password
                 </Button>
               </form>
-            )}
+            </Form>
           </div>
         </div>
       </div>
 
       <div className="hidden md:block w-[50%] relative overflow-hidden bg-gradient-to-t from-[#C7DCD2] via-[#E5EFEA] to-[#F9FBFA]">
-        <div className="absolute inset-0">
-          <Image
-            src="/wastecan1.svg"
-            alt="Waste Bin"
-            fill
-            className="object-contain object-right bg-inherit"
-          />
-        </div>
+        <Image
+          src="/wastecan1.svg"
+          alt="Waste Bin"
+          fill
+          className="object-contain object-right bg-inherit"
+        />
       </div>
     </div>
   );

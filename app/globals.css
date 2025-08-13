@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "swiper/css";
+@import "swiper/css/effect-cards";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -45,6 +47,14 @@
   --color-grey-10: #d3d3d3;
   --color-grey-20: #b6b6b6;
   --color-grey-30: #919191;
+  --color-grey-40: #6d6d6d;
+  --color-grey-50: #494949;
+  --color-grey-60: #242424;
+  --color-grey-70: #1e1e1e;
+  --color-grey-80: #181818;
+  --color-grey-90: #121212;
+  --color-grey-100: #0c0c0c;
+  --color-grey-110: #070707;
   --color-secondary-10: #fbeecc;
   --color-secondary-20: #f9e3aa;
   --color-secondary-30: #f6d480;
@@ -52,9 +62,21 @@
   --color-secondary-50: #f0b82b;
   --color-secondary-60: #edaa00;
   --color-secondary-70: #c58e00;
+  --color-secondary-80: #9e7100;
+  --color-secondary-90: #775500;
+  --color-secondary-100: #4f3900;
+  --color-secondary-110: #2f2200;
   --color-primary-10: #cce1d7;
   --color-primary-20: #abcdbc;
   --color-primary-30: #80b49b;
+  --color-primary-40: #569b7a;
+  --color-primary-50: #2c8258;
+  --color-primary-60: #026937;
+  --color-primary-70: #02582e;
+  --color-primary-80: #014625;
+  --color-primary-90: #01351c;
+  --color-primary-100: #012312;
+  --color-primary-110: #00150b;
 }
 
 :root {
@@ -142,4 +164,20 @@
     padding: --spacing(6);
     box-shadow: var(--shadow-xl);
   }
+}
+
+@keyframes infiniteScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(var(--scroll-distance));
+  }
+}
+.scroll-row {
+  animation: infiniteScroll 80s linear infinite;
+}
+.wave {
+  background-image: url("/wave.png");
+  background-size: cover;
 }
