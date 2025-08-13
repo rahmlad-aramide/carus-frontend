@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function VerifyRegistrationOTP() {
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -39,39 +40,68 @@ export default function VerifyRegistrationOTP() {
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-10 p-6 border rounded-lg shadow-sm bg-white">
-      <h2 className="text-[28px] font-bold mb-4">Verification</h2>
-      <p className="text-base">
-        Enter the verification code sent to your email below.
-      </p>
-
-      <form onSubmit={handleVerifyOTP} className="space-y-6">
-        <div className="flex justify-center gap-3">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              ref={(el) => {
-                inputsRef.current[index] = el;
-              }}
-              type="text"
-              inputMode="numeric"
-              maxLength={1}
-              value={digit}
-              onChange={(e) => handleChange(e.target.value, index)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              className="rounded-[10px] w-[48px] h-[48px] py-1 text-[24px] bg-[#CCE1D7] text-center border focus:outline-none"
-            />
-          ))}
+    <div className="flex min-h-screen">
+      <div className="w-full md:w-2/3 flex flex-col py-10 bg-white">
+        <div className="px-3 md:px-5 mb-15">
+          <Image
+            aria-hidden
+            src="/logo.png"
+            alt="Carus Logo"
+            width={117}
+            height={32}
+          />
         </div>
-        <p className="mt-7 mb-7 text-base text-centr">Code expires in 10mins</p>
-        <Button
-          type="submit"
-          className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
-          disabled={otp.some((digit) => !digit)}
-        >
-          Verify
-        </Button>
-      </form>
+
+        <div className="flex-1 flex px-5 md:px-20">
+          <div className="w-full max-w-sm">
+            <div className="flex flex-col gap-1.5">
+              <h2 className="text-[28px] font-bold">Verification</h2>
+              <p className="text-base text-[#494949] mb-8">
+                Enter the verification code sent to your email below.
+              </p>
+            </div>
+
+            <form onSubmit={handleVerifyOTP} className="space-y-6">
+              <div className="flex justify-center gap-3">
+                {otp.map((digit, index) => (
+                  <input
+                    key={index}
+                    ref={(el) => {
+                      inputsRef.current[index] = el;
+                    }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleChange(e.target.value, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    className="rounded-[10px] w-[48px] h-[48px] py-1 text-[24px] bg-[#CCE1D7] text-center border focus:outline-none"
+                  />
+                ))}
+              </div>
+              <p className="mt-7 mb-7 text-base text-center">
+                Code expires in 10 minutes
+              </p>
+              <Button
+                type="submit"
+                className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
+                disabled={otp.some((digit) => !digit)}
+              >
+                Verify
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div className="hidden md:block w-[50%] relative overflow-hidden bg-gradient-to-t from-[#C7DCD2] via-[#E5EFEA] to-[#F9FBFA]">
+        <Image
+          src="/wastecan1.svg"
+          alt="Waste Bin"
+          fill
+          className="object-contain object-right bg-inherit"
+        />
+      </div>
     </div>
   );
 }

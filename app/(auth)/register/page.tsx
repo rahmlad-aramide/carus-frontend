@@ -37,8 +37,8 @@ const signupSchema = z.object({
     .min(10, {
       message: "Phone Number must be 10 digits without the leading 0",
     })
-    .max(10, {
-      message: "Phone Number must be 10 digits without the leading 0",
+    .max(11, {
+      message: "Phone Number must be 10 digits with the leading 0",
     }),
   password: z
     .string()

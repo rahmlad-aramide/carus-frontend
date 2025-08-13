@@ -1,10 +1,15 @@
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function NavBar() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <header className="w-full">
-      <div className="flex justify-between items-center px-10 mt-5 max-w-screen-xl mx-auto">
+      <div className="hidden md:flex justify-between items-center px-10 mt-5 max-w-screen-xl mx-auto">
         {/* Logo */}
         <div className="flex items-center gap-30">
           <Image
@@ -17,27 +22,130 @@ export default function NavBar() {
           />
 
           {/* nav links */}
-          <nav className="hidden md:flex items-center gap-10">
-            <Link href="/" className="text-primary font-bold">
+          <nav className="hidden md:flex items-center space-x-20">
+            <Link href="/" className="text-primary-60 font-bold">
               Home
             </Link>
-            <Link href="/service">Service</Link>
-            <Link href="/contact">Contact</Link>
+            <Link className="text-grey-100" href="/service">
+              Service
+            </Link>
+            <Link className="text-grey-100" href="/contact">
+              Contact
+            </Link>
           </nav>
         </div>
 
         {/* Right side: auth buttons */}
         <div className="flex items-center gap-4">
-          <Link href="/login" className="px-3 py-1">
+          <Link
+            href="/login"
+            className="px-4 py-2 text-primary-60 font-bold rounded-lg border border-primary-60"
+          >
             Log In
           </Link>
           <Link
             href="/register"
-            className="px-4 py-2 bg-primary text-white rounded"
+            className="px-4 py-2 bg-primary text-white rounded-lg"
           >
             Sign Up
           </Link>
         </div>
+      </div>
+
+      {/* Mobile */}
+
+      <div>
+        <div className="md:hidden flex justify-between items-center px-5 mt-5 w-full">
+          <Image
+            aria-hidden
+            src="/logo.png"
+            alt="Carus Logo"
+            width={117}
+            height={32}
+            className="w-[117px] h-[32px]"
+          />
+
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="px-2 text-[#292D32] text-2xl"
+          >
+            ☰
+          </button>
+        </div>
+
+        {sidebarOpen && (
+          <div
+            className="md:hidden fixed inset-0 z-50"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        <aside
+          className={`md:hidden fixed top-0 w-full bg-white z-50 transform transition-transform duration-300 ease-in-out 
+        ${sidebarOpen ? "translate-x-0" : "translate-x-full"}
+        `}
+        >
+          <div className="flex justify-between items-center px-5 mt-5 w-full">
+            <Image
+              aria-hidden
+              src="/logo.png"
+              alt="Carus Logo"
+              width={117}
+              height={32}
+              className="w-[117px] h-[32px]"
+            />
+
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="text-[#FF6161] text-2xl font-bold"
+            >
+              ✕
+            </button>
+          </div>
+
+          <nav className="flex flex-col space-y-12 mt-8 pl-15">
+            <Link
+              href="/"
+              onClick={() => setSidebarOpen(false)}
+              className="text-primary-60 font-bold"
+            >
+              Home
+            </Link>
+
+            <Link
+              href="/service"
+              onClick={() => setSidebarOpen(false)}
+              className="text-grey-100"
+            >
+              Service
+            </Link>
+
+            <Link
+              href="/contact"
+              onClick={() => setSidebarOpen(false)}
+              className="text-grey-100"
+            >
+              Contact
+            </Link>
+          </nav>
+
+          <div className="flex flex-col gap-5 pl-15 mt-12">
+            <Link
+              href="/login"
+              onClick={() => setSidebarOpen(false)}
+              className="px-4 py-3 text-center text-primary-60 font-bold rounded-lg border border-primary-60 w-[155px]"
+            >
+              Log In
+            </Link>
+            <Link
+              href="/register"
+              onClick={() => setSidebarOpen(false)}
+              className="px-4 py-3 text-center bg-primary text-white rounded-lg w-[155px]"
+            >
+              Sign Up
+            </Link>
+          </div>
+        </aside>
       </div>
     </header>
   );
