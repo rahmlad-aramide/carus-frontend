@@ -9,13 +9,13 @@ export default function DownloadSection() {
       <div className="md:hidden mt-20 bg-primary-80 p-4 pt-20 pb-20 wave">
         <div className="flex flex-col items-center">
           {/* Text Section */}
-          <div className="flex-1 space-y-6 md:pl-15 pl-0">
+          <div className="flex-1 space-y-6 pl-0">
             <p className="text-white text-center font-black text-2xl leading-tight">
               Streamline your waste
               <br /> management efforts with our
               <br /> powerful app
             </p>
-            <p className="text-base text-white text-center">
+            <p className="text-base lg:text-xl text-white text-center">
               Get our mobile app on any device
               <br /> you use on the App Store or Google
               <br /> Playstore
@@ -40,15 +40,15 @@ export default function DownloadSection() {
       </div>
 
       {/* Desktop */}
-      <div className="hidden md:block mt-48 bg-primary-80 p-4 md:pb-0 wave">
-        <div className="flex flex-col md:flex-row items-center gap-10 max-w-7xl mx-auto">
+      <div className="hidden md:block bg-primary-80 wave pt-10 lg:px-15">
+        <div className="flex md:flex-row items-center mx-auto">
           {/* Text Section */}
-          <div className="flex-1 space-y-6 md:pl-15 pl-0">
-            <p className="text-white text-center md:text-left font-black text-xl md:text-[33px] leading-tight">
+          <div className="w-full space-y-6 md:pl-15 lg:pl-15 w-2/3">
+            <p className="text-white text-center md:text-left font-black text-xl md:text-[26px] lg:text-[33px] leading-tight">
               Streamline your waste management <br /> efforts with our powerful
               app
             </p>
-            <p className="text-base text-white">
+            <p className="text-base md:text-xl text-white">
               Get our mobile app on any device you use on the <br /> App Store
               or Google Playstore
             </p>
@@ -70,8 +70,8 @@ export default function DownloadSection() {
           </div>
 
           {/* Image Section */}
-          <div className="hidden md:flex flex-1 justify-end">
-            <div className="relative w-[300px] md:w-[500px] h-[500px]">
+          <div className="hidden md:flex justify-end w-1/3">
+            <div className="relative w-[390px] md:h-[300px] lg:h-[410px]">
               <Image
                 src="/phone.webp"
                 alt=""
@@ -84,8 +84,8 @@ export default function DownloadSection() {
         </div>
       </div>
 
-      <div className="mt-10 md:mt-24 flex flex-col gap-y-10 md:flex-row justify-center items-center md:max-w-5xl md:m-auto px-8 gap-0 md:gap-20">
-        <p className="text-2xl text-center md:text-start md:text-[35px] font-black md:leading-snug">
+      <div className="mt-10 md:mt-24 flex flex-col gap-y-10 md:flex-row justify-center items-center md:max-w-5xl md:m-auto px-8 gap-0 md:gap-20 lg:gap-40">
+        <p className="text-2xl text-center md:text-start md:text-[35px] lg:text-[40px] font-black md:leading-snug">
           Take the first step
           <br className="md:hidden" /> towards a<br />{" "}
           <span className="bg-gradient-to-r from-[#2c8258] to-[#ffde52] text-transparent bg-clip-text">

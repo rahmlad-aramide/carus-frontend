@@ -98,7 +98,7 @@ export default function HeroSection() {
       <div className="px-5 flex justify-center">
         <div className="bg-[#ECF6F2] flex flex-col items-center w-full rounded-[20px] md:max-w-5xl pt-16 pb-13 px-5 md:px-36 lg:px-56 -mt-8">
           <div className="bg-[#CCE1D7] h-1 md:h-2 w-17 text-center"></div>
-          <p className="text-[25px] md:text-[33px] font-black mt-10 leading-snug text-center">
+          <p className="text-[25px] md:text-[33px] lg:text-[40px] font-black mt-10 leading-snug text-center">
             Effortless Waste Scheduling
           </p>
           <p className="mt-8 text-base md:text-2xl text-center">
@@ -123,7 +123,7 @@ export default function HeroSection() {
           <p className="text-2xl md:text-3xl lg:text-4xl font-black text-center md:text-left lg:text-left">
             Earn Reward
           </p>
-          <p className="text-base md:text-xl mt-4 text-center md:text-left max-w-2xl">
+          <p className="text-base md:text-xl lg:text-2xl mt-4 text-center md:text-left max-w-2xl">
             You can earn points that can be redeemed for exciting rewards such
             as Gift cards, airtime, and even cash. Our easy-to-use app makes
             waste management a breeze, and with every donation, you are

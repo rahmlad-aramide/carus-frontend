@@ -53,7 +53,7 @@ const signupSchema = z.object({
 });
 type SignupSchema = z.infer<typeof signupSchema>;
 
-export default function LoginForm() {
+export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [option, setOption] = useState<"individual" | "business">("individual");
   const [page, setPage] = useState(1);
@@ -190,7 +190,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="e.g John"
+                              placeholder="John Champion"
                               {...field}
                             />
                           </FormControl>
@@ -210,7 +210,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="e.g Champion"
+                              placeholder="John Champion"
                               {...field}
                             />
                           </FormControl>
@@ -230,7 +230,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="e.g example@mail.com"
+                              placeholder="example@mail.com"
                               {...field}
                             />
                           </FormControl>
@@ -266,7 +266,7 @@ export default function LoginForm() {
                               {/* Input field */}
                               <Input
                                 className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none pl-20"
-                                placeholder="e.g 812 345 6789"
+                                placeholder="812 345 6789"
                                 {...field}
                               />
                             </div>
@@ -324,7 +324,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="e.g Carus Recycling"
+                              placeholder="John Champion"
                               {...field}
                             />
                           </FormControl>
@@ -344,7 +344,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="e.g example@mail.com"
+                              placeholder="example@mail.com"
                               {...field}
                             />
                           </FormControl>
@@ -412,7 +412,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="Enter your address"
+                              placeholder="2 Atunrase Estate, Gbagada, Lagos"
                               {...field}
                             />
                           </FormControl>
@@ -559,7 +559,7 @@ export default function LoginForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="Enter your address"
+                              placeholder="2 Atunrase Estate, Gbagada, Lagos"
                               {...field}
                             />
                           </FormControl>
