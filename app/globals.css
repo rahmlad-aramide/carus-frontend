@@ -181,3 +181,11 @@
   background-image: url("/wave.png");
   background-size: cover;
 }
+.swiper-slide {
+  opacity: 0;
+  /* transition: opacity 0.3s ease; */
+}
+
+.swiper-cards .swiper-slide-active {
+  opacity: 1;
+}

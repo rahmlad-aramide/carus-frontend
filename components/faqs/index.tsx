@@ -36,10 +36,10 @@ export default function Faqs() {
     setSelectedQuesId((prev) => (prev === id ? null : id));
   };
   return (
-    <div className="flex flex-col md:flex-row justify-center gap-x-20 px-10 md:px-40 mt-40 mb-30">
+    <div className="flex flex-col md:flex-row justify-center gap-x-20 px-10 md:px-20 lg:px-20 mt-40 mb-30">
       <div className="space-y-3 md:w-1/3 mb-15 md:mb-0">
         <p className="text-base">FAQs</p>
-        <p className="text-2xl md:text-5xl leading-snug font-black ">
+        <p className="text-2xl md:text-5xl lg:text-[58px] leading-snug font-black ">
           Frequently Asked Questions.
         </p>
       </div>
@@ -51,7 +51,7 @@ export default function Faqs() {
               <div className="flex-1 min-w-0">
                 <h3
                   onClick={() => handleSelectedQues(faq.id)}
-                  className="font-semibold text-base md:text-[20px] text-grey-90 font-medium cursor-pointer"
+                  className="font-semibold text-base md:text-xl lg:text-2xl text-grey-90 font-medium cursor-pointer"
                 >
                   {faq.question}
                 </h3>
@@ -69,7 +69,7 @@ export default function Faqs() {
             </div>
 
             {selectedQuesId === faq.id && (
-              <p className="mt-5 text-sm md:text-[18px] text-grey-90 text-justify leading-snug pb-5 border border-l-0 border-r-0 border-t-0 border-grey-40">
+              <p className="mt-5 text-sm md:text-[18px] lg:text-xl text-grey-90 text-justify leading-snug pb-5 border border-l-0 border-r-0 border-t-0 border-grey-40">
                 {faq.answer}
               </p>
             )}

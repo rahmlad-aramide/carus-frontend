@@ -129,7 +129,7 @@ export default function Community() {
 
   return (
     <div>
-      <h1 className="text-[24px] md:text-[33px] font-black text-center mt-20">
+      <h1 className="text-[24px] md:text-[33px] lg:text-[48px] font-black text-center mt-20">
         Join Our Community{" "}
       </h1>
       <div className="overflow-hidden w-full mt-15">
