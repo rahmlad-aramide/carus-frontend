@@ -1,4 +1,4 @@
-echo '🏗️👷 Styling, testing and building your project before committing'
+echo '🏗️👷  Have formatted the codebase? Checking styling, linting, and testing your project before committing.'
 
 # Check Prettier standards
 npm run check-format ||
