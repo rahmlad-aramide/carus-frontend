@@ -16,8 +16,8 @@ export default function NavBar() {
             aria-hidden
             src="/logo.png"
             alt="Carus Logo"
-            width={117}
-            height={32}
+            width={235}
+            height={64}
             className="w-[117px] h-[32px]"
           />
 

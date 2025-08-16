@@ -37,7 +37,7 @@ export default function HeroSection() {
       </Link>
 
       <div className="md:-mt-5 -mt-25 absolute mx-auto -z-10">
-        <div className="relative w-[150vw] h-[400px] md:w-[100vw] -left-25 md:-left-3 md:-right-16 -right-32 h-[150vw] md:h-[500px]">
+        <div className="relative w-[100vw] -left-1/2 translate-x-1/2 h-[400px] md:h-[500px]">
           <Image
             src="/Ellipse.png"
             alt="ellipse"
@@ -56,40 +56,40 @@ export default function HeroSection() {
           disableOnInteraction: false,
         }}
         modules={[EffectCards, Autoplay]}
-        className="w-full mt-8 lg:mt-20 max-w-xs md:max-w-md lg:max-w-2xl"
+        className="w-full mt-8 lg:mt-20 max-w-[85%] lg:max-w-2xl"
       >
         <SwiperSlide>
-          <div className="relative w-[240px] md:w-[616px] h-[162px] md:h-[417px] mx-auto">
+          <div className="relative w-[90%] aspect-[3/2] md:h-[417px] mx-auto">
             <Image
               src="/schedule.gif"
               alt="preview"
-              fill
-              className="rounded-3xl object-cover"
-              unoptimized
+              className="rounded-3xl"
+              width={1512}
+              height={1024}
             />
           </div>
         </SwiperSlide>
 
         <SwiperSlide>
-          <div className="relative w-[240px] md:w-[616px] h-[162px] md:h-[417px] mx-auto">
+          <div className="relative w-[90%] aspect-[3/2] md:h-[417px] mx-auto">
             <Image
               src="/redeem.gif"
               alt="preview"
-              fill
-              className="rounded-3xl object-cover"
-              unoptimized
+              className="rounded-3xl"
+              width={1512}
+              height={1024}
             />
           </div>
         </SwiperSlide>
 
         <SwiperSlide>
-          <div className="relative w-[240px] md:w-[616px] h-[162px] md:h-[417px] mx-auto">
+          <div className="relative w-[90%] aspect-[3/2] md:h-[417px] mx-auto">
             <Image
               src="/donate.gif"
               alt="preview"
-              fill
-              className="rounded-3xl object-cover"
-              unoptimized
+              className="rounded-3xl"
+              width={1512}
+              height={1024}
             />
           </div>
         </SwiperSlide>
