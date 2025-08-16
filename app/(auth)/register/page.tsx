@@ -114,13 +114,13 @@ export default function SignupForm() {
               Register An Account
             </h1>
 
-            <div className="w-full flex items-center justify-center gap-8 rounded-full bg-[#F3F3F3] h-[56px] px-2 py-1 mb-5">
+            <div className="w-full flex items-center justify-between rounded-full bg-[#F3F3F3] h-[56px] px-3 py-2 mb-5">
               <Button
                 onClick={() => {
                   setOption("individual");
                   setPage(1); // reset steps
                 }}
-                className={`flex-1 rounded-full py-5 px-7 text-center text-sm md:text-base ${
+                className={`rounded-full py-5 px-8 text-center text-sm md:text-base ${
                   option === "individual"
                     ? "bg-[#CCE1D7] text-black"
                     : "bg-white text-black"
@@ -134,7 +134,7 @@ export default function SignupForm() {
                   setOption("business");
                   setPage(1); // reset steps
                 }}
-                className={`flex-1 rounded-full py-5 px-7 text-center text-sm md:text-base ${
+                className={`rounded-full py-5 px-8 text-center text-sm md:text-base ${
                   option === "business"
                     ? "bg-[#CCE1D7] text-black"
                     : "bg-white text-black"

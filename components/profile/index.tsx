@@ -61,7 +61,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center px-5 md:px-15 mt-10 bg-[#F3F3F3] rounded-[10px] pt-5 pb-20">
+    <div className="flex-1 flex items-center justify-center px-5 md:px-15 mt-5 bg-[#F3F3F3] rounded-[10px] pt-5 pb-20">
       <div className="w-full max-w-5xl">
         <p className="text-base font-bold text-grey-90 mb-7">
           Personal Information

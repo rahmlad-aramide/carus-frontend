@@ -12,8 +12,8 @@ export default function DownloadSection() {
           <div className="flex-1 space-y-6 pl-0">
             <p className="text-white text-center font-black text-2xl leading-tight">
               Streamline your waste
-              <br /> management efforts with our
-              <br /> powerful app
+              <br /> management efforts with
+              <br /> our powerful app
             </p>
             <p className="text-base lg:text-xl text-white text-center">
               Get our mobile app on any device

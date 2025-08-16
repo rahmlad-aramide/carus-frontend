@@ -59,7 +59,7 @@ export default function HeroSection() {
         className="w-full mt-8 lg:mt-20 max-w-xs md:max-w-md lg:max-w-2xl"
       >
         <SwiperSlide>
-          <div className="relative w-[240px] md:w-[616px] h-[162px] md:h-[417px] mx-auto">
+          <div className="relative w-[320px] md:w-[616px] h-[220px] md:h-[417px] mx-auto">
             <Image
               src="/schedule.gif"
               alt="preview"
@@ -71,7 +71,7 @@ export default function HeroSection() {
         </SwiperSlide>
 
         <SwiperSlide>
-          <div className="relative w-[240px] md:w-[616px] h-[162px] md:h-[417px] mx-auto">
+          <div className="relative w-[320px] md:w-[616px] h-[220px] md:h-[417px] mx-auto">
             <Image
               src="/redeem.gif"
               alt="preview"
@@ -83,7 +83,7 @@ export default function HeroSection() {
         </SwiperSlide>
 
         <SwiperSlide>
-          <div className="relative w-[240px] md:w-[616px] h-[162px] md:h-[417px] mx-auto">
+          <div className="relative w-[320px] md:w-[616px] h-[220px] md:h-[417px] mx-auto">
             <Image
               src="/donate.gif"
               alt="preview"
@@ -140,11 +140,11 @@ export default function HeroSection() {
           </Link>
         </div>
 
-        <div className="px-5  md:px-0">
-          <div className="flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-5 py- md:py-15 mb-8">
-            <div className="relative h-[185px] w-[270px] md:w-[500px] md:h-[400px]">
+        <div>
+          <div className="flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-5 py-6 md:py-15 mb-8">
+            <div className="relative h-[270px] w-[310px] md:w-[500px] md:h-[400px]">
               <Image
-                src="/reward.webp"
+                src="/redeem.webp"
                 alt=""
                 fill
                 className="object-cover"
