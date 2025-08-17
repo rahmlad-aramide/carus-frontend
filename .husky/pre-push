@@ -9,15 +9,15 @@ npm run build ||
 )
 
 # pull from origin staging
-echo '🏗️👷 Pulling updates from branch staging before pushing'
+# echo '🏗️👷 Pulling updates from branch staging before pushing'
 
-git pull origin staging --rebase ||
-(
-    echo '🤡😂❌🤡 Failed to pull from origin staging. 🤡😂❌🤡
-            You should try again.'
-    false;
-)
+# git pull origin staging --rebase ||
+# (
+#     echo '🤡😂❌🤡 Failed to pull from origin staging. 🤡😂❌🤡
+#             You should try again.'
+#     false;
+# )
 
-# If everything passes... Now we can push
-echo '✅✅✅✅ Pull successful... I am pushing this now. ✅✅✅✅'
+# # If everything passes... Now we can push
+# echo '✅✅✅✅ Pull successful... I am pushing this now. ✅✅✅✅'
 
