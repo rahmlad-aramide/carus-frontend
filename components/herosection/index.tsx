@@ -111,7 +111,6 @@ export default function HeroSection() {
             href="/register"
             className="flex space-x-2 bg-primary-60 rounded-[10px] p-3 px-5 mt-12 w-max hover:bg-primary-50 duration-700"
           >
-            {" "}
             <p className="text-white font-bold">Get Started - for Free</p>{" "}
             <TbArrowNarrowRight className="text-white h-6 w-6 my-auto" />{" "}
           </Link>
