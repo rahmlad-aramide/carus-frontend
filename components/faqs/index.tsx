@@ -46,18 +46,18 @@ export default function Faqs() {
 
       <ul className="space-y-15 w-full md:w-2/3">
         {faqs.map((faq) => (
-          <li key={faq.id}>
+          <li key={faq.id} className="border-b border-grey-40 pb-5">
             <div className="flex items-start gap-8">
               <div className="flex-1 min-w-0">
                 <h3
                   onClick={() => handleSelectedQues(faq.id)}
-                  className="font-semibold text-base md:text-xl lg:text-2xl text-grey-90 font-medium cursor-pointer"
+                  className="font-semibold text-base md:text-xl lg:text-2xl text-grey-90 font-medium cursor-pointer "
                 >
                   {faq.question}
                 </h3>
               </div>
               <button
-                className="flex-none text-white bg-primary-60 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer"
+                className="flex-none text-white bg-primary-60 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer "
                 onClick={() => handleSelectedQues(faq.id)}
               >
                 {selectedQuesId !== faq.id ? (
@@ -67,13 +67,11 @@ export default function Faqs() {
                 )}
               </button>
             </div>
-
             {selectedQuesId === faq.id && (
-              <p className="mt-5 text-sm md:text-[18px] lg:text-xl text-grey-90 text-justify leading-snug pb-5 border border-l-0 border-r-0 border-t-0 border-grey-40">
+              <p className="mt-5 text-sm md:text-[18px] lg:text-xl text-grey-90 text-justify leading-snug">
                 {faq.answer}
               </p>
             )}
-            <div className=""></div>
           </li>
         ))}
       </ul>

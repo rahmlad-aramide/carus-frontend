@@ -48,7 +48,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="px-4 md:px-15 pt-10 pb-10 ">
+      <div className="px-8 md:px-15 pt-10 pb-10">
         <p className="text-grey-30 text-xl font-bold">Contact Us</p>
         {/* Social Icons */}
         <div className="flex justify-start flex-1 space-x-4 pt-5">
@@ -82,7 +82,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <p className="mt-7 mb-15 text-primary-60 px-4 md:px-15">
+      <p className="mt-7 mb-15 text-primary-60 px-8 md:px-15">
         Copyright © Carus. 2025.
       </p>
     </div>

@@ -1,0 +1,234 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import Image from "next/image";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@radix-ui/react-popover";
+import { CalendarIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import InfoToolTip from "@/components/infotooltip";
+import DropoffWasteSelector from "../wasteselector(dropoff)";
+
+// ✅ Validation schema
+const dropoffFormSchema = z.object({
+  noOfPlasticWaste: z.string().min(2, { message: "Minimum of 100 pieces" }),
+  noOfPlasticBag: z
+    .string()
+    .nonempty({ message: "Please indicate number of bags" }),
+  date: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, {
+    message: "Please enter date in DD/MM/YYYY format",
+  }),
+});
+
+type dropoffFormSchema = z.infer<typeof dropoffFormSchema>;
+type DropoffFormProps = {
+  onBack: () => void;
+};
+
+export default function DropoffForm({ onBack }: DropoffFormProps) {
+  const [image, setImage] = useState<string | null>(null);
+
+  const form = useForm<dropoffFormSchema>({
+    resolver: zodResolver(dropoffFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      noOfPlasticWaste: "",
+      noOfPlasticBag: "",
+      date: "",
+    },
+  });
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      setImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const onSubmit = (values: dropoffFormSchema) => {
+    console.log(values);
+  };
+
+  return (
+    <>
+      <div>
+        <div className="md:hidden fixed top-0 z-40 bg-white flex justify-between items-center h-16 pb-10 w-full pt-10 px-1">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onBack}
+              className="bg-[#F3F3F3] rounded-[10px] text-[#292D32] p-2"
+            >
+              <ArrowLeft />
+            </button>
+            <p className="text-xl md:text-3xl font-black">Schedule Pickup</p>
+          </div>
+        </div>
+
+        <div className="px-1">
+          <p className="text-[14px] md:text-base text-grey-90 mb-3 mt-10 xl:mt-0">
+            Category
+          </p>
+          <DropoffWasteSelector />
+        </div>
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full px-1 md:px-2 mt-5 pb-10 space-y-5"
+          >
+            {/* Number of Plastic Waste */}
+            <FormField
+              control={form.control}
+              name="noOfPlasticWaste"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm md:text-base text-grey-90">
+                    Number of Plastic Waste
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                      placeholder="Minimum of 100 pieces"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Number of Plastic Bag */}
+            <FormField
+              control={form.control}
+              name="noOfPlasticBag"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm md:text-base text-grey-90 justify-between">
+                    Number of Plastic Bag
+                    <InfoToolTip
+                      text=" Ensure your waste has been properly sorted by
+                            category and select the number of bags you're
+                            scheduling for pickup."
+                    />
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
+                      placeholder="Please indicate number of bags"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Date */}
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="text-sm md:text-base text-grey-90">
+                    Drop-off Date
+                  </FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={`rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none justify-between text-left font-normal ${
+                          !field.value && "text-muted-foreground"
+                        }`}
+                      >
+                        {field.value ? (
+                          field.value
+                        ) : (
+                          <span className="text-gray-400">DD/MM/YYYY</span>
+                        )}
+                        <CalendarIcon className="flex justify-end h-4 w-4" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={
+                          field.value ? new Date(field.value) : undefined
+                        }
+                        onSelect={(selected) => {
+                          if (selected) {
+                            field.onChange(format(selected, "dd/MM/yyyy"));
+                          }
+                        }}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Photos of Trash */}
+            <div>
+              <label
+                htmlFor="photos"
+                className="text-sm md:text-base text-grey-90 font-medium"
+              >
+                Photos of trash
+              </label>
+
+              <div className="bg-[#F3F3F3] flex items-center justify-center w-full h-[96px] rounded-[10px] mt-2 cursor-pointer relative">
+                {/* Hidden Input */}
+                <input
+                  id="photos"
+                  type="file"
+                  accept="image/*"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  onChange={handleImageChange}
+                />
+
+                {/* Icon */}
+                <div className="relative w-5 h-5 pointer-events-none">
+                  <Image
+                    src="/gallery-import.png"
+                    alt="upload image"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Button */}
+
+            <div className="col-span-1 xl:col-start-2">
+              <Button
+                type="submit"
+                className="w-full py-7 text-sm md:text-base font-bold"
+              >
+                Schedule Dropoff
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </>
+  );
+}

@@ -4,9 +4,10 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaHome, FaCalendar, FaWallet, FaCog, FaUser } from "react-icons/fa";
+import { FaHome, FaCalendar, FaWallet, FaCog } from "react-icons/fa";
+import ImageContainer from "../imagecontainer";
 
-export default function SideNav() {
+export default function ScheduleSideNav() {
   const pathname = usePathname();
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
@@ -15,7 +16,6 @@ export default function SideNav() {
     { href: "/schedule", label: "Schedule", icon: FaCalendar },
     { href: "/wallet", label: "Wallet", icon: FaWallet },
     { href: "/settings", label: "Settings", icon: FaCog },
-    { href: "/profile", label: "Profile", icon: FaUser },
   ];
 
   return (
@@ -52,6 +52,10 @@ export default function SideNav() {
               height={64}
               className="w-[88px] md:w-[117px] h-[24px] md:h-[32px]"
             />
+          </div>
+
+          <div className="md:hidden pl-4 mt-10">
+            <ImageContainer />
           </div>
 
           <nav className="flex flex-col justify-center space-y-8 mt-8 md:mt-15 pl-4 pr-2 md:px-12">
