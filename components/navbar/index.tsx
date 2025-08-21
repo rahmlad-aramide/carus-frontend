@@ -54,10 +54,9 @@ export default function NavBar() {
 
       {/* Mobile */}
 
-      <div>
-        <div className="md:hidden flex justify-between items-center px-5 mt-5 w-full">
+      <div className="md:hidden fixed top-0 left-0 w-full z-50 bg-white">
+        <div className="flex justify-between items-center px-5 py-4">
           <Image
-            aria-hidden
             src="/logo.png"
             alt="Carus Logo"
             width={117}
@@ -87,7 +86,6 @@ export default function NavBar() {
         >
           <div className="flex justify-between items-center px-5 mt-5 w-full">
             <Image
-              aria-hidden
               src="/logo.png"
               alt="Carus Logo"
               width={117}

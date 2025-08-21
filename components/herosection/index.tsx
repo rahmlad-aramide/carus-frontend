@@ -140,7 +140,7 @@ export default function HeroSection() {
         </div>
 
         <div>
-          <div className="flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-5 py-6 md:py-15 mb-8">
+          <div className="flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-4 py-6 md:py-15 mb-8">
             <div className="relative h-[270px] w-[310px] md:w-[500px] md:h-[400px]">
               <Image
                 src="/redeem.webp"

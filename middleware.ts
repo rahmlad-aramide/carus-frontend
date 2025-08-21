@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const protectedRoutes = [
     "/dashboard",
     "/profile",
-    "/schedule",
+    // "/schedule",
     "/wallet",
     "/login",
     "/register",
@@ -26,7 +26,7 @@ export const config = {
   matcher: [
     "/dashboard",
     "/profile",
-    "/schedule",
+    // "/schedule",
     "/wallet",
     "/login",
     "/register",
