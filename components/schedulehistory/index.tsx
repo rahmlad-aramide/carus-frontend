@@ -155,7 +155,7 @@ export default function ScheduleHistory() {
                 onClick={() =>
                   setActiveTab(tab as "pending" | "completed" | "missed")
                 }
-                className={`cursor-pointer capitalize pb-1 px-3 md:px-5 ${activeTab === tab ? "text-[#026937] text-[11px] md:text-base" : "text-[11px] md:text-base text-[#6D6D6D]"}`}
+                className={`cursor-pointer capitalize pb-1 md:px-5 ${activeTab === tab ? "text-[#026937] text-[11px] md:text-base" : "text-[11px] md:text-base text-[#6D6D6D]"}`}
               >
                 {tab}
               </button>

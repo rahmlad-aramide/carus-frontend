@@ -47,7 +47,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-16 md:h-20 pt-12 md:pt-18 pb-10 w-full md:w-[calc(100%-16rem)]">
+      <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-25 md:h-20 md:pt-18 md:pb-10 w-full md:w-[calc(100%-16rem)]">
         <p className="text-xl md:text-3xl font-black">Schedule</p>
 
         <div className="hidden md:flex items-center gap-5">
@@ -60,7 +60,7 @@ export default function Page() {
         {schedule.map(({ activity, paragraph, image, form }, index) => (
           <div key={index}>
             <div
-              className="bg-[#F3F3F3] rounded-[10px] md:space-y-3 xl:space-y-2 px-5 py-2 md:p-4 cursor-pointer"
+              className="bg-[#F3F3F3] rounded-[10px] md:space-y-3 xl:space-y-2 px-6 py-2 md:p-4 cursor-pointer"
               onClick={() => setActiveForm(form)}
             >
               <div className="flex justify-end ml-auto pt-2">
@@ -73,11 +73,11 @@ export default function Page() {
                   />
                 </div>
               </div>
-              <div className="px-4 py-4 lg:pl-8 lg:pr-10 lg:py-2 xl:pl-6 xl:pr-30  space-y-2">
-                <h3 className="text-sm md:text-[18px] lg:text-xl xl:text-2xl font-bold">
+              <div className="py-4 lg:pl-8 lg:pr-10 lg:py-2 xl:pl-6 xl:pr-30  space-y-2">
+                <h3 className="text-[15px] md:text-[18px] lg:text-xl xl:text-2xl font-bold">
                   {activity}
                 </h3>
-                <p className="text-[11px] text-grey-40 md:text-sm lg:text-base font-bold">
+                <p className="text-[12px] text-grey-40 md:text-sm lg:text-base font-bold">
                   {paragraph}
                 </p>
               </div>

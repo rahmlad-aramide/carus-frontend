@@ -49,7 +49,7 @@ export default function WasteSelector() {
   );
 
   return (
-    <div className="bg-[#F3F3F3] grid grid-cols-3 lg:w-2/3 md:grid-cols-4 xl:w-full xl:grid-cols-7 gap-y-4 gap-x-3 xl:gap-1 p-5 rounded-xl">
+    <div className="bg-[#F3F3F3] grid grid-cols-3 lg:w-2/3 md:grid-cols-4 xl:w-full xl:grid-cols-7 gap-y-4 gap-x-3 xl:gap-1 p-3 md:p-5 rounded-xl">
       {/* Plastic */}
       <Button
         type="plastic"
@@ -80,7 +80,7 @@ export default function WasteSelector() {
         bg="bg-[#FFF1E3]"
         circle="bg-[#FFDFBE]"
         baseWidth="w-[90px] md:w-[105px]"
-        activeWidth="w-[100px] md:w-[115px]"
+        activeWidth="w-[105px] md:w-[115px]"
       ></Button>
 
       {/* Organic */}
@@ -124,7 +124,7 @@ export default function WasteSelector() {
         bg="bg-[#C2FFF4]"
         circle="bg-[#49FFDD]"
         baseWidth="w-[110px] md:w-[135px]"
-        activeWidth="w-[120px] md:w-[150px]"
+        activeWidth="w-[130px] md:w-[150px]"
       ></Button>
     </div>
   );

@@ -51,7 +51,6 @@ type SchedulePickupProps = {
 };
 
 export default function Pickup({ onBack }: SchedulePickupProps) {
-  const [, setImage] = useState<string | null>(null);
   const [enabled, setEnabled] = useState(false);
 
   const form = useForm<SchedulePickupSchema>({
@@ -68,7 +67,8 @@ export default function Pickup({ onBack }: SchedulePickupProps) {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      setImage(URL.createObjectURL(e.target.files[0]));
+      const file = e.target.files[0];
+      console.log("Selected file:", file);
     }
   };
 
@@ -210,27 +210,6 @@ export default function Pickup({ onBack }: SchedulePickupProps) {
                     />
                     <button
                       type="button"
-                      // onClick={() => {
-                      //   // Example: use navigator.geolocation API
-                      //   navigator.geolocation.getCurrentPosition(
-                      //     (pos) => {
-                      //       console.log(
-                      //         "Lat:",
-                      //         pos.coords.latitude,
-                      //         "Lng:",
-                      //         pos.coords.longitude
-                      //       );
-                      //       // you could update form field here
-                      //       field.onChange(
-                      //         `Lat: ${pos.coords.latitude}, Lng: ${pos.coords.longitude}`
-                      //       );
-                      //     },
-                      //     (err) => {
-                      //       console.error(err);
-                      //       alert("Unable to fetch location");
-                      //     }
-                      //   );
-                      // }}
                       className="absolute top-3 right-0 w-[25px] h-[25px]"
                     >
                       <Image
