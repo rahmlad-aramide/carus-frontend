@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,8 +43,6 @@ type DropoffFormProps = {
 };
 
 export default function DropoffForm({ onBack }: DropoffFormProps) {
-  const [image, setImage] = useState<string | null>(null);
-
   const form = useForm<dropoffFormSchema>({
     resolver: zodResolver(dropoffFormSchema),
     mode: "onChange",
@@ -58,7 +55,8 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      setImage(URL.createObjectURL(e.target.files[0]));
+      const file = e.target.files[0];
+      console.log("Selected file:", file);
     }
   };
 
@@ -69,7 +67,7 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
   return (
     <>
       <div>
-        <div className="md:hidden fixed top-0 z-40 bg-white flex justify-between items-center h-16 pb-10 w-full pt-10 px-1">
+        <div className="fixed top-0 z-40 bg-white flex justify-between items-center h-16 pb-10 w-full pt-10 md:pt-15 px-1">
           <div className="flex items-center gap-3">
             <button
               onClick={onBack}
@@ -77,12 +75,12 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
             >
               <ArrowLeft />
             </button>
-            <p className="text-xl md:text-3xl font-black">Schedule Pickup</p>
+            <p className="text-xl md:text-3xl font-black">Schedule Drop-off</p>
           </div>
         </div>
 
         <div className="px-1">
-          <p className="text-[14px] md:text-base text-grey-90 mb-3 mt-10 xl:mt-0">
+          <p className="text-[14px] md:text-base text-grey-90 mb-3 mt-10 md:mt-15">
             Category
           </p>
           <DropoffWasteSelector />
@@ -91,7 +89,7 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full px-1 md:px-2 mt-5 pb-10 space-y-5"
+            className="w-full px-1 md:px-2 mt-5 pb-10 space-y-5 md:w-2/3"
           >
             {/* Number of Plastic Waste */}
             <FormField

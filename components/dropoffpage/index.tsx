@@ -59,6 +59,10 @@ export default function DropOff({ onBack }: ScheduleDropoffProps) {
       centre.address.toLowerCase().includes(search.toLowerCase()),
   );
 
+  if (dropoffForm !== null) {
+    return <DropoffForm onBack={() => setDropoffForm(null)} />;
+  }
+
   return (
     <>
       <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-16 md:h-20 pt-12 md:pt-18 pb-10 w-full md:w-[calc(100%-16rem)]">
@@ -71,7 +75,7 @@ export default function DropOff({ onBack }: ScheduleDropoffProps) {
           >
             <ArrowLeft />
           </button>
-          <p className="text-xl md:text-3xl font-black">Schedule Pickup</p>
+          <p className="text-xl md:text-3xl font-black">Schedule Drop-off</p>
         </div>
 
         <div className="hidden md:flex items-center gap-5">
@@ -93,7 +97,7 @@ export default function DropOff({ onBack }: ScheduleDropoffProps) {
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#F3F3F3] py-4 rounded-[10px] border-none pl-15"
+            className="w-full bg-[#F3F3F3] py-2 md:py-4 rounded-[10px] border-none pl-15"
           ></input>
         </div>
 
@@ -107,7 +111,7 @@ export default function DropOff({ onBack }: ScheduleDropoffProps) {
                       setActiveCentre(index);
                       setDropoffForm(index);
                     }}
-                    className={`mb-5 px-9 py-3 md:px-5 lg:px-7 rounded-[10px] cursor-pointer md:space-y-1
+                    className={`mb-5 px-6 py-3 md:px-5 lg:px-7 rounded-[10px] cursor-pointer md:space-y-1
                ${activeCentre === index ? "bg-[#E4F4EC]" : "bg-[#F3F3F3]"}   `}
                   >
                     <div className="flex items-center justify-between">
@@ -153,31 +157,7 @@ export default function DropOff({ onBack }: ScheduleDropoffProps) {
               <p>No centres found</p>
             )}
           </div>
-
-          {/* Form on Desktop */}
-          <div className="hidden xl:block xl:w-1/2">
-            {dropoffForm !== null && (
-              <div className="bg-white rounded-xl p-6 shadow-lg h-fit">
-                <DropoffForm onBack={() => setDropoffForm(null)} />
-              </div>
-            )}
-          </div>
         </div>
-
-        {/* Modal for Mobile */}
-        {dropoffForm !== null && (
-          <div
-            className="xl:hidden fixed inset-0 z-50 flex items-center justify-center bg-opacity-40"
-            onClick={() => setDropoffForm(null)}
-          >
-            <div
-              className="bg-white rounded-[10px] px-4 w-full md:max-w-sm shadow-lg"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <DropoffForm onBack={() => setDropoffForm(null)} />
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
