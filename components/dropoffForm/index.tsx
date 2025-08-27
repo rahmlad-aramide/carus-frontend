@@ -67,7 +67,7 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
   return (
     <>
       <div>
-        <div className="fixed top-0 z-40 bg-white flex justify-between items-center h-16 pb-10 w-full pt-10 md:pt-15 px-1">
+        <div className="fixed top-0 z-40 bg-white flex justify-between items-center h-16 pb-10 w-full pt-12 md:pt-15 px-1">
           <div className="flex items-center gap-3">
             <button
               onClick={onBack}
@@ -80,7 +80,7 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
         </div>
 
         <div className="px-1">
-          <p className="text-[14px] md:text-base text-grey-90 mb-3 mt-10 md:mt-15">
+          <p className="text-[14px] md:text-base text-grey-90 mb-3 mt-20 md:mt-30">
             Category
           </p>
           <DropoffWasteSelector />

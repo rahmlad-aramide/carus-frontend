@@ -1,3 +1,3 @@
-export default function Page() {
-  return <div>Wallet Page</div>;
+export default function Wallet() {
+  return <div>Wallet</div>;
 }

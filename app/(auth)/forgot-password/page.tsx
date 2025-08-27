@@ -71,7 +71,7 @@ export default function ForgotPassword() {
   return (
     <div className="flex min-h-screen">
       {/* flex form and bg image */}
-      <div className="w-full md:w-2/3 flex flex-col py-10 bg-white">
+      <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col py-10 bg-white">
         {/* Logo */}
         <div className="px-3 md:px-5 mb-15">
           <Image
@@ -130,13 +130,14 @@ export default function ForgotPassword() {
         </div>
       </div>
 
-      <div className="hidden md:block w-[50%] relative overflow-hidden bg-gradient-to-t from-[#C7DCD2] via-[#E5EFEA] to-[#F9FBFA]">
-        <div className="absolute inset-0">
+      <div className="relative hidden md:flex md:w-1/3 lg:w-1/2  overflow-hidden bg-gradient-to-t from-[#C7DCD2] via-[#E5EFEA] to-[#F9FBFA]">
+        <div className="absolute bottom-0 md:right-0 xl:left-1/2 xl:-translate-x-1/2">
           <Image
-            src="/wastecan1.svg"
-            alt="Waste Bin"
-            fill
-            className="object-contain object-right bg-inherit"
+            src="/wastecan.png"
+            alt="waste-can"
+            width={400}
+            height={400}
+            className="object-contain md:w-[280px] lg:w-[350px] xl:w-[500px]"
           />
         </div>
       </div>
