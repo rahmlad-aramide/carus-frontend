@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { Button } from "@headlessui/react";
+import { Button } from "../ui/button";
 
 type Schedule = {
   id: string;
@@ -254,7 +254,7 @@ export default function ScheduleHistory() {
 
                 <Button
                   onClick={() => setSelectedSchedule(null)}
-                  className="absolute top-2 right-3 text-[#FF6161] text-2xl cursor-pointer hover:bg-[#FF6161] hover:text-white rounded-full flex items-center justify-center transition w-8 h-8"
+                  className="absolute top-2 right-3 text-[#FF6161] bg-white text-2xl cursor-pointer hover:bg-[#FF6161] hover:text-white rounded-full flex items-center justify-center transition w-8 h-8"
                 >
                   &times;
                 </Button>
@@ -341,15 +341,15 @@ export default function ScheduleHistory() {
 
                 <div className="flex gap-10 mt-10">
                   <Button
-                    type="submit"
-                    className="w-full py-2 text-[9px] md:text-sm font-bold text-green-60 border border-primary-60 rounded-[10px] cursor-pointer hover:bg-primary-10"
+                    type="button"
+                    className="w-[180px] py-2 text-[9px] md:text-sm font-bold text-green-60 bg-white border border-primary-60 rounded-[10px] cursor-pointer"
                   >
                     Delete
                   </Button>
 
                   <Button
-                    type="submit"
-                    className="w-full py-2 text-[9px] text-white md:text-sm font-bold bg-primary-60 hover:bg-primary-50 rounded-[10px] cursor-pointer"
+                    type="button"
+                    className="w-[180px] py-2 text-[9px] text-white md:text-sm font-bold bg-primary-60 rounded-[10px] cursor-pointer"
                   >
                     Missed
                   </Button>

@@ -4,17 +4,18 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaHome, FaCalendar, FaWallet, FaCog, FaUser } from "react-icons/fa";
+import { CalendarTick, Home, Setting2, Wallet } from "iconsax-react";
+import { FaUser } from "react-icons/fa";
 
 export default function SideNav() {
   const pathname = usePathname();
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
   const navLinks = [
-    { href: "/dashboard", label: "Home", icon: FaHome },
-    { href: "/schedule", label: "Schedule", icon: FaCalendar },
-    { href: "/wallet", label: "Wallet", icon: FaWallet },
-    { href: "/settings", label: "Settings", icon: FaCog },
+    { href: "/dashboard", label: "Home", icon: Home },
+    { href: "/schedule", label: "Schedule", icon: CalendarTick },
+    { href: "/wallet", label: "Wallet", icon: Wallet },
+    { href: "/settings", label: "Settings", icon: Setting2 },
     { href: "/profile", label: "Profile", icon: FaUser },
   ];
 
@@ -57,6 +58,10 @@ export default function SideNav() {
           <nav className="flex flex-col justify-center space-y-8 mt-8 md:mt-15 pl-4 pr-2 md:px-12">
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isProfile = label === "Profile";
+
+              const isActive =
+                pathname === href || pathname.startsWith(`${href}`);
+
               return (
                 <Link
                   key={href}
@@ -64,12 +69,16 @@ export default function SideNav() {
                   onClick={() => setSideBarOpen(false)}
                   className={`flex items-center gap-4 transition transform duration-200 px-3 pr-10 py-2 text-base md:text-xl rounded-[10px] 
                   ${
-                    pathname === href
+                    isActive
                       ? "bg-white text-primary-60 cursor-default"
                       : "text-grey-40 hover:bg-white hover:text-primary-40"
                   } ${isProfile ? "md:hidden" : ""}`}
                 >
-                  <Icon size={18} />
+                  {isActive ? (
+                    <Icon size={24} color="#026937" variant="Bold" />
+                  ) : (
+                    <Icon size={24} color="#6D6D6D" />
+                  )}{" "}
                   {label}
                 </Link>
               );

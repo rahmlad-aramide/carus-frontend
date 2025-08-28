@@ -14,15 +14,16 @@ export default function Settings() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mt-5 md:mt-10 pb-15 md:pb-8">
+      <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-25 md:h-20 md:pt-18 md:pb-10 w-full md:w-[calc(100%-16rem)]">
         <p className="text-xl md:text-3xl font-black">Settings</p>
+
         <div className="hidden md:flex items-center gap-5">
           <NotificationBell />
           <ImageContainer />
         </div>
       </div>
       {/* Tabs */}
-      <div className="flex items-center space-x-7 md:space-x-10 relative">
+      <div className="flex items-center space-x-7 md:space-x-10 relative pt-25 md:pt-30">
         {tabs.map((tab) => (
           <div key={tab} className="flex flex-col items-center">
             <button

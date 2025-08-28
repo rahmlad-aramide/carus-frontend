@@ -4,12 +4,12 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   //   const token = request.cookies.get("token")?.value;
   const protectedRoutes = [
-    "/dashboard",
+    // "/dashboard",
     "/profile",
     // "/schedule",
     "/wallet",
-    "/login",
-    "/register",
+    // "/login",
+    // "/register",
     "/services",
     "/contact",
   ];
@@ -24,12 +24,12 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard",
+    // "/dashboard",
     "/profile",
     // "/schedule",
     "/wallet",
-    "/login",
-    "/register",
+    // "/login",
+    // "/register",
     "/services",
     "/contact",
   ],
