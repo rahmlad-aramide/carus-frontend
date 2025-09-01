@@ -51,11 +51,8 @@ export default function LoginForm() {
     setError("");
     try {
       console.log("Login values:", values);
-      if (
-        values.email === "test@carus.com" &&
-        values.password === "12345678"
-      ) {
-        router.push('/dashboard')
+      if (values.email === "test@carus.com" && values.password === "12345678") {
+        router.push("/dashboard");
       } else {
         setError("Invalid email or password");
       }

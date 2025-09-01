@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
     // "/register",
     "/services",
     "/contact",
-    "/settings"
+    "/settings",
   ];
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),
@@ -35,6 +35,6 @@ export const config = {
     // "/register",
     "/services",
     "/contact",
-    "/settings"
+    "/settings",
   ],
 };
