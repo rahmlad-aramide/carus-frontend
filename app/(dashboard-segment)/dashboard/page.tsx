@@ -13,8 +13,8 @@ export default function Page() {
 
   return (
     <div>
-      <div className="fixed top-0 z-40 bg-white flex justify-between items-center md:pr-12 h-25 md:h-20 w-full md:w-[calc(100%-16rem)]">
-        <div className="flex flex-col mt-5 mb-4">
+      <div className="fixed top-0 z-40 bg-white flex justify-between items-center md:pr-12 h-25 md:h-20 md:pt-18 md:pb-17 w-full md:w-[calc(100%-16rem)]">
+        <div className="flex flex-col mt-5">
           <h1 className="text-xl md:text-[28px] font-black">Hi Username</h1>
           <p className="text-[11px] md:text-base">
             Let&apos;s keep our Environment Clean
@@ -29,7 +29,7 @@ export default function Page() {
       <div className="flex flex-col xl:flex-row gap-4">
         <div className="xl:w-2/3 ">
           <Link href="/schedule/pickup">
-            <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[150px] lg:h-[248px] w-full rounded-[20px] overflow-hidden mt-22 md:mt-32">
+            <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[150px] lg:h-[248px] w-full rounded-[20px] overflow-hidden mt-22 md:mt-35">
               <div className="flex flex-col justify-end h-full pb-5 md:pb-10 lg:pb-20 xl:pb-15 space-y-1 px-5 md:px-10">
                 <p className="text-primary-70 text-sm md:text-base lg:text-2xl font-bold z-10">
                   Request Pickup
@@ -130,7 +130,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="xl:w-1/3 xl:mt-25">
+        <div className="xl:w-1/3 xl:mt-25 max-h-[115vh] overflow-y-auto">
           <History />
         </div>
       </div>

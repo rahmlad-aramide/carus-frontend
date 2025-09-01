@@ -26,10 +26,10 @@ export default function NavBar() {
             <Link href="/" className="text-primary-60 font-bold">
               Home
             </Link>
-            <Link className="text-grey-100" href="/service">
+            <Link href="" className="text-grey-100">
               Service
             </Link>
-            <Link className="text-grey-100" href="/contact">
+            <Link href="" className="text-grey-100">
               Contact
             </Link>
           </nav>
