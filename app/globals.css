@@ -150,9 +150,6 @@
     font-weight: 900;
     line-height: 100%;
   }
-  p {
-    line-height: 24px;
-  }
 }
 
 @layer components {
