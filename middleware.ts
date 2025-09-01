@@ -6,14 +6,14 @@ export function middleware(request: NextRequest) {
   const protectedRoutes = [
     // "/dashboard",
     "/profile",
-    "/schedule",
-    "/schedule/pickup",
-    "/wallet",
+    // "/schedule",
+    // "/schedule/pickup",
+    // "/wallet",
     // "/login",
     // "/register",
     "/services",
     "/contact",
-    "/settings",
+    // "/settings",
   ];
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),
@@ -28,13 +28,13 @@ export const config = {
   matcher: [
     // "/dashboard",
     "/profile",
-    "/schedule",
-    "/schedule/pickup",
-    "/wallet",
+    // "/schedule",
+    // "/schedule/pickup",
+    // "/wallet",
     // "/login",
     // "/register",
     "/services",
     "/contact",
-    "/settings",
+    // "/settings",
   ],
 };

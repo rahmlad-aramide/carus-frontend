@@ -34,12 +34,7 @@ const signupSchema = z.object({
   email: z.email({ message: "Invalid email address" }),
   phone: z
     .string()
-    .min(10, {
-      message: "Phone Number must be 10 digits without the leading 0",
-    })
-    .max(11, {
-      message: "Phone Number must be 10 digits with the leading 0",
-    }),
+    .regex(/^\d{10}$/, { message: "Enter 10 digits without the leading 0" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
@@ -113,11 +108,11 @@ export default function SignupForm() {
               Register An Account
             </h1>
 
-            <div className="w-full flex items-center justify-between rounded-full bg-[#F3F3F3] h-[56px] px-3 py-2 mb-5">
+            <div className="w-full flex items-center justify-between rounded-full bg-[#F3F3F3] p-2 mb-5">
               <Button
                 onClick={() => {
                   setOption("individual");
-                  setPage(1); // reset steps
+                  setPage(1);
                 }}
                 className={`rounded-full py-5 px-8 text-center text-sm md:text-base ${
                   option === "individual"
