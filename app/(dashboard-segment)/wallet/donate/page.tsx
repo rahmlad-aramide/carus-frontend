@@ -6,7 +6,6 @@ import NotificationBell from "@/components/notificationbell";
 import ImageContainer from "@/components/imagecontainer";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import DonateEarnings from "@/components/donateearnings";
 
 const donate = [
