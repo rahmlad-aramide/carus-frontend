@@ -205,7 +205,7 @@ export default function LoginForm() {
                 </div>
               </div>
 
-              {/* Social buttons */}
+              {/* Social button */}
               <div className="flex mt-5 ">
                 <div className="flex gap-7 justify-center w-full">
                   <Button
@@ -216,32 +216,6 @@ export default function LoginForm() {
                     <Image
                       src="/google-icon.svg"
                       alt="Google"
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    className="bg-[#F3F3F3] border-none"
-                    onClick={() => signIn("apple")}
-                  >
-                    <Image
-                      src="/apple-icon.svg"
-                      alt="Apple"
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    className="bg-[#F3F3F3] border-none"
-                    onClick={() => signIn("facebook")}
-                  >
-                    <Image
-                      src="/facebook-icon.svg"
-                      alt="Facebook"
                       width={20}
                       height={20}
                     />
