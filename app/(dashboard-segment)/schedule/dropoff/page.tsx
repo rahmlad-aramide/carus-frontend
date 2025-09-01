@@ -64,8 +64,6 @@ export default function Page() {
   return (
     <>
       <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-16 md:h-20 pt-12 md:pt-18 pb-10 w-full md:w-[calc(100%-16rem)]">
-        {/* Left side */}
-
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.back()}

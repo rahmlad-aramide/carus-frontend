@@ -287,6 +287,9 @@ export default function Page() {
                         }
                       }}
                       initialFocus
+                      captionLayout="dropdown"
+                      fromYear={1950}
+                      toYear={new Date().getFullYear()}
                     />
                   </PopoverContent>
                 </Popover>

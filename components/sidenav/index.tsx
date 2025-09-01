@@ -40,7 +40,7 @@ export default function SideNav() {
       {/* Sidebar */}
       <aside
         className={`min-h-screen w-[183px] md:w-[266px] bg-[#F3F3F3] text-grey-40 
-          z-50 fixed top-0 left-0 transform transition-transform duration-300 ease-in-out md:static 
+          z-50 fixed top-0 left-0 transform transition-transform duration-300 ease-in-out
           ${sideBarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 flex flex-col justify-between`}
       >
         <div>

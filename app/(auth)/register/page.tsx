@@ -57,7 +57,6 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [option, setOption] = useState<"individual" | "business">("individual");
   const [page, setPage] = useState(1);
-  const [date, setDate] = useState<Date>();
   const [accepted, setAccepted] = useState(false);
 
   const form = useForm<SignupSchema>({
@@ -433,18 +432,18 @@ export default function SignupForm() {
                             <PopoverTrigger asChild>
                               <Button
                                 variant={"outline"}
-                                className={`rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none justify-start text-left font-normal ${
+                                className={`rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none justify-between text-left font-normal ${
                                   !field.value && "text-muted-foreground"
                                 }`}
                               >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {date ? (
-                                  format(date, "dd/MM/yyyy")
+                                {field.value ? (
+                                  field.value
                                 ) : (
                                   <span className="text-gray-400">
-                                    MM/DD/YYYY
+                                    DD/MM/YYYY
                                   </span>
                                 )}
+                                <CalendarIcon className="flex justify-end h-4 w-4" />
                               </Button>
                             </PopoverTrigger>
                             <PopoverContent
@@ -453,9 +452,22 @@ export default function SignupForm() {
                             >
                               <Calendar
                                 mode="single"
-                                selected={date}
-                                onSelect={setDate}
-                                autoFocus
+                                selected={
+                                  field.value
+                                    ? new Date(field.value)
+                                    : undefined
+                                }
+                                onSelect={(selected) => {
+                                  if (selected) {
+                                    field.onChange(
+                                      format(selected, "dd/MM/yyyy"),
+                                    );
+                                  }
+                                }}
+                                initialFocus
+                                captionLayout="dropdown"
+                                fromYear={1950}
+                                toYear={new Date().getFullYear()}
                               />
                             </PopoverContent>
                           </Popover>
@@ -473,15 +485,28 @@ export default function SignupForm() {
                             Select Gender
                           </FormLabel>
                           <FormControl>
-                            <select
-                              {...field}
-                              className="rounded-[10px] w-full py-4 text-sm bg-[#F3F3F3] border-none px-2"
-                            >
-                              <option value="">--Select Gender--</option>
-                              <option value="male">Male</option>
-                              <option value="female">Female</option>
-                              <option value="others">Others</option>
-                            </select>
+                            <div className="relative">
+                              <select
+                                {...field}
+                                className="rounded-[10px] w-full pr-8 pl-3 py-4 text-sm bg-[#F3F3F3] border-none leading-5 appearance-none"
+                              >
+                                <option value="">--Select Gender--</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="others">Others</option>
+                              </select>
+
+                              <div className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2">
+                                <Image
+                                  src="/arrow-down.svg"
+                                  alt="arrow-down"
+                                  aria-hidden={true}
+                                  width={16}
+                                  height={16}
+                                  className="object-contain"
+                                />
+                              </div>
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>

@@ -70,6 +70,30 @@ const history = [
     amount: "N5,000",
     textColor: "text-[rgb(0,177,91)]",
   },
+
+  {
+    description: "You funded your wallet",
+    date: "Tue, Feb 31 2023",
+    time: "7:00am",
+    amount: "N5,000",
+    textColor: "text-[rgb(0,177,91)]",
+  },
+
+  {
+    description: "You funded your wallet",
+    date: "Tue, Feb 31 2023",
+    time: "7:00am",
+    amount: "N5,000",
+    textColor: "text-[rgb(0,177,91)]",
+  },
+
+  {
+    description: "You funded your wallet",
+    date: "Tue, Feb 31 2023",
+    time: "7:00am",
+    amount: "N5,000",
+    textColor: "text-[rgb(0,177,91)]",
+  },
 ];
 export default function History() {
   return (
