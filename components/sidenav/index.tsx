@@ -86,10 +86,13 @@ export default function SideNav() {
           </nav>
         </div>
 
-        <button className="flex items-center gap-3 text-base md:text-xl text-grey-40 mt-10 px-5 md:px-15 pb-20">
+        <Link
+          href="/login"
+          className="flex items-center gap-3 text-base md:text-xl text-grey-40 mt-10 px-5 md:px-15 pb-20"
+        >
           <Image src="/logout.png" alt="" width={24} height={24} />
           Logout
-        </button>
+        </Link>
       </aside>
     </>
   );

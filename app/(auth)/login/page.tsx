@@ -20,6 +20,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.email({ message: "Invalid email address" }),
@@ -31,6 +32,7 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [remember, setRemember] = useState(false);
@@ -49,11 +51,8 @@ export default function LoginForm() {
     setError("");
     try {
       console.log("Login values:", values);
-      if (
-        values.email === "text@example.com" &&
-        values.password === "12345678"
-      ) {
-        alert("Login successful!");
+      if (values.email === "test@carus.com" && values.password === "12345678") {
+        router.push("/dashboard");
       } else {
         setError("Invalid email or password");
       }

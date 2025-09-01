@@ -31,10 +31,10 @@ export default function Page() {
           <Link href="/schedule/pickup">
             <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[150px] lg:h-[248px] w-full rounded-[20px] overflow-hidden mt-22 md:mt-35">
               <div className="flex flex-col justify-end h-full pb-5 md:pb-10 lg:pb-20 xl:pb-15 space-y-1 px-5 md:px-10">
-                <p className="text-primary-70 text-sm md:text-base lg:text-2xl font-bold">
+                <p className="text-primary-70 text-sm md:text-base lg:text-2xl font-bold z-10">
                   Request Pickup
                 </p>
-                <p className="text-primary-60 text-[12px] md:text-sm leading-snug">
+                <p className="text-primary-60 text-[12px] md:text-sm leading-snug z-10">
                   Request your waste
                   <br className="lg:hidden" /> pickup at your doorstep
                 </p>
@@ -92,7 +92,7 @@ export default function Page() {
                   height={40}
                   className="object-contain w-[20px] h-[20px] lg:h-[40px] lg:w-[40px]"
                 />
-                <p className="text-[9px] md:text-[11px] lg:text-base text-grey-90">
+                <p className="text-[9px] md:text-[11px] lg:text-base text-grey-90 text-center">
                   Redeem Earning
                 </p>
               </div>
