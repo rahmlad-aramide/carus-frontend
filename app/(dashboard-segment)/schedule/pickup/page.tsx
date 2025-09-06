@@ -26,7 +26,6 @@ import { CalendarIcon } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import NotificationBell from "@/components/notificationbell";
 import ImageContainer from "@/components/imagecontainer";
-import { Switch } from "@headlessui/react";
 import InfoToolTip from "@/components/infotooltip";
 import { lagosLGAs } from "@/components/lagosLGAs";
 import WasteSelector from "@/components/wasteselector";
@@ -49,7 +48,7 @@ const schedulePickupSchema = z.object({
 type SchedulePickupSchema = z.infer<typeof schedulePickupSchema>;
 
 export default function Page() {
-  const [enabled, setEnabled] = useState(false);
+  const [isOn, setIsOn] = useState(false);
   const router = useRouter();
 
   const form = useForm<SchedulePickupSchema>({
@@ -335,22 +334,21 @@ export default function Page() {
               <span className="text-grey-90 text-sm md:text-base font-medium">
                 Call on Arrival
               </span>
-
-              <Switch
-                checked={enabled}
-                onChange={setEnabled}
+              <button
+                type="button"
+                onClick={() => setIsOn(!isOn)}
                 className={`${
-                  enabled ? "bg-primary-10" : "bg-grey-10"
+                  isOn ? "bg-primary-10" : "bg-grey-10"
                 } relative inline-flex h-[16px] w-[31px] items-center rounded-full transition-colors`}
               >
                 <span
                   className={`${
-                    enabled
+                    isOn
                       ? "translate-x-[14px] bg-primary-60"
                       : "translate-x-[2px] bg-grey-30"
                   } inline-block h-[13px] w-[14px] transform rounded-full transition-transform`}
                 />
-              </Switch>
+              </button>
             </div>
 
             {/* Set Reminder */}
@@ -367,9 +365,9 @@ export default function Page() {
 
               <span
                 className="w-[20px] h-[20px] rounded-full border-2 border-grey-30 bg-[#F3F3F3] 
-                flex items-center justify-center transition peer-checked:[&>span]:bg-primary-60"
+                flex items-center justify-center transition peer-checked:[&>span]:bg-primary-60 peer-checked:border-primary-60"
               >
-                <span className="w-[10px] h-[10px] bg-transparent rounded-full transition"></span>
+                <span className="w-[10px] h-[10px] bg-transparent rounded-full transition  peer-checked:bg-primary-60"></span>
               </span>
             </label>
           </div>

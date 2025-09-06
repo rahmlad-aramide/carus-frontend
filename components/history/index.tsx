@@ -99,7 +99,7 @@ export default function History() {
   return (
     <div className="mt-7">
       <p className="text-base md:text-xl font-bold mb-3">History</p>
-      <div className="border border-grey-10 rounded-[10px] p-2 space-y-3">
+      <div className="border border-grey-10 rounded-[10px] p-2 space-y-3 xl:max-h-[70vh] xl:overflow-y-auto">
         {history.map(
           ({ description, date, time, amount, textColor }, index) => (
             <div key={index} className="border-b border-grey-20 pb-2">

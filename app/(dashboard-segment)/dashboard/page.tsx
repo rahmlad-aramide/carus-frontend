@@ -7,9 +7,11 @@ import Image from "next/image";
 import Link from "next/link";
 import History from "@/components/history";
 import EarnReward from "@/components/earnreward";
+import RedeemPoints from "@/components/redeempoints";
 
 export default function Page() {
   const [earnReward, setEarnReward] = useState(false);
+  const [showRedeemPoints, setShowRedeemPoints] = useState(false);
 
   return (
     <div>
@@ -84,7 +86,10 @@ export default function Page() {
                 </p>
               </div>
 
-              <div className="flex flex-col items-center justify-center space-y-1 lg:space-y-2 bg-primary-10 rounded-[10px] p-1 md:p-3 w-full h-[64px] md:h-[80px] lg:h-[112px]">
+              <div
+                onClick={() => setShowRedeemPoints(true)}
+                className="cursor-pointer flex flex-col items-center justify-center space-y-1 lg:space-y-2 bg-primary-10 rounded-[10px] p-1 md:p-3 w-full h-[64px] md:h-[80px] lg:h-[112px]"
+              >
                 <Image
                   src="/import.png"
                   alt=""
@@ -97,18 +102,20 @@ export default function Page() {
                 </p>
               </div>
 
-              <div className="flex flex-col items-center justify-center space-y-1 lg:space-y-2 bg-primary-10 rounded-[10px] p-1 md:p-3 w-full h-[64px] md:h-[80px] lg:h-[112px]">
-                <Image
-                  src="/gift.png"
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="object-contain w-[20px] h-[20px] lg:h-[40px] lg:w-[40px]"
-                />
-                <p className="text-[9px] md:text-[11px] lg:text-base text-grey-90">
-                  Donate
-                </p>
-              </div>
+              <Link href="/wallet/donate">
+                <div className="flex flex-col items-center justify-center space-y-1 lg:space-y-2 bg-primary-10 rounded-[10px] p-1 md:p-3 w-full h-[64px] md:h-[80px] lg:h-[112px]">
+                  <Image
+                    src="/gift.png"
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="object-contain w-[20px] h-[20px] lg:h-[40px] lg:w-[40px]"
+                  />
+                  <p className="text-[9px] md:text-[11px] lg:text-base text-grey-90">
+                    Donate
+                  </p>
+                </div>
+              </Link>
             </div>
           </div>
 
@@ -130,12 +137,15 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="xl:w-1/3 xl:mt-25 max-h-[115vh] overflow-y-auto">
+        <div className="xl:w-1/3 xl:mt-25 sticky top-0">
           <History />
         </div>
       </div>
 
       {earnReward && <EarnReward onClose={() => setEarnReward(false)} />}
+      {showRedeemPoints && (
+        <RedeemPoints onBack={() => setShowRedeemPoints(false)} />
+      )}
     </div>
   );
 }

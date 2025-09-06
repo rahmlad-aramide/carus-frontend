@@ -8,6 +8,8 @@ import ImageContainer from "@/components/imagecontainer";
 import Link from "next/link";
 import History from "@/components/history";
 import DonateEarnings from "@/components/donateearnings";
+import ConvertPoints from "@/components/convertpoints";
+import RedeemPoints from "@/components/redeempoints";
 
 const donate = [
   {
@@ -26,7 +28,9 @@ const donate = [
 ];
 
 export default function Wallet() {
-  const [showForm, setShowForm] = useState(false);
+  const [showDonateEarnings, setShowDOnateEarnings] = useState(false);
+  const [showConvertPoints, setShowConvertPoints] = useState(false);
+  const [showRedeemPoints, setShowRedeemPoints] = useState(false);
 
   return (
     <div>
@@ -39,24 +43,31 @@ export default function Wallet() {
         </div>
       </div>
 
-      <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[150px] lg:h-[232px] w-full rounded-[22px] lg:rounded-[30px] p-5 lg:p-8 overflow-hidden mt-22 md:mt-32">
-        <div className="flex flex-col justify-between h-28 lg:h-45">
+      <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[148px] lg:h-[232px] w-full rounded-[22px] lg:rounded-[30px] p-5 lg:p-8 overflow-hidden mt-22 md:mt-32">
+        <div className="absolute top-0 left-0 w-[250px] md:w-[318px] h-[148px] lg:h-[232px] lg:w-[500px] xl:w-[700px]">
+          <Image src="/Line.svg" alt="wave" fill className="object-cover" />
+        </div>
+
+        <div className="flex flex-col justify-between h-28 lg:h-45 relative z-10">
           <div className="flex items-center justify-between">
-            <p className="text-base lg:text-xl text-primary-80">
+            <p className="text-[9px] lg:text-xl text-primary-80">
               Points
-              <br /> <span className="text-xl lg:text-2xl font-black">190</span>
+              <br />{" "}
+              <span className="text-[11px] lg:text-2xl font-black">190</span>
             </p>
-            <p className="text-[11px] lg:text-sm text-primary-80 text-right">
+            <p className="text-[9px] lg:[11px] lg:text-sm text-primary-80 text-right">
               User ID
               <br />{" "}
-              <span className="text-sm lg:text-base font-bold">6789</span>
+              <span className="text-[11px] lg:text-sm lg:text-base font-bold">
+                6789
+              </span>
             </p>
           </div>
 
           <div className="flex items-center justify-between">
             <Button
-              type="button"
-              className="py-6 w-[154px] lg:w-[180px] text-sm lg:text-base text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2"
+              onClick={() => setShowRedeemPoints(true)}
+              className="py-5 lg:py-6 w-[150px] lg:w-[180px] text-[13px] lg:text-base text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2"
             >
               <Image
                 src="/import.svg"
@@ -67,9 +78,11 @@ export default function Wallet() {
               />
               Redeem Points
             </Button>
-            <p className="text-sm lg:text-base text-primary-80 text-right">
+            <p className="text-[11px] lg:text-base text-primary-80 text-right">
               Total Balance <br />
-              <span className="text-xl lg:text-[33px] font-black">N30,000</span>
+              <span className="text-2xl lg:text-[33px] font-black">
+                N30,000
+              </span>
             </p>
           </div>
         </div>
@@ -83,12 +96,12 @@ export default function Wallet() {
             </p>
             <p className="text-[9px] lg:text-sm">
               Powered by{" "}
-              <span className="textsm lg:text-base font-bold">Bitgifty</span>
+              <span className="text-sm lg:text-base font-bold">Bitgifty</span>
             </p>
             <div className="flex items-end justify-end">
               <Button
-                type="button"
-                className="py-3 w-[154px] lg:w-[180px] text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 lg:mt-3"
+                onClick={() => setShowConvertPoints(true)}
+                className="py-5 lg:py-3 w-[193px] lg:w-[180px] text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-1 lg:mt-3"
               >
                 <Image
                   src="/convertshape-2.svg"
@@ -101,7 +114,7 @@ export default function Wallet() {
               </Button>
             </div>
           </div>
-          <div className="hidden xl:block max-h-[60vh] overflow-y-auto mt-10">
+          <div className="hidden xl:block sticky mt-10 ">
             <History />
           </div>
         </div>
@@ -135,7 +148,7 @@ export default function Wallet() {
                 </div>
 
                 <div className="flex-1">
-                  <p className="text-sm lg:text-base xl:text-xl font-bold leading-none lg:leading-loose">
+                  <p className="text-sm lg:text-base xl:text-xl font-bold lg:leading-loose">
                     {content}
                   </p>
                   <p className="text-[9px] lg:text-sm xl:text-base font-bold">
@@ -143,7 +156,7 @@ export default function Wallet() {
                     <span className="text-grey-40 font-regular">Raised</span>
                   </p>
 
-                  <div className="flex items-center gap-1 lg:gap-4 lg:mt-5">
+                  <div className="flex items-center gap-1 lg:gap-4 mt-2 lg:mt-5">
                     <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
                       <Image
                         src="/clock.png"
@@ -156,7 +169,7 @@ export default function Wallet() {
                     <p className="text-[9px] lg:text-sm">{days} Days left</p>
                   </div>
 
-                  <div className="flex items-center gap-5 lg:mt-2 w-full">
+                  <div className="flex items-center gap-5 mt-2 w-full">
                     <div className="w-full h-[4px] bg-primary-10 rounded-[20px]">
                       <div
                         className="h-full bg-[rgb(86,155,122)] rounded-[20px]"
@@ -173,8 +186,8 @@ export default function Wallet() {
 
               <div className="flex justify-end mt-1 lg:mt-1">
                 <div
-                  onClick={() => setShowForm(true)}
-                  className="bg-primary-60 rounded-[10px] w-[174px] xl:gap-2 h-10 flex items-center justify-center gap-2"
+                  onClick={() => setShowDOnateEarnings(true)}
+                  className="cursor-pointer bg-primary-60 rounded-[10px] w-[174px] xl:gap-2 h-10 flex items-center justify-center gap-2 hover:bg-primary-50"
                 >
                   <Image
                     src="/gift2.png"
@@ -183,7 +196,9 @@ export default function Wallet() {
                     height={16}
                     className="object-contain"
                   />
-                  <span className="text-white text-sm">Donate Earnings</span>
+                  <span className="text-white text-[13px]">
+                    Donate Earnings
+                  </span>
                 </div>
               </div>
             </div>
@@ -195,7 +210,15 @@ export default function Wallet() {
         <History />
       </div>
 
-      {showForm && <DonateEarnings onBack={() => setShowForm(false)} />}
+      {showDonateEarnings && (
+        <DonateEarnings onBack={() => setShowDOnateEarnings(false)} />
+      )}
+      {showConvertPoints && (
+        <ConvertPoints onBack={() => setShowConvertPoints(false)} />
+      )}
+      {showRedeemPoints && (
+        <RedeemPoints onBack={() => setShowRedeemPoints(false)} />
+      )}
     </div>
   );
 }

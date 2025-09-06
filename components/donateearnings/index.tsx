@@ -24,7 +24,7 @@ export default function DonateEarnings({ onBack }: DonateEarningsProps) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/10 flex items-center justify-center">
-      <div className="relative bg-white shadow-md w-full max-w-md md:max-w-lg lg:max-w-3xl md:rounded-[20px] p-5 lg:p-8 xl:px-10 xl:py-7 max-h-screen overflow-y-auto md:max-h-none md:overflow-visible">
+      <div className="relative bg-white shadow-md w-[90%] max-w-md md:max-w-lg lg:max-w-3xl md:rounded-[20px] p-5 lg:p-8 xl:px-10 xl:py-7 max-h-screen overflow-y-auto md:max-h-none md:overflow-visible">
         <div className="flex items-center gap-3 mb-7 lg:mb-2">
           <button
             onClick={onBack}
@@ -36,6 +36,7 @@ export default function DonateEarnings({ onBack }: DonateEarningsProps) {
           <p className="text-base md:text-xl font-black">Donate</p>
         </div>
 
+        {/* Close Button */}
         <button
           onClick={onBack}
           className="hidden md:block absolute top-3 right-3 text-[#FF6161] bg-white text-2xl cursor-pointer hover:bg-[#FF6161] hover:text-white rounded-full flex items-center justify-center transition w-8 h-8"
@@ -193,7 +194,7 @@ export default function DonateEarnings({ onBack }: DonateEarningsProps) {
                 />
               </label>
 
-              <Button className="bg-primary-60 rounded-[10px] w-full xl:gap-2 h-10 flex items-center justify-center mt-8">
+              <Button className="cursor-pointer rounded-[10px] w-full xl:gap-2 h-10 flex items-center justify-center mt-8">
                 <Image
                   src="/gift2.png"
                   alt=""

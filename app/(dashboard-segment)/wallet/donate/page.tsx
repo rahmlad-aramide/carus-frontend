@@ -106,8 +106,8 @@ export default function Wallet() {
                 />
               </div>
 
-              <div className="flex-1 mt-2 lg:mt-5 xl:mt-3">
-                <p className="text-sm lg:text-base xl:text-xl font-bold leading-none lg:leading-6 xl:leading-loose">
+              <div className="flex-1 lg:mt-5 xl:mt-3">
+                <p className="text-sm lg:text-base xl:text-xl font-bold leading-normal lg:leading-6 xl:leading-loose">
                   {content}
                 </p>
                 <p className="text-[9px] lg:text-sm xl:text-base font-bold">
@@ -115,7 +115,7 @@ export default function Wallet() {
                   <span className="text-grey-40 font-regular">Raised</span>
                 </p>
 
-                <div className="flex items-center gap-1 xl:gap-4 lg:mt-2 xl:mt-5">
+                <div className="flex items-center gap-1 xl:gap-4 mt-2 xl:mt-5">
                   <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
                     <Image
                       src="/clock.png"
@@ -130,7 +130,7 @@ export default function Wallet() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-5 lg:mt-2 lg:mb-4 w-full">
+                <div className="flex items-center gap-5 mt-2 lg:mb-4 w-full">
                   <div className="w-full h-[4px] bg-primary-10 rounded-[20px]">
                     <div
                       className="h-full bg-[rgb(86,155,122)] rounded-[20px]"
@@ -148,7 +148,7 @@ export default function Wallet() {
             <div className="flex justify-end lg:pb-2">
               <div
                 onClick={() => setShowForm(true)}
-                className="bg-primary-60 rounded-[10px] w-[40px] xl:w-[174px] xl:gap-2 h-10 flex items-center justify-center"
+                className="cursor-pointer bg-primary-60 hover:bg-primary-50 rounded-[10px] w-[40px] xl:w-[174px] xl:gap-2 h-10 flex items-center justify-center"
               >
                 <Image
                   src="/gift2.png"
