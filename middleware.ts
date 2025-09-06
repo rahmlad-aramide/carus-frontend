@@ -5,15 +5,13 @@ export function middleware(request: NextRequest) {
   //   const token = request.cookies.get("token")?.value;
   const protectedRoutes = [
     // "/dashboard",
-    "/profile",
-    // "/schedule",
+    "/schedule",
     // "/schedule/pickup",
-    // "/wallet",
-    // "/login",
-    // "/register",
+    "/profile",
+    "/wallet",
     "/services",
     "/contact",
-    // "/settings",
+    "/settings",
   ];
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),
@@ -27,14 +25,12 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // "/dashboard",
-    "/profile",
-    // "/schedule",
+    "/schedule",
     // "/schedule/pickup",
-    // "/wallet",
-    // "/login",
-    // "/register",
+    "/profile",
+    "/wallet",
     "/services",
     "/contact",
-    // "/settings",
+    "/settings",
   ],
 };

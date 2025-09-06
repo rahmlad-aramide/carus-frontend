@@ -66,6 +66,7 @@ export default function HeroSection() {
               className="rounded-3xl"
               width={1512}
               height={1024}
+              unoptimized
             />
           </div>
         </SwiperSlide>
@@ -78,6 +79,7 @@ export default function HeroSection() {
               className="rounded-3xl"
               width={1512}
               height={1024}
+              unoptimized
             />
           </div>
         </SwiperSlide>
@@ -90,6 +92,7 @@ export default function HeroSection() {
               className="rounded-3xl"
               width={1512}
               height={1024}
+              unoptimized
             />
           </div>
         </SwiperSlide>
