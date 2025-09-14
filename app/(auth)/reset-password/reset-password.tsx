@@ -45,18 +45,6 @@ export default function PasswordResetPage() {
     },
   });
 
-  // const onSubmit = (values: z.infer<typeof schema>) => {
-  //   const params = new URLSearchParams(window.location.search);
-  //   const email = params.get("email");
-  //   const otp = params.get("otp");
-  //   if (!otp || !email) {
-  //     toast.error("Link Invalid!", {
-  //       description: "Check the reset link and try again!",
-  //     });
-  //     return;
-  //   }
-  //   mutate({ newPassword: values.password, email, otp });
-  // };
   const onSubmit = (values: z.infer<typeof schema>) => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
