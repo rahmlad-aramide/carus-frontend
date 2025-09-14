@@ -142,12 +142,7 @@ export function useResendOtp(
 
 /* Complete Google Signup */
 export function useCompleteGoogleSignup(
-  options?: UseMutationOptions<
-    any,
-    unknown,
-    CompleteGoogleSignupInput,
-    unknown
-  >,
+  options?: UseMutationOptions<any, any, CompleteGoogleSignupInput, unknown>,
 ) {
   return useMutation({
     mutationFn: (data: CompleteGoogleSignupInput) =>

@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import QueryProvider from "./query-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/context/auth-context";
+import { GoogleAuthProvider } from "./google-auth-provider";
 
 export const metadata: Metadata = {
   title: "Carus Recycling",
@@ -24,7 +25,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={satoshi.className}>
         <QueryProvider>
-          <UserProvider>{children}</UserProvider>
+          <GoogleAuthProvider>
+            <UserProvider>{children}</UserProvider>
+          </GoogleAuthProvider>
           <Toaster richColors />
         </QueryProvider>
       </body>
