@@ -17,7 +17,7 @@ export default function Page() {
     <div>
       <div className="fixed top-0 z-40 bg-white flex justify-between items-center md:pr-12 h-25 md:h-20 md:pt-18 md:pb-17 w-full md:w-[calc(100%-16rem)]">
         <div className="flex flex-col mt-5">
-          <h1 className="text-xl md:text-[28px] font-black">Hi Username</h1>
+          <h1 className="text-xl md:text-[28px] font-black">Hi User</h1>
           <p className="text-[11px] md:text-base">
             Let&apos;s keep our Environment Clean
           </p>

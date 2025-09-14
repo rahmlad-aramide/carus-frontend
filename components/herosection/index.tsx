@@ -120,8 +120,8 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="flex flex-col-reverse justify-center md:flex-row md:justify-between gap-x-20 md:max-w-6xl items-center mt-28 mx-auto px-5">
-        <div className="my-auto flex flex-col items-center justify-center md:items-start">
+      <div className="flex flex-1 flex-col-reverse justify-center md:flex-row md:justify-between gap-x-10 md:gap-x-20 md:max-w-6xl items-center mt-28 mx-auto px-5">
+        <div className="w-full md:w-1/2 my-auto flex flex-col items-center justify-center md:items-start">
           <p className="text-2xl md:text-3xl lg:text-4xl font-black text-center md:text-left lg:text-left">
             Earn Reward
           </p>
@@ -142,17 +142,16 @@ export default function HeroSection() {
           </Link>
         </div>
 
-        <div>
-          <div className="flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-4 py-6 md:py-15 mb-8">
-            <div className="relative h-[270px] w-[310px] md:w-[500px] md:h-[400px]">
-              <Image
-                src="/redeem.webp"
-                alt=""
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
+        <div className="w-full md:w-1/2 flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-4 py-6 md:py-15 mb-8">
+          <div className="relative w-full h-[350px] md:h-[400px]">
+            <Image
+              src="/redeem.webp"
+              alt="Carus Redeem point screen"
+              fill
+              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-contain"
+              priority
+            />
           </div>
         </div>
       </div>

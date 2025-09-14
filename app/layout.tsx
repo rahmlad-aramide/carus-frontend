@@ -3,10 +3,11 @@ import "./globals.css";
 import localFont from "next/font/local";
 import QueryProvider from "./query-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { UserProvider } from "@/context/auth-context";
 
 export const metadata: Metadata = {
   title: "Carus Recycling",
-  description: "",
+  description: "Carus Recycling",
 };
 
 const satoshi = localFont({
@@ -23,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={satoshi.className}>
         <QueryProvider>
-          {children}
+          <UserProvider>{children}</UserProvider>
           <Toaster richColors />
         </QueryProvider>
       </body>

@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useChangePassword } from "@/queries/auth";
+import { toast } from "sonner";
+import { ErrorAlert } from "@/components/error-alert";
 
 const schema = z
   .object({
@@ -30,7 +33,7 @@ const schema = z
   });
 
 export default function PasswordResetPage() {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const { mutate, isSuccess, isError, error, isPending } = useChangePassword();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -42,19 +45,34 @@ export default function PasswordResetPage() {
     },
   });
 
-  const onSubmit = () => {
-    try {
-      setIsSuccess(true);
-      form.reset();
-    } catch (error) {
-      console.error("Password reset failed", error);
+  // const onSubmit = (values: z.infer<typeof schema>) => {
+  //   const params = new URLSearchParams(window.location.search);
+  //   const email = params.get("email");
+  //   const otp = params.get("otp");
+  //   if (!otp || !email) {
+  //     toast.error("Link Invalid!", {
+  //       description: "Check the reset link and try again!",
+  //     });
+  //     return;
+  //   }
+  //   mutate({ newPassword: values.password, email, otp });
+  // };
+  const onSubmit = (values: z.infer<typeof schema>) => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    if (!token) {
+      toast.error("Link Invalid!", {
+        description: "Check the reset link and try again!",
+      });
+      return;
     }
+    mutate({ newPassword: values.password, token });
   };
 
   if (isSuccess) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="max-w-md w-[500px] h-[300px] relative overflow-hidden bg-white shadow-[0_4px_20px_rgba(2,1,129,0.63)] rounded-xl shadow-lg flex items-center justify-center">
+        <div className="max-w-md w-[500px] h-[300px] relative overflow-hidden bg-white shadow-[0_4px_20px_rgba(2,50,12,0.63)] rounded-xl flex items-center justify-center">
           <Image
             src="/waste.png"
             alt="Waste Bin"
@@ -174,12 +192,13 @@ export default function PasswordResetPage() {
                     </FormItem>
                   )}
                 />
-
+                {isError && <ErrorAlert error={error} />}
                 <Button
                   type="submit"
+                  disabled={isPending}
                   className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold mt-8"
                 >
-                  Reset Password
+                  {isPending ? "Reseting..." : "Reset Password"}
                 </Button>
               </form>
             </Form>

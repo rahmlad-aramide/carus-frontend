@@ -22,10 +22,11 @@ import type {
   ResendOtpInput,
   CompleteGoogleSignupInput,
 } from "@/types/auth";
+import { CustomError } from "@/tanstack-query";
 
 /* Login */
 export function useLogin(
-  options?: UseMutationOptions<LoginResponse, unknown, LoginInput, unknown>,
+  options?: UseMutationOptions<LoginResponse, any, LoginInput, unknown>,
 ) {
   return useMutation({
     mutationFn: (data: LoginInput) => postLogin(data),
@@ -40,14 +41,14 @@ export function useLogin(
 
 /* Register */
 export function useRegister(
-  options?: UseMutationOptions<any, unknown, RegisterInput, unknown>,
+  options?: UseMutationOptions<any, CustomError, RegisterInput, unknown>,
 ) {
   return useMutation({
     mutationFn: (data: RegisterInput) => postRegister(data),
     meta: {
       successMessage: "Registration successful",
-      additionalDescription: "Welcome aboard! You can now login.",
-      errorMessage: "Error creating account",
+      additionalDescription: "You are being redirected to verify your email.",
+      errorMessage: "Error creating your account",
     },
     ...options,
   });
@@ -55,14 +56,14 @@ export function useRegister(
 
 /* Forgot password (request) */
 export function useForgotPassword(
-  options?: UseMutationOptions<any, unknown, ForgotPasswordInput, unknown>,
+  options?: UseMutationOptions<any, any, ForgotPasswordInput, unknown>,
 ) {
   return useMutation({
     mutationFn: (data: ForgotPasswordInput) => postForgotPassword(data),
     meta: {
       invalidatesQuery: authKeys.forgotPassword(),
-      successMessage: "Reset email sent",
-      additionalDescription: "Kindly check your inbox...",
+      successMessage: "Reset email sent!",
+      additionalDescription: "Kindly check your email inbox...",
       errorMessage: "Error sending reset email",
     },
     ...options,
@@ -71,13 +72,14 @@ export function useForgotPassword(
 
 /* Verify OTP */
 export function useVerifyOtp(
-  options?: UseMutationOptions<any, unknown, OtpInput, unknown>,
+  options?: UseMutationOptions<any, any, OtpInput, unknown>,
 ) {
   return useMutation({
     mutationFn: (data: OtpInput) => postOtp(data),
     meta: {
       invalidatesQuery: authKeys.verifyOtp(),
-      successMessage: "OTP verified",
+      successMessage: "OTP verified successfully!",
+      additionalDescription: "You are being redirected to your dashboard.",
       errorMessage: "Error verifying OTP",
     },
     ...options,
@@ -88,7 +90,7 @@ export function useVerifyOtp(
 export function useConfirmForgotPasswordOtp(
   options?: UseMutationOptions<
     any,
-    unknown,
+    CustomError,
     ConfirmForgotPassworOtpInput,
     unknown
   >,
@@ -108,7 +110,7 @@ export function useConfirmForgotPasswordOtp(
 
 /* Change password (after confirmation) */
 export function useChangePassword(
-  options?: UseMutationOptions<any, unknown, ChangePasswordInput, unknown>,
+  options?: UseMutationOptions<any, CustomError, ChangePasswordInput, unknown>,
 ) {
   return useMutation({
     mutationFn: (data: ChangePasswordInput) => postChangePassword(data),
@@ -124,7 +126,7 @@ export function useChangePassword(
 
 /* Resend OTP */
 export function useResendOtp(
-  options?: UseMutationOptions<any, unknown, ResendOtpInput, unknown>,
+  options?: UseMutationOptions<any, Error, ResendOtpInput, unknown>,
 ) {
   return useMutation({
     mutationFn: (data: ResendOtpInput) => postResendOtp(data),

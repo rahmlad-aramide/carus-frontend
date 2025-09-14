@@ -2,6 +2,7 @@
 "use client";
 import cookie from "@/services/cookie";
 import { registerLogoutHandler, registerQueryClient } from "@/services/http";
+import { CustomError } from "@/tanstack-query";
 import {
   MutationCache,
   QueryClient,
@@ -21,9 +22,7 @@ declare module "@tanstack/react-query" {
       additionalDescription?: string;
       errorMessage?: string;
     };
-    // defaultError: {
-
-    // }
+    defaultError: CustomError;
   }
 }
 
@@ -43,9 +42,8 @@ export default function QueryProvider({ children }: { children: ReactNode }) {
         });
       },
       onError: (_error, _variables, _context, mutation) => {
-        console.log(_error);
         toast.error(mutation.meta?.errorMessage || "An error occured.", {
-          description: _error.message,
+          description: _error.response?.data?.message,
         });
       },
       onSettled: (_data, _error, _variables, _context, mutation) => {},
@@ -67,7 +65,7 @@ export default function QueryProvider({ children }: { children: ReactNode }) {
       setTimeout(() => router.push("/login"), 1200);
     } else if (reason === "user") {
       // voluntary logout
-      toast.success("Logging out.", {
+      toast.info("Logging out.", {
         description: "You are being signed out of CARUS.",
       });
       router.push("/");

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarTick, Home, Setting2, Wallet } from "iconsax-react";
 import { FaUser } from "react-icons/fa";
+import { httpLogout } from "@/services/http";
 
 export default function SideNav() {
   const pathname = usePathname();
@@ -86,13 +87,13 @@ export default function SideNav() {
           </nav>
         </div>
 
-        <Link
-          href="/login"
-          className="flex items-center gap-3 text-base md:text-xl text-grey-40 mt-10 px-5 md:px-15 pb-20"
+        <button
+          onClick={() => httpLogout("user")}
+          className="flex items-center gap-3 text-base md:text-xl text-grey-40 active:text-red-500 active:scale-100 hover:scale-95 mt-10 px-5 md:px-15 pb-20 transition duration-200 cursor-pointer"
         >
           <Image src="/logout.png" alt="" width={24} height={24} />
           Logout
-        </Link>
+        </button>
       </aside>
     </>
   );

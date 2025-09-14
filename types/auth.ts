@@ -63,10 +63,15 @@ export interface ForgotPasswordInput {
   email: string;
 }
 
-export interface ChangePasswordInput {
+export interface OldChangePasswordInput {
   otp: string;
   email: string;
   newPassword: string;
+}
+
+export interface ChangePasswordInput {
+  newPassword: string;
+  token: string;
 }
 
 export interface CompleteGoogleSignupInput {

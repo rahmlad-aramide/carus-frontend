@@ -41,6 +41,12 @@ http.interceptors.response.use(
     }
     switch (error.response.status) {
       case 401:
+        if (
+          error.response.data.message === "Please verify your email first" ||
+          error.response.data.message === "Invalid Credentials"
+        ) {
+          return Promise.reject(error);
+        }
         httpLogout("expired");
         return Promise.reject(error);
       case 404:

@@ -19,8 +19,12 @@ import { FaCheckSquare, FaRegSquare } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLogin } from "@/queries/auth";
+import { ErrorAlert } from "@/components/error-alert";
+import cookie from "@/services/cookie";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.email({ message: "Invalid email address" }),
@@ -33,8 +37,20 @@ type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { mutate, isError, isPending, error } = useLogin({
+    onSuccess(data) {
+      cookie.set("auth-user", data.data);
+      router.push("/dashboard");
+    },
+    onError(error, variables) {
+      if (error.response.data.message === "Please verify your email first") {
+        toast.warning("Email not verified!", {
+          description: "You are being redirected to verify your email...",
+        });
+        router.push(`/otp-verification?email=${variables.identifier}`);
+      }
+    },
+  });
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -47,21 +63,12 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (values: LoginSchema) => {
-    setLoading(true);
-    setError("");
-    try {
-      console.log("Login values:", values);
-      if (values.email === "test@carus.com" && values.password === "12345678") {
-        router.push("/dashboard");
-      } else {
-        setError("Invalid email or password");
-      }
-    } catch (err) {
-      console.log(err);
-      setError("Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+    const { email, ...rest } = values;
+    const payload = {
+      identifier: email,
+      ...rest,
+    };
+    mutate(payload);
   };
 
   return (
@@ -172,14 +179,18 @@ export default function LoginForm() {
                     </div>
                   </div>
 
-                  {error && <p className="text-sm text-red-500">{error}</p>}
+                  {isError && <ErrorAlert error={error} />}
 
                   <Button
                     type="submit"
                     className="w-full py-6 text-sm md:text-base font-bold"
-                    disabled={loading}
+                    disabled={isPending}
                   >
-                    {loading ? "Signing in..." : "Sign in"}
+                    {isPending ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      "Sign in"
+                    )}
                   </Button>
                 </form>
               </Form>

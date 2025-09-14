@@ -22,15 +22,19 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
+import { useRegister } from "@/queries/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { ErrorAlert } from "@/components/error-alert";
 
 const signupSchema = z.object({
   option: z.enum(["individual", "business"]),
-  firstName: z.string().min(2, { message: "First name is too short" }),
-  lastName: z.string().min(2, { message: "Last name is too short" }),
+  first_name: z.string().min(2, { message: "First name is too short" }),
+  last_name: z.string().min(2, { message: "Last name is too short" }),
   email: z.email({ message: "Invalid email address" }),
   phone: z
     .string()
@@ -38,7 +42,7 @@ const signupSchema = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
-  address: z.string().min(5, { message: "Please enter a valid address" }),
+  address: z.string().optional(),
   gender: z.string().nonempty({ message: "Please select a gender" }),
   dob: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, {
     message: "Please enter date in DD/MM/YYYY format",
@@ -49,6 +53,12 @@ const signupSchema = z.object({
 type SignupSchema = z.infer<typeof signupSchema>;
 
 export default function SignupForm() {
+  const router = useRouter();
+  const { mutate, isPending, isError, error } = useRegister({
+    onSuccess(_data, variables) {
+      router.push(`/otp-verification?email=${variables.email}`);
+    },
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [option, setOption] = useState<"individual" | "business">("individual");
   const [page, setPage] = useState(1);
@@ -60,8 +70,8 @@ export default function SignupForm() {
     reValidateMode: "onChange",
     defaultValues: {
       option: "individual",
-      firstName: "",
-      lastName: "",
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
       address: "",
@@ -76,14 +86,21 @@ export default function SignupForm() {
   const handleContinue = async () => {
     const isValid = await form.trigger(
       option === "individual"
-        ? ["firstName", "lastName", "email", "phone", "password"]
+        ? ["first_name", "last_name", "email", "phone", "password"]
         : ["companyName", "email", "password"],
     );
     if (isValid) setPage(2);
   };
 
   const onSubmit = (values: SignupSchema) => {
-    console.log("Form submitted:", values);
+    const { option, ...rest } = values;
+    console.log(`Creating an ${option} account...`);
+    const payload = {
+      ...rest,
+      country_code: "ng",
+    };
+    //@ts-expect-error dob is formatted to string
+    mutate(payload);
   };
 
   return (
@@ -102,22 +119,22 @@ export default function SignupForm() {
           />
         </Link>
 
-        <div className="flex-1 flex items-center justify-center px-5 md:px-20">
+        <div className="flex-1 flex items-center justify-center px-4 sm:px-5 md:px-20">
           <div className="w-full max-w-sm">
             <h1 className="text-xl md:text-[28px] font-bold pb-5">
               Register An Account
             </h1>
 
-            <div className="w-full flex items-center justify-between rounded-full bg-[#F3F3F3] p-2 mb-5">
+            <div className="w-full flex gap-2 md:gap-4 items-center justify-between rounded-full bg-[#F3F3F3] h-[56px] px-3 py-2 mb-5">
               <Button
                 onClick={() => {
                   setOption("individual");
                   setPage(1);
                 }}
-                className={`rounded-full py-5 px-8 text-center text-sm md:text-base ${
+                className={`flex-1 rounded-full py-5 px-6 lg:px-8 text-center text-sm md:text-base hover:text-white ${
                   option === "individual"
-                    ? "bg-[#CCE1D7] text-black"
-                    : "bg-white text-black"
+                    ? "bg-[#CCE1D7] text-[#4F4F4F]"
+                    : "bg-white text-[#4F4F4F]"
                 }`}
               >
                 As an Individual
@@ -125,13 +142,12 @@ export default function SignupForm() {
 
               <Button
                 onClick={() => {
-                  setOption("business");
-                  setPage(1); // reset steps
+                  toast.info("This is a coming soon feature!");
                 }}
-                className={`rounded-full py-5 px-8 text-center text-sm md:text-base ${
+                className={`flex-1 rounded-full py-5 px-4 lg:px-8 text-center text-sm md:text-base hover:text-white ${
                   option === "business"
-                    ? "bg-[#CCE1D7] text-black"
-                    : "bg-white text-black"
+                    ? "bg-[#CCE1D7] text-[#4F4F4F]"
+                    : "bg-white text-[#4F4F4F]"
                 }`}
               >
                 As a Business
@@ -163,7 +179,7 @@ export default function SignupForm() {
                 2
               </div>
             </div>
-
+            {isError && <ErrorAlert error={error} />}
             {/* Form */}
             <Form {...form}>
               <form
@@ -175,7 +191,7 @@ export default function SignupForm() {
                   <>
                     <FormField
                       control={form.control}
-                      name="firstName"
+                      name="first_name"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-bold">
@@ -184,7 +200,7 @@ export default function SignupForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="John Champion"
+                              placeholder="John"
                               {...field}
                             />
                           </FormControl>
@@ -195,7 +211,7 @@ export default function SignupForm() {
 
                     <FormField
                       control={form.control}
-                      name="lastName"
+                      name="last_name"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-base font-bold">
@@ -204,7 +220,7 @@ export default function SignupForm() {
                           <FormControl>
                             <Input
                               className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                              placeholder="John Champion"
+                              placeholder="Champion"
                               {...field}
                             />
                           </FormControl>
@@ -450,7 +466,7 @@ export default function SignupForm() {
                                 selected={
                                   field.value
                                     ? new Date(field.value)
-                                    : undefined
+                                    : new Date()
                                 }
                                 onSelect={(selected) => {
                                   if (selected) {
@@ -459,10 +475,9 @@ export default function SignupForm() {
                                     );
                                   }
                                 }}
-                                initialFocus
+                                autoFocus
                                 captionLayout="dropdown"
-                                fromYear={1950}
-                                toYear={new Date().getFullYear()}
+                                startMonth={new Date(1900, 0)}
                               />
                             </PopoverContent>
                           </Popover>
@@ -614,10 +629,16 @@ export default function SignupForm() {
 
                     <Button
                       type="submit"
+                      disabled={isPending}
                       className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
                     >
-                      Sign up
+                      {isPending ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        "Sign up"
+                      )}
                     </Button>
+                    {isError && <ErrorAlert error={error} />}
                   </>
                 )}
               </form>

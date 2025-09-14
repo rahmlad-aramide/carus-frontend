@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useForgotPassword } from "@/queries/auth";
+import { ErrorAlert } from "@/components/error-alert";
 
 const schema = z.object({
   contact: z
@@ -29,7 +30,11 @@ const schema = z.object({
 });
 
 export default function ForgotPassword() {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const { mutate, isPending, isError, isSuccess, error } = useForgotPassword({
+    // onSuccess() {
+    //   router.push('/')
+    // },
+  });
 
   const form = useForm({
     resolver: zodResolver(schema),
@@ -38,19 +43,14 @@ export default function ForgotPassword() {
     },
   });
 
-  const onSubmit = () => {
-    try {
-      setIsSuccess(true);
-      form.reset();
-    } catch (error) {
-      console.error("Enter a valid email or phone number", error);
-    }
+  const onSubmit = (values: z.infer<typeof schema>) => {
+    mutate({ email: values.contact });
   };
 
   if (isSuccess) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="max-w-md w-[500px] h-[300px] relative overflow-hidden bg-white shadow-[0_4px_20px_rgba(2,1,129,0.63)] rounded-xl shadow-lg flex items-center justify-center">
+        <div className="max-w-md w-[500px] h-[300px] relative overflow-hidden bg-white shadow-[0_4px_20px_rgba(2,50,12,0.63)] rounded-xl flex items-center justify-center">
           <Image
             src="/waste.png"
             alt="Waste Bin"
@@ -60,7 +60,7 @@ export default function ForgotPassword() {
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
             <h4>Successful!</h4>
             <p className="text-base mt-3">
-              A reset link has been sent <br /> to your email.
+              A password reset link has been sent <br /> to your email.
             </p>
           </div>
         </div>
@@ -104,7 +104,7 @@ export default function ForgotPassword() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-base font-bold">
-                        Email or Phone Number
+                        Email Address
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -117,12 +117,13 @@ export default function ForgotPassword() {
                     </FormItem>
                   )}
                 />
-
+                {isError && <ErrorAlert error={error} />}
                 <Button
                   type="submit"
+                  disabled={isPending}
                   className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold mt-8"
                 >
-                  Send Reset Link
+                  {isPending ? "Requesting link..." : "Send Reset Link"}
                 </Button>
               </form>
             </Form>

@@ -24,13 +24,25 @@ export default function DownloadSection() {
             <div className="flex gap-5 mt-15 ">
               <div className="flex bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-2 py-2 space-x-1 items-center">
                 <div className="relative w-6 h-6">
-                  <Image src="/playstore.png" alt="" fill priority />
+                  <Image
+                    src="/playstore.png"
+                    alt="PlayStore Icon"
+                    width={24}
+                    height={24}
+                    priority
+                  />
                 </div>
                 <p className="text-sm">Get on Playstore</p>
               </div>
               <div className="flex bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-2 py-2 space-x-1 items-center">
                 <div className="relative w-6 h-6">
-                  <Image src="/apple.png" alt="" fill priority />
+                  <Image
+                    src="/apple.png"
+                    alt="Apple Icon"
+                    width={24}
+                    height={24}
+                    priority
+                  />
                 </div>
                 <p className="text-sm">Get on App Store</p>
               </div>
@@ -43,7 +55,7 @@ export default function DownloadSection() {
       <div className="hidden md:block bg-primary-80 wave pt-10 lg:px-15">
         <div className="flex md:flex-row items-center mx-auto">
           {/* Text Section */}
-          <div className="w-full space-y-6 md:pl-15 lg:pl-15 w-2/3">
+          <div className="w-full space-y-6 md:pl-15 lg:pl-15 md:w-2/3">
             <p className="text-white text-center md:text-left font-black text-xl md:text-[26px] lg:text-[33px] leading-tight">
               Streamline your waste management <br /> efforts with our powerful
               app
@@ -56,13 +68,25 @@ export default function DownloadSection() {
             <div className="flex gap-7 mt-15">
               <div className="flex bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-3 py-2 space-x-2 items-center">
                 <div className="relative w-6 h-6">
-                  <Image src="/playstore.png" alt="" fill priority />
+                  <Image
+                    src="/playstore.png"
+                    alt="PlayStore Icon"
+                    width={24}
+                    height={24}
+                    priority
+                  />
                 </div>
                 <p className="text-base">Get on Playstore</p>
               </div>
               <div className="flex bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-3 py-2 space-x-2 items-center">
                 <div className="relative w-6 h-6">
-                  <Image src="/apple.png" alt="" fill priority />
+                  <Image
+                    src="/apple.png"
+                    alt="Apple Icon"
+                    width={24}
+                    height={24}
+                    priority
+                  />
                 </div>
                 <p className="text-base">Get on App Store</p>
               </div>
@@ -75,8 +99,9 @@ export default function DownloadSection() {
               <Image
                 src="/phone.webp"
                 alt=""
-                fill
                 priority
+                width={785}
+                height={870}
                 className="object-contain"
               />
             </div>
@@ -107,12 +132,24 @@ export default function DownloadSection() {
         <div className="flex ">
           <Link href="https://bitgifty.com/">
             <div className="relative h-[39px] md:h-[43px] w-[106px] md:w-[120px]">
-              <Image src="/bitgift.png" alt="bitgifty" fill priority />
+              <Image
+                src="/bitgift.png"
+                alt="bitgifty"
+                fill
+                sizes="(max-width: 768px) 25vw, (max-width: 1200px) 20vw, 15vw"
+                priority
+              />
             </div>
           </Link>
           <Link href="https://lawma.gov.ng/">
-            <div className="relative h-[39px] md:h-[43px] w-[130px] w-[141px]">
-              <Image src="/lawma.png" alt="bitgifty" fill priority />
+            <div className="relative h-[39px] md:h-[43px] w-[130px] md:w-[141px]">
+              <Image
+                src="/lawma.png"
+                alt="bitgifty"
+                fill
+                sizes="(max-width: 768px) 25vw, (max-width: 1200px) 20vw, 15vw"
+                priority
+              />
             </div>
           </Link>
         </div>

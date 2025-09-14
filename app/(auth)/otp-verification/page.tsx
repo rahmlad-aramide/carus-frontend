@@ -1,43 +1,107 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useResendOtp, useVerifyOtp } from "@/queries/auth";
+import { ErrorAlert } from "@/components/error-alert";
+import { Loader2 } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import z from "zod";
+import cookie from "@/services/cookie";
+
+const FormSchema = z.object({
+  otp: z.string().min(6, {
+    message: "Your one-time password must be 6 characters.",
+  }),
+});
 
 export default function VerifyRegistrationOTP() {
-  const [otp, setOtp] = useState(["", "", "", ""]);
-  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
+  const router = useRouter();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      otp: "",
+    },
+  });
+  const [timeLeft, setTimeLeft] = useState(600);
 
-  const handleChange = (value: string, index: number) => {
-    if (/^\d?$/.test(value)) {
-      // Allow only one digit
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
+  const { mutate, isPending, isError, error } = useVerifyOtp({
+    onSuccess(data) {
+      cookie.set("auth-user", data.data);
+      router.push("/dashboard");
+    },
+  });
 
-      // Move to next input automatically
-      if (value && index < otp.length - 1) {
-        inputsRef.current[index + 1]?.focus();
+  const {
+    mutate: resendOtp,
+    isPending: resendingOtp,
+    isError: isResendingError,
+    error: errorResendingOtp,
+  } = useResendOtp({
+    onSuccess() {
+      setTimeLeft(600);
+    },
+  });
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // Decrement the timeLeft by 1 second
+      setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+      // Check if the countdown has reached zero
+      if (timeLeft === 0) {
+        // Stop the countdown
+        clearInterval(intervalId);
+        // Call the onTimeout callback function (if provided)
       }
+    }, 1000); // Update every 1 second
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [timeLeft]);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  const handleResentOTP = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const email = searchParams.get("email");
+    console.log("🚀 ~ handleResentOTP ~ email:", email);
+    if (!email) {
+      toast.error("Link Invalid!", {
+        description: "Check the verification link and try again!",
+      });
+      return;
     }
+    resendOtp({ email });
   };
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputsRef.current[index - 1]?.focus();
+  function onSubmit(values: z.infer<typeof FormSchema>) {
+    const searchParams = new URLSearchParams(window.location.search);
+    const email = searchParams.get("email");
+    if (!email) {
+      toast.error("Link Invalid!", {
+        description: "Check the verification link and try again!",
+      });
+      return;
     }
-  };
-
-  const handleVerifyOTP = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const code = otp.join("");
-    console.log("Verifying OTP:", code);
-
-    // TODO: Call backend API
-  };
+    mutate({ otp: values.otp, identifier: email });
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -53,43 +117,79 @@ export default function VerifyRegistrationOTP() {
         </div>
 
         <div className="flex-1 flex px-5 md:px-20">
-          <div className="w-full max-w-sm">
+          <div className="w-full max-w-sm mx-auto">
             <div className="flex flex-col gap-1.5">
-              <h2 className="text-[28px] font-bold">Verification</h2>
+              <h2 className="text-[28px] font-bold">OTP Verification</h2>
               <p className="text-base text-[#494949] mb-8">
                 Enter the verification code sent to your email below.
               </p>
             </div>
 
-            <form onSubmit={handleVerifyOTP} className="space-y-6">
-              <div className="flex justify-center gap-3">
-                {otp.map((digit, index) => (
-                  <input
-                    key={index}
-                    ref={(el) => {
-                      inputsRef.current[index] = el;
-                    }}
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleChange(e.target.value, index)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    className="rounded-[10px] w-[48px] h-[48px] py-1 text-[24px] bg-[#CCE1D7] text-center border focus:outline-none"
-                  />
-                ))}
-              </div>
-              <p className="mt-7 mb-7 text-base text-center">
-                Code expires in 10 minutes
-              </p>
-              <Button
-                type="submit"
-                className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
-                disabled={otp.some((digit) => !digit)}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col items-center justify-center space-y-4"
               >
-                Verify
-              </Button>
-            </form>
+                <FormField
+                  control={form.control}
+                  name="otp"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col items-center justify-center">
+                      <FormControl>
+                        <InputOTP maxLength={6} {...field}>
+                          <InputOTPGroup>
+                            <InputOTPSlot index={0} />
+                          </InputOTPGroup>
+                          <InputOTPGroup>
+                            <InputOTPSlot index={1} />
+                          </InputOTPGroup>
+                          <InputOTPGroup>
+                            <InputOTPSlot index={2} />
+                          </InputOTPGroup>
+                          <InputOTPGroup>
+                            <InputOTPSlot index={3} />
+                          </InputOTPGroup>
+                          <InputOTPGroup>
+                            <InputOTPSlot index={4} />
+                          </InputOTPGroup>
+                          <InputOTPGroup>
+                            <InputOTPSlot index={5} />
+                          </InputOTPGroup>
+                        </InputOTP>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {timeLeft > 0 ? (
+                  <p className="text-center my-7">
+                    Code expires in {minutes > 0 && `${minutes} minutes`}{" "}
+                    {seconds} seconds
+                  </p>
+                ) : isResendingError ? (
+                  <ErrorAlert error={errorResendingOtp} />
+                ) : (
+                  <p className="text-center my-7">
+                    Didn&apos;t receive any code?{" "}
+                    <button
+                      type="button"
+                      onClick={handleResentOTP}
+                      className="text-center text-primary hover:underline cursor-pointer"
+                    >
+                      {resendingOtp ? "Requesting code..." : "Resend Code"}
+                    </button>
+                  </p>
+                )}
+                <Button
+                  type="submit"
+                  className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
+                  disabled={isPending}
+                >
+                  {isPending ? <Loader2 className="animate-spin" /> : "Verify"}
+                </Button>
+                {isError && <ErrorAlert error={error} />}
+              </form>
+            </Form>
           </div>
         </div>
       </div>

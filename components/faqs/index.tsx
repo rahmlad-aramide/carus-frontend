@@ -51,7 +51,7 @@ export default function Faqs() {
               <div className="flex-1 min-w-0">
                 <h3
                   onClick={() => handleSelectedQues(faq.id)}
-                  className="font-semibold text-base md:text-xl lg:text-2xl text-grey-90 font-medium cursor-pointer "
+                  className="font-semibold text-base md:text-xl lg:text-2xl text-grey-90 md:font-medium cursor-pointer "
                 >
                   {faq.question}
                 </h3>
