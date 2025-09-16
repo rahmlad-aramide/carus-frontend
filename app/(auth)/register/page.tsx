@@ -30,6 +30,7 @@ import { useRegister } from "@/queries/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ErrorAlert } from "@/components/error-alert";
+import { GoogleButton } from "../google-auth/google-button";
 
 const signupSchema = z.object({
   option: z.enum(["individual", "business"]),
@@ -54,15 +55,6 @@ type SignupSchema = z.infer<typeof signupSchema>;
 
 export default function SignupForm() {
   const router = useRouter();
-  const { mutate, isPending, isError, error } = useRegister({
-    onSuccess(_data, variables) {
-      router.push(`/otp-verification?email=${variables.email}`);
-    },
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [option, setOption] = useState<"individual" | "business">("individual");
-  const [page, setPage] = useState(1);
-  const [accepted, setAccepted] = useState(false);
 
   const form = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
@@ -82,6 +74,17 @@ export default function SignupForm() {
       cac: "",
     },
   });
+  const { mutate, isPending, isError, error } = useRegister({
+    onSuccess(_data, variables) {
+      form.reset();
+      router.push(`/otp-verification?email=${variables.email}`);
+    },
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [option, setOption] = useState<"individual" | "business">("individual");
+  const [page, setPage] = useState(1);
+  const [accepted, setAccepted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleContinue = async () => {
     const isValid = await form.trigger(
@@ -643,6 +646,9 @@ export default function SignupForm() {
                 )}
               </form>
             </Form>
+
+            {/* Social button */}
+            <GoogleButton isLoading={isLoading} setIsLoading={setIsLoading} />
 
             <p className="text-center text-sm md:text-base mt-8">
               Have an account?

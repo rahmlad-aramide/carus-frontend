@@ -79,4 +79,5 @@ export interface CompleteGoogleSignupInput {
   gender: string;
   phone: string;
   dob: string;
+  country_code: string;
 }

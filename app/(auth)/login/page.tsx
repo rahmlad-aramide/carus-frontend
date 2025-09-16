@@ -18,13 +18,13 @@ import { Button } from "@/components/ui/button";
 import { FaCheckSquare, FaRegSquare } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLogin } from "@/queries/auth";
 import { ErrorAlert } from "@/components/error-alert";
 import cookie from "@/services/cookie";
 import { toast } from "sonner";
+import { GoogleButton } from "../google-auth/google-button";
 
 const loginSchema = z.object({
   email: z.email({ message: "Invalid email address" }),
@@ -37,9 +37,18 @@ type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
   const router = useRouter();
+  const form = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   const { mutate, isError, isPending, error } = useLogin({
     onSuccess(data) {
       cookie.set("auth-user", data.data);
+      form.reset();
       router.push("/dashboard");
     },
     onError(error, variables) {
@@ -53,14 +62,7 @@ export default function LoginForm() {
   });
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (values: LoginSchema) => {
     const { email, ...rest } = values;
@@ -184,7 +186,7 @@ export default function LoginForm() {
                   <Button
                     type="submit"
                     className="w-full py-6 text-sm md:text-base font-bold"
-                    disabled={isPending}
+                    disabled={isPending || isLoading}
                   >
                     {isPending ? (
                       <Loader2 className="animate-spin" />
@@ -195,44 +197,8 @@ export default function LoginForm() {
                 </form>
               </Form>
 
-              {/* Separator with lines */}
-              <div className="flex items-center mt-10 gap-x-4">
-                <div className="w-24">
-                  <Image
-                    src="/Line6.svg"
-                    alt="line6.png"
-                    width={500}
-                    height={500}
-                  />
-                </div>
-                <p className="text-center w-32">Or continue with</p>
-                <div className="w-24">
-                  <Image
-                    src="/Line7.svg"
-                    alt="line7.png"
-                    width={500}
-                    height={500}
-                  />
-                </div>
-              </div>
-
               {/* Social button */}
-              <div className="flex mt-5 ">
-                <div className="flex gap-7 justify-center w-full">
-                  <Button
-                    variant="outline"
-                    className="bg-[#F3F3F3] border-none"
-                    onClick={() => signIn("google")}
-                  >
-                    <Image
-                      src="/google-icon.svg"
-                      alt="Google"
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
-                </div>
-              </div>
+              <GoogleButton isLoading={isLoading} setIsLoading={setIsLoading} />
 
               <div>
                 <p className="text-center text-sm md:text-base mt-8">
