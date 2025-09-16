@@ -3,8 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import NotificationBell from "@/components/notificationbell";
-import ImageContainer from "@/components/imagecontainer";
 import Link from "next/link";
 import History from "@/components/history";
 import DonateEarnings from "@/components/donateearnings";
@@ -34,15 +32,6 @@ export default function Wallet() {
 
   return (
     <div>
-      <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-25 md:h-20 md:pt-18 md:pb-10 w-full md:w-[calc(100%-16rem)]">
-        <p className="text-xl md:text-3xl font-black">Wallet</p>
-
-        <div className="hidden md:flex items-center gap-5">
-          <NotificationBell />
-          <ImageContainer />
-        </div>
-      </div>
-
       <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[148px] lg:h-[232px] w-full rounded-[22px] lg:rounded-[30px] p-5 lg:p-8 overflow-hidden mt-22 md:mt-32">
         <div className="absolute top-0 left-0 w-[250px] md:w-[318px] h-[148px] lg:h-[232px] lg:w-[500px] xl:w-[700px]">
           <Image src="/Line.svg" alt="wave" fill className="object-cover" />

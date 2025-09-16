@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import NotificationBell from "@/components/notificationbell";
-import ImageContainer from "@/components/imagecontainer";
 import Image from "next/image";
 import Link from "next/link";
 import History from "@/components/history";
@@ -15,19 +13,6 @@ export default function Page() {
 
   return (
     <div>
-      <div className="fixed top-0 z-40 bg-white flex justify-between items-center md:pr-12 h-25 md:h-20 md:pt-18 md:pb-17 w-full md:w-[calc(100%-16rem)]">
-        <div className="flex flex-col mt-5">
-          <h1 className="text-xl md:text-[28px] font-black">Hi User</h1>
-          <p className="text-[11px] md:text-base">
-            Let&apos;s keep our Environment Clean
-          </p>
-        </div>
-        <div className="hidden md:flex items-center gap-5">
-          <NotificationBell />
-          <ImageContainer />
-        </div>
-      </div>
-
       <div className="flex flex-col xl:flex-row gap-4">
         <div className="xl:w-2/3 ">
           <Link href="/schedule/pickup">
@@ -137,9 +122,9 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="xl:w-1/3 xl:mt-25 sticky top-0">
+        <aside className="xl:w-1/3 xl:mt-25 sticky top-0">
           <History />
-        </div>
+        </aside>
       </div>
 
       {earnReward && <EarnReward onClose={() => setEarnReward(false)} />}
