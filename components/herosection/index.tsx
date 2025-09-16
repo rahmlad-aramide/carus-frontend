@@ -98,13 +98,13 @@ export default function HeroSection() {
         </SwiperSlide>
       </Swiper>
 
-      <div className="px-5 flex justify-center">
+      <div className="px-7 md:px-10 flex justify-center">
         <div className="bg-[#ECF6F2] flex flex-col items-center w-full rounded-[20px] md:max-w-5xl pt-16 pb-13 px-5 md:px-36 lg:px-56 -mt-8">
           <div className="bg-[#CCE1D7] h-1 md:h-2 w-17 text-center"></div>
-          <p className="text-[25px] md:text-[33px] lg:text-[40px] font-black mt-10 leading-snug text-center">
+          <p className="text-[25px] lg:text-[33px] xl:text-[40px] font-black mt-10 leading-snug text-center">
             Effortless Waste Scheduling
           </p>
-          <p className="mt-8 text-base md:text-2xl text-center">
+          <p className="mt-8 text-base md:text-xl lg:text-2xl text-center">
             By using our waste schedule feature, you can conveniently manage
             your waste disposal needs, stay organized, and contribute to a
             cleaner environment.
@@ -120,12 +120,12 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col-reverse justify-center md:flex-row md:justify-between gap-x-10 md:gap-x-20 md:max-w-6xl items-center mt-28 mx-auto px-5">
+      <div className="flex flex-1 flex-col-reverse justify-center md:flex-row md:justify-between gap-x-10 md:gap-x-15 lg:gap-x-20 md:max-w-6xl items-center mt-28 mx-auto px-7 md:px-10">
         <div className="w-full md:w-1/2 my-auto flex flex-col items-center justify-center md:items-start">
-          <p className="text-2xl md:text-3xl lg:text-4xl font-black text-center md:text-left lg:text-left">
+          <p className="text-2xl lg:text-3xl xl:text-4xl font-black text-center md:text-left lg:text-left">
             Earn Reward
           </p>
-          <p className="text-base md:text-xl lg:text-2xl mt-4 text-center md:text-left max-w-2xl">
+          <p className="text-base lg:text-xl xl:text-2xl mt-4 text-center md:text-justify max-w-2xl">
             You can earn points that can be redeemed for exciting rewards such
             as Gift cards, airtime, and even cash. Our easy-to-use app makes
             waste management a breeze, and with every donation, you are
@@ -134,7 +134,7 @@ export default function HeroSection() {
 
           <Link
             href="/register"
-            className="flex space-x-2 bg-primary-60 rounded-[10px] p-3 px-5 mt-12 w-max hover:bg-primary-50 duration-700"
+            className="flex space-x-2 bg-primary-60 rounded-[10px] p-3 px-5 mt-12 md:mt-10 lg:mt-12 w-max hover:bg-primary-50 duration-700"
           >
             {" "}
             <p className="text-white font-bold">Get Started - for Free</p>{" "}
@@ -142,8 +142,8 @@ export default function HeroSection() {
           </Link>
         </div>
 
-        <div className="w-full md:w-1/2 flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-4 py-6 md:py-15 mb-8">
-          <div className="relative w-full h-[350px] md:h-[400px]">
+        <div className="w-full md:w-1/2 flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-4 md:py-0 lg:py-10 mb-8">
+          <div className="relative w-full h-[350px] md:h-[310px] xl:h-[400px]">
             <Image
               src="/redeem.webp"
               alt="Carus Redeem point screen"
