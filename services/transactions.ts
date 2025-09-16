@@ -1,20 +1,6 @@
-// import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+import { TransactionsResponse } from "@/types/transaction";
+import http from "./http";
 
-// import { Transactions, TransactionsResponse } from "../_types/transaction";
-// import { baseQuery } from "../_utils/baseQuery";
-
-// export const transactionApi = createApi({
-//   reducerPath: "transactionApi",
-//   baseQuery: fetchBaseQuery(baseQuery),
-//   endpoints: (builder) => ({
-//     getTransactions: builder.query<Transactions[], void>({
-//       query: () => "transactions",
-//       transformResponse: (response: TransactionsResponse) => {
-//         return response.data;
-//       },
-//     }),
-//   }),
-// });
-
-// export const useGetTransactionsQuery =
-//   transactionApi.endpoints.getTransactions.useQuery;
+export async function getTransactions(): Promise<TransactionsResponse> {
+  return (await http.get("/transactions")).data;
+}

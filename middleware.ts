@@ -8,24 +8,27 @@ export function middleware(request: NextRequest) {
   const refresh_token = authUserValue?.refresh_token;
 
   const protectedRoutes = [
-    // "/dashboard",
-    "/schedule",
-    // "/schedule/pickup",
     "/profile",
     "/wallet",
     "/services",
     "/contact",
     "/settings",
   ];
+  const releasedRoutes = ["/dashboard", "/schedule", "/schedule/pickup"];
+
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),
   );
 
+  const isReleased = releasedRoutes.some((route) =>
+    request.nextUrl.pathname.startsWith(route),
+  );
+
   if (isProtected) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
-  if (!isProtected && !access_token && !refresh_token) {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (isReleased && !access_token && !refresh_token) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
   return NextResponse.next();
 }
@@ -34,7 +37,7 @@ export const config = {
   matcher: [
     // "/dashboard",
     "/schedule",
-    // "/schedule/pickup",
+    "/schedule/pickup",
     "/profile",
     "/wallet",
     "/services",
