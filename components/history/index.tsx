@@ -1,3 +1,5 @@
+import { useGetTransaction } from "@/queries/transactions";
+
 const history = [
   {
     description: "You funded your wallet",
@@ -96,6 +98,15 @@ const history = [
   },
 ];
 export default function History() {
+  const { data, isPending, isError, error } = useGetTransaction();
+  console.log(
+    "🚀 ~ History ~ data, isPending, isError, error:",
+    data,
+    isPending,
+    isError,
+    error,
+  );
+
   return (
     <div className="mt-7">
       <p className="text-base md:text-xl font-bold mb-3">History</p>

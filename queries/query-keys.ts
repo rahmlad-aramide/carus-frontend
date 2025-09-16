@@ -12,3 +12,17 @@ export const authKeys = {
   completeGoogleSignup: () =>
     [...authKeys.all, "completeGoogleSignup"] as const,
 };
+
+export const transactionKeys = {
+  all: ["transaction"] as const,
+};
+
+export const profileKeys = {
+  all: ["profile"] as const,
+  edit: () => [...profileKeys.all, "edit"] as const,
+};
+
+export const scheduleKeys = {
+  all: ["schedule"] as const,
+  pickup: () => [...scheduleKeys.all, "pickup"] as const,
+};

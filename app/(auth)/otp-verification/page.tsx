@@ -81,7 +81,6 @@ export default function VerifyRegistrationOTP() {
   const handleResentOTP = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const email = searchParams.get("email");
-    console.log("🚀 ~ handleResentOTP ~ email:", email);
     if (!email) {
       toast.error("Link Invalid!", {
         description: "Check the verification link and try again!",
