@@ -1,23 +1,12 @@
 "use client";
 
-import NotificationBell from "@/components/notificationbell";
-import ImageContainer from "@/components/imagecontainer";
 import Image from "next/image";
 import Link from "next/link";
 import ScheduleHistory from "@/components/schedulehistory";
 
 export default function Page() {
   return (
-    <>
-      <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-25 md:h-20 md:pt-18 md:pb-10 w-full md:w-[calc(100%-16rem)]">
-        <p className="text-xl md:text-3xl font-black">Schedule</p>
-
-        <div className="hidden md:flex items-center gap-5">
-          <NotificationBell />
-          <ImageContainer />
-        </div>
-      </div>
-
+    <div>
       <div className="flex flex-col md:flex-row gap-5 mt-20 md:mt-30">
         <Link
           href="/schedule/pickup"
@@ -71,6 +60,6 @@ export default function Page() {
       </div>
 
       <ScheduleHistory />
-    </>
+    </div>
   );
 }

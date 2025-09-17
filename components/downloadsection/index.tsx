@@ -52,15 +52,15 @@ export default function DownloadSection() {
       </div>
 
       {/* Desktop */}
-      <div className="hidden md:block bg-primary-80 wave pt-10 lg:px-15">
+      <div className="hidden md:block bg-primary-80 wave pt-10 xl:px-10">
         <div className="flex md:flex-row items-center mx-auto">
           {/* Text Section */}
-          <div className="w-full space-y-6 md:pl-15 lg:pl-15 md:w-2/3">
-            <p className="text-white text-center md:text-left font-black text-xl md:text-[26px] lg:text-[33px] leading-tight">
+          <div className="w-full space-y-6 md:pl-10 md:w-2/3">
+            <p className="text-white text-center md:text-left font-black md:text-2xl lg:text-[26px] xl:text-[33px] leading-tight">
               Streamline your waste management <br /> efforts with our powerful
               app
             </p>
-            <p className="text-base md:text-xl text-white">
+            <p className="text-base lg:text-xl text-white">
               Get our mobile app on any device you use on the <br /> App Store
               or Google Playstore
             </p>
@@ -95,22 +95,22 @@ export default function DownloadSection() {
 
           {/* Image Section */}
           <div className="hidden md:flex justify-end w-1/3">
-            <div className="relative w-[390px] md:h-[300px] lg:h-[410px]">
+            <div className="relative w-[390px] md:h-[290px] lg:h-[375px] xl:h-[400px] 2xl:h-[435px]">
               <Image
                 src="/phone.webp"
-                alt=""
-                priority
-                width={785}
-                height={870}
+                alt="phone-webp"
+                fill
+                sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-contain"
+                priority
               />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-10 md:mt-24 flex flex-col gap-y-10 md:flex-row justify-center items-center md:max-w-5xl md:m-auto px-8 gap-0 md:gap-20 lg:gap-40">
-        <p className="text-2xl text-center md:text-start md:text-[35px] lg:text-[40px] font-black md:leading-snug">
+      <div className="mt-10 md:mt-24 flex flex-col gap-y-10 md:flex-row justify-center md:justify-between items-center md:max-w-5xl xl:max-w-6xl md:m-auto px-10">
+        <p className="text-2xl md:text-[28px] lg:text-[35px] xl:text-[40px] text-center md:text-start font-black md:leading-snug">
           Take the first step
           <br className="md:hidden" /> towards a<br />{" "}
           <span className="bg-gradient-to-r from-[#2c8258] to-[#ffde52] text-transparent bg-clip-text">
@@ -129,7 +129,7 @@ export default function DownloadSection() {
       </div>
 
       <div className="bg-[#F3F3F3] mt-10 md:mt-24 flex flex-col md:flex-row justify-center items-center py-10 md:space-y-0 space-y-5 md:space-x-8 mb-10">
-        <div className="flex ">
+        <div className="flex justify-between gap-x-10">
           <Link href="https://bitgifty.com/">
             <div className="relative h-[39px] md:h-[43px] w-[106px] md:w-[120px]">
               <Image
