@@ -3,6 +3,7 @@ import { useGetProfile } from "@/queries/account";
 import { usePathname } from "next/navigation";
 import NotificationBell from "@/components/notificationbell";
 import ImageContainer from "@/components/imagecontainer";
+import { toast } from "sonner";
 
 export const TopNav = () => {
   const { data, isPending, isError, error } = useGetProfile();
@@ -14,13 +15,11 @@ export const TopNav = () => {
   };
   const title = titles[pathname] || null;
 
-  console.log(
-    "🚀 ~ TopNav userdata ~ data, isPending, isError, error:",
-    data,
-    isPending,
-    isError,
-    error,
-  );
+  if (isError) {
+    toast.error("Error getting your details", {
+      description: error.response?.data?.message || error.message,
+    });
+  }
 
   return (
     <header>
@@ -29,11 +28,22 @@ export const TopNav = () => {
           <h1 className="text-xl md:text-3xl font-black">{title}</h1>
         ) : (
           <div>
+            {isPending && (
+              <h1 className="text-xl md:text-3xl font-black inline-flex">
+                Hi{" "}
+                <div
+                  aria-label="User"
+                  className="ml-1.5 w-[200px] animate-pulse bg-grey-10 h-7 my-auto rounded"
+                ></div>
+                ,
+              </h1>
+            )}
             {data?.data && (
               <h1 className="text-xl md:text-3xl font-black">
-                Hi
+                Hi{" "}
                 {data.data.first_name.charAt(0).toUpperCase() +
                   data.data.first_name.slice(1)}
+                ,
               </h1>
             )}
             <p className="text-sm md:text-base">
@@ -44,7 +54,7 @@ export const TopNav = () => {
 
         <div className="hidden md:flex items-center gap-5">
           <NotificationBell />
-          <ImageContainer />
+          <ImageContainer image={data?.data.avatar} isPending={isPending} />
         </div>
       </div>
     </header>

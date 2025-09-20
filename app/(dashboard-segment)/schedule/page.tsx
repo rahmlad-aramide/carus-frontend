@@ -3,8 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import ScheduleHistory from "@/components/schedulehistory";
+// import { useQuery } from "@tanstack/react-query";
+import { useGetSchedule } from "@/queries/schedule";
 
 export default function Page() {
+  // const { data, isPending, isError, error } = useQuery(useGetScheduleByIdQueryOptions());
+const { data, isPending, isError, error } = useGetSchedule();
+console.log("🚀 ~ Page ~ data, isPending, isError, error:", data, isPending, isError, error)
+
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-5 mt-20 md:mt-30">

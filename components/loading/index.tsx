@@ -13,3 +13,20 @@ export default function Loading() {
     </div>
   );
 }
+
+export const LoadingComponent = ({ description="Loading..." }: { description: string }) => {
+  return (
+    <>
+      <div>
+        <Image
+          src={"/assets/carus-loader.gif"}
+          alt="Loading history data"
+          width={353}
+          height={349}
+          className="w-20"
+        />
+      </div>
+      <p className="text-sm text-gray-500">{description}</p>
+    </>
+  );
+};

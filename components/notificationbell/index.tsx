@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { Empty } from "../empty";
 
 export default function NotificationBell() {
   const [notifications] = useState(0);
@@ -42,20 +43,14 @@ export default function NotificationBell() {
             height={24}
             className="cursor-pointer"
           />
-
-          {notifications > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
-              {notifications}
-            </span>
-          )}
         </div>
 
         {showNotifications && (
-          <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg p-4 z-50">
+          <div className="absolute right-0 mt-2 w-64 min-h-96 md:w-80 bg-white border rounded-lg shadow-lg p-4 z-50">
             {notifications === 0 ? (
-              <p className="text-sm text-gray-500">
-                No notifications at the moment
-              </p>
+              <div className="flex flex-col justify-center items-center gap-4 h-96">
+                <Empty description="You have no notifications at the moment." />
+              </div>
             ) : (
               <ul>
                 <li className="text-sm">Notifications</li>

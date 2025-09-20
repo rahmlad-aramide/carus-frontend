@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,43 +12,51 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Eye, EyeOff } from "lucide-react";
+import { useEditProfile, useGetProfile } from "@/queries/account";
+import { UserInfo } from "@/types/account";
+import { Loader2 } from "lucide-react";
+import { ErrorAlert } from "../error-alert";
 
 // ✅ Validation schema
 const profileSchema = z.object({
-  firstName: z.string().min(2, { message: "First name is too short" }),
-  lastName: z.string().min(2, { message: "Last name is too short" }),
+  first_name: z.string().min(2, { message: "First name is too short" }),
+  last_name: z.string().min(2, { message: "Last name is too short" }),
   email: z.string().email({ message: "Invalid email address" }),
   phone: z
     .string()
     .regex(/^\d{10}$/, { message: "Enter 10 digits without the leading 0" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters" }),
   address: z.string().min(5, { message: "Please enter a valid address" }),
 });
 
 type ProfileSchema = z.infer<typeof profileSchema>;
 
 export default function Profile() {
-  const [showPassword, setShowPassword] = useState(false);
   const [image, setImage] = useState<string | null>(null);
+  const {
+    data,
+    isPending: isProfilePending,
+  } = useGetProfile();
+  const { mutate, isPending, isError, error } = useEditProfile();
+
+  const profileData = data?.data;
 
   const form = useForm<ProfileSchema>({
     resolver: zodResolver(profileSchema),
     mode: "onChange",
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      first_name: "",
+      last_name: "",
       email: "",
       phone: "",
-      password: "",
       address: "",
     },
   });
+
+  const { reset } = form;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -56,8 +64,40 @@ export default function Profile() {
     }
   };
 
+  useEffect(() => {
+    const userData: UserInfo = profileData
+      ? {
+          address: profileData.address || "",
+          email: profileData.email,
+          first_name: profileData.first_name,
+          last_name: profileData.last_name,
+          phone: profileData.phone || "",
+        }
+      : {
+          address: "",
+          email: "",
+          first_name: "",
+          last_name: "",
+          phone: "",
+        };
+    if (userData) {
+      reset(userData);
+    }
+    if (profileData?.avatar) {
+      setImage(profileData?.avatar);
+    }
+  }, [profileData, reset]);
+
+//   let a = {
+//     "first_name": "Abdrahman",
+//     "last_name": "Oladimeji",
+//     "email": "abdrahmanoladimeji02@gmail.com",
+//     "phone": "9023600083",
+//     "address": "Novas Apartment, Lugbe"
+// }
   const onSubmit = (values: ProfileSchema) => {
     console.log(values);
+    mutate(values);
   };
 
   return (
@@ -71,16 +111,21 @@ export default function Profile() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            <div className="flex flex-col items-center items-start mb-6 md:mb-0">
+            <div className="flex flex-col items-start mb-6 md:mb-0">
               <div className="relative inline-block">
                 <div className="w-20 h-20 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-gray-300">
-                  <Image
-                    src={image || "/avatar.png"}
-                    alt="Profile"
-                    width={160}
-                    height={160}
-                    className="w-full h-full object-cover"
-                  />
+                  {isProfilePending ? (
+                    <div
+                      className={`w-full h-full bg-grey-10 animate-pulse rounded-full`}
+                    ></div>
+                  ) : (
+                    <Avatar className="size-full object-cover">
+                      <AvatarImage src={image || ""} />
+                      <AvatarFallback>
+                        {profileData?.first_name.slice(0, 3)}
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
                 </div>
 
                 <input
@@ -106,42 +151,21 @@ export default function Profile() {
               </div>
             </div>
 
-            <div className="space-y-6">
-              {/* First Name */}
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base font-bold">
-                      First Name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="rounded-[10px] w-full py-5 text-sm bg-white border-none"
-                        placeholder="John Champion"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="lg:hidden">
-                {/* Last Name */}
+            <div className="space-y-6 lg:col-span-2">
+              <div className="w-full max-w-sm mx-auto space-y-6">
+                {/* First Name */}
                 <FormField
                   control={form.control}
-                  name="lastName"
+                  name="first_name"
                   render={({ field }) => (
-                    <FormItem className="lg-col-start-3">
+                    <FormItem>
                       <FormLabel className="text-base font-bold">
-                        Last Name
+                        First Name
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="rounded-[10px] w-full py-5 text-sm bg-white border-none"
-                          placeholder="John Champion"
+                          className="flex rounded-[10px] w-full py-5 text-sm !bg-white border-none"
+                          placeholder="e.g John"
                           {...field}
                         />
                       </FormControl>
@@ -149,144 +173,112 @@ export default function Profile() {
                     </FormItem>
                   )}
                 />
-              </div>
 
-              {/* Email */}
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base font-bold">
-                      Email Address
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="rounded-[10px] w-full py-5 text-sm bg-white border-none"
-                        placeholder="example@mail.com"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                {/* Last Name */}
+                <FormField
+                  control={form.control}
+                  name="last_name"
+                  render={({ field }) => (
+                    <FormItem className="lg-col-start-3">
+                      <FormLabel className="text-base font-bold">
+                        Last Name
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="rounded-[10px] w-full py-5 text-sm !bg-white border-none"
+                          placeholder="e.g Champion"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              {/* Phone */}
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base font-bold">
-                      Number
-                    </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-2 space-x-2">
-                          <Image
-                            src="/flag.svg"
-                            alt="Nigeria Flag"
-                            width={14}
-                            height={10}
-                            className="w-6 h-4 object-cover rounded-sm"
+                {/* Email */}
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base font-bold">
+                        Email Address
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="rounded-[10px] w-full py-5 text-sm !bg-white border-none"
+                          placeholder="e.g example@mail.com"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Phone */}
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base font-bold">
+                        Number
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 flex items-center pl-2 space-x-2">
+                            <Image
+                              src="/flag.svg"
+                              alt="Nigeria Flag"
+                              width={14}
+                              height={10}
+                              className="w-6 h-4 object-cover rounded-sm"
+                            />
+                            <span className="text-sm text-gray-700">+234</span>
+                          </div>
+                          <Input
+                            className="rounded-[10px] w-full py-5 text-sm !bg-white border-none pl-20"
+                            placeholder="e.g 812 345 6789"
+                            {...field}
                           />
-                          <span className="text-sm text-gray-700">+234</span>
                         </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Address */}
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base font-bold">
+                        Home Address
+                      </FormLabel>
+                      <FormControl>
                         <Input
-                          className="rounded-[10px] w-full py-5 text-sm bg-white border-none pl-20"
-                          placeholder="812 345 6789"
+                          className="rounded-[10px] w-full py-5 text-sm !bg-white border-none"
+                          placeholder="Your address here"
                           {...field}
                         />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Address */}
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base font-bold">
-                      Home Address
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="rounded-[10px] w-full py-5 text-sm bg-white border-none"
-                        placeholder="2 Atunrase Estate, Gbagada, Lagos"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Password */}
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base font-bold">
-                      Enter Password
-                    </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          className="rounded-[10px] w-full py-5 text-sm bg-white border-none"
-                          type={showPassword ? "text" : "password"}
-                          placeholder="Enter Password"
-                          {...field}
-                        />
-                        <div
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
-                        >
-                          {showPassword ? (
-                            <EyeOff size={20} />
-                          ) : (
-                            <Eye size={20} />
-                          )}
-                        </div>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Button */}
-
-              <Button type="submit" className="w-full py-5 font-bold">
-                Save Changes
-              </Button>
-            </div>
-
-            <div className="hidden lg:block">
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem className="lg-col-start-3">
-                    <FormLabel className="text-base font-bold">
-                      Last Name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="rounded-[10px] w-full py-5 text-sm bg-white border-none"
-                        placeholder="John Champion"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {isError && <ErrorAlert error={error} />}
+                {/* Button */}
+                <Button
+                  disabled={isPending}
+                  type="submit"
+                  className="w-full py-5 font-bold"
+                >
+                  {isPending ? <Loader2 className="animate-spin" /> : "Save Changes"}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>

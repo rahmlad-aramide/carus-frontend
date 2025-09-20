@@ -1,7 +1,7 @@
-import { EditProfileInput, EditProfileResponse } from "@/types/account";
+import { EditProfileInput, EditProfileResponse, GetAccountResponse } from "@/types/account";
 import http from "./http";
 
-export async function getProfile(): Promise<EditProfileResponse> {
+export async function getProfile(): Promise<GetAccountResponse> {
   return (await http.get("/account")).data;
 }
 

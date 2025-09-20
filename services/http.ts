@@ -28,27 +28,61 @@ http.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 http.interceptors.response.use(
   function (response) {
     return response;
   },
-  function (error) {
+  async function (error) {
+    const originalRequest = error.config;
+    const authUser = cookie.get("auth-user");
+    const refreshToken = authUser ? authUser.refresh_token : null;
+
     if (!error.response) {
       return Promise.reject(error);
     }
+
     switch (error.response.status) {
       case 401:
+        // Exclude specific 401 errors from the refresh token logic
         if (
           error.response.data.message === "Please verify your email first" ||
           error.response.data.message === "Invalid Credentials"
         ) {
           return Promise.reject(error);
         }
+        // Proceed with refresh logic for other 401s (e.g., expired token)
+        if (!originalRequest._retry && refreshToken) {
+          originalRequest._retry = true;
+          try {
+            const refreshResponse = await http.post("/auth/refresh", {
+              refreshToken,
+            });
+
+            // Update the access token in your auth-user object
+            authUser.access_token = refreshResponse.data.access_token;
+            // Note: If your backend rotates the refresh token, update it as well
+            // authUser.refresh_token = refreshResponse.data.refresh_token;
+            cookie.set("auth-user", authUser);
+            // Update the Authorization header for the new request
+            http.defaults.headers.common["Authorization"] =
+              `Bearer ${refreshResponse.data.access_token}`;
+            originalRequest.headers["Authorization"] =
+              `Bearer ${refreshResponse.data.access_token}`;
+            // Resend the original request
+            return http(originalRequest);
+          } catch (refreshError) {
+            // If refresh fails (e.g., refresh token expired), log the user out
+            httpLogout("expired");
+            return Promise.reject(refreshError);
+          }
+        }
+        // If we get here, it means we don't have a refresh token or we already retried
         httpLogout("expired");
         return Promise.reject(error);
+
       case 404:
         return Promise.reject(error);
       case 422:
@@ -58,8 +92,9 @@ http.interceptors.response.use(
       default:
         break;
     }
+
     return Promise.reject(error);
-  },
+  }
 );
 
 // small registration API so the app can provide a QueryClient and a logout action

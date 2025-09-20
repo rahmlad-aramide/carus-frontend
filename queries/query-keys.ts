@@ -24,5 +24,6 @@ export const profileKeys = {
 
 export const scheduleKeys = {
   all: ["schedule"] as const,
+  id: (scheduleId?: string) => [...scheduleKeys.all, scheduleId] as const,
   pickup: () => [...scheduleKeys.all, "pickup"] as const,
 };

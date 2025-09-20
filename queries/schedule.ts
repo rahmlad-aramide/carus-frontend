@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getSchedule, postSchedulePickup } from "@/services/schedule";
 import {
+  getSchedule,
+  getScheduleById,
+  postSchedulePickup,
+} from "@/services/schedule";
+import {
+  queryOptions,
   useMutation,
   UseMutationOptions,
   useQuery,
@@ -15,13 +20,21 @@ export function useGetSchedule() {
   });
 }
 
+export function useGetScheduleByIdQueryOptions(scheduleId?: string) {
+  return queryOptions({
+    queryKey: scheduleKeys.id(scheduleId),
+    queryFn: () => getScheduleById(scheduleId),
+    enabled: !!scheduleId,
+  });
+}
+
 export function usePostSchedulePickup(
   options?: UseMutationOptions<
     ScheduleResponse,
     any,
     SchedulePickupInput,
     unknown
-  >,
+  >
 ) {
   return useMutation({
     mutationFn: (data: SchedulePickupInput) => postSchedulePickup(data),

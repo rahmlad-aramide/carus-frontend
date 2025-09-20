@@ -39,7 +39,7 @@ const schedulePickupSchema = z.object({
     .nonempty({ message: "Please indicate number of bags" }),
   massOfPlasticWaste: z.string().nonempty({ message: "Minimum of 1kg" }),
   address: z.string().min(5, { message: "Please enter a valid address" }),
-  lga: z.string().nonempty({ message: "Please indicate a lga" }),
+  lga: z.string().nonempty({ message: "Please indicate a LGA" }),
   date: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, {
     message: "Please enter date in DD/MM/YYYY format",
   }),
@@ -48,7 +48,7 @@ const schedulePickupSchema = z.object({
 type SchedulePickupSchema = z.infer<typeof schedulePickupSchema>;
 
 export default function Page() {
-  const [isOn, setIsOn] = useState(false);
+  const [callOnArrival, setCallOnArrival] = useState(false);
   const router = useRouter();
 
   const form = useForm<SchedulePickupSchema>({
@@ -336,14 +336,14 @@ export default function Page() {
               </span>
               <button
                 type="button"
-                onClick={() => setIsOn(!isOn)}
+                onClick={() => setCallOnArrival(!callOnArrival)}
                 className={`${
-                  isOn ? "bg-primary-10" : "bg-grey-10"
+                  callOnArrival ? "bg-primary-10" : "bg-grey-10"
                 } relative inline-flex h-[16px] w-[31px] items-center rounded-full transition-colors`}
               >
                 <span
                   className={`${
-                    isOn
+                    callOnArrival
                       ? "translate-x-[14px] bg-primary-60"
                       : "translate-x-[2px] bg-grey-30"
                   } inline-block h-[13px] w-[14px] transform rounded-full transition-transform`}

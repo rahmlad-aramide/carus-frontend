@@ -24,6 +24,13 @@ export interface Account {
   };
 }
 
+export interface GetAccountResponse extends GeneralResponse {
+  data: Account;
+}
+
+// Define a new type with only the properties you need
+export type UserInfo = Pick<Account, 'first_name' | 'last_name' | 'email' | 'phone' | 'address'>;
+
 export interface AccountState {
   isEdited: boolean;
   isLoadingEditProfile: boolean;
@@ -50,6 +57,7 @@ export interface EditProfileInput {
   last_name?: string;
   phone?: string;
   address?: string;
+  email?: string;
   region?: string;
   city?: string;
 }
