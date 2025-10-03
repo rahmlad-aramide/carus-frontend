@@ -6,7 +6,7 @@ export async function getSchedule(): Promise<ScheduleResponse> {
   return (await http.get("/schedule")).data;
 }
 
-export async function getScheduleById(id?:string): Promise<ScheduleResponse> {
+export async function getScheduleById(id?: string): Promise<ScheduleResponse> {
   return (await http.get(`/schedule/${id}`)).data;
 }
 

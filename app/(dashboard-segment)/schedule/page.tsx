@@ -8,8 +8,14 @@ import { useGetSchedule } from "@/queries/schedule";
 
 export default function Page() {
   // const { data, isPending, isError, error } = useQuery(useGetScheduleByIdQueryOptions());
-const { data, isPending, isError, error } = useGetSchedule();
-console.log("🚀 ~ Page ~ data, isPending, isError, error:", data, isPending, isError, error)
+  const { data, isPending, isError, error } = useGetSchedule();
+  console.log(
+    "🚀 ~ Page ~ data, isPending, isError, error:",
+    data,
+    isPending,
+    isError,
+    error,
+  );
 
   return (
     <div>

@@ -29,7 +29,10 @@ export interface GetAccountResponse extends GeneralResponse {
 }
 
 // Define a new type with only the properties you need
-export type UserInfo = Pick<Account, 'first_name' | 'last_name' | 'email' | 'phone' | 'address'>;
+export type UserInfo = Pick<
+  Account,
+  "first_name" | "last_name" | "email" | "phone" | "address"
+>;
 
 export interface AccountState {
   isEdited: boolean;

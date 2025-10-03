@@ -24,7 +24,6 @@ const profileSchema = z.object({
   confirmPassword: z
     .string()
     .min(8, { message: "Password must be at least 8 characters" }),
-  
 });
 
 type ProfileSchema = z.infer<typeof profileSchema>;
@@ -57,12 +56,9 @@ export default function Account() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            <div className="flex flex-col items-center items-start mb-6 md:mb-0">
-              
-            </div>
+            <div className="flex flex-col items-center items-start mb-6 md:mb-0"></div>
 
             <div className="space-y-6">
-
               {/* Password */}
               <FormField
                 control={form.control}
@@ -115,7 +111,9 @@ export default function Account() {
                           {...field}
                         />
                         <div
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
                           className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
                         >
                           {showConfirmPassword ? (

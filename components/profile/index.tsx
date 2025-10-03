@@ -36,10 +36,7 @@ type ProfileSchema = z.infer<typeof profileSchema>;
 
 export default function Profile() {
   const [image, setImage] = useState<string | null>(null);
-  const {
-    data,
-    isPending: isProfilePending,
-  } = useGetProfile();
+  const { data, isPending: isProfilePending } = useGetProfile();
   const { mutate, isPending, isError, error } = useEditProfile();
 
   const profileData = data?.data;
@@ -88,13 +85,13 @@ export default function Profile() {
     }
   }, [profileData, reset]);
 
-//   let a = {
-//     "first_name": "Abdrahman",
-//     "last_name": "Oladimeji",
-//     "email": "abdrahmanoladimeji02@gmail.com",
-//     "phone": "9023600083",
-//     "address": "Novas Apartment, Lugbe"
-// }
+  //   let a = {
+  //     "first_name": "Abdrahman",
+  //     "last_name": "Oladimeji",
+  //     "email": "abdrahmanoladimeji02@gmail.com",
+  //     "phone": "9023600083",
+  //     "address": "Novas Apartment, Lugbe"
+  // }
   const onSubmit = (values: ProfileSchema) => {
     console.log(values);
     mutate(values);
@@ -276,7 +273,11 @@ export default function Profile() {
                   type="submit"
                   className="w-full py-5 font-bold"
                 >
-                  {isPending ? <Loader2 className="animate-spin" /> : "Save Changes"}
+                  {isPending ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    "Save Changes"
+                  )}
                 </Button>
               </div>
             </div>

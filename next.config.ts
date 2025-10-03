@@ -6,12 +6,12 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'robohash.org',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "robohash.org",
+        pathname: "/**",
       },
-    ]
-  }
+    ],
+  },
 };
 
 export default withSentryConfig(nextConfig, {

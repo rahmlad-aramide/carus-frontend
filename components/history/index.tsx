@@ -109,16 +109,19 @@ export default function History() {
       <p className="text-base md:text-xl font-bold mb-3">History</p>
       {isPending && (
         <div className="flex flex-col justify-center items-center border border-grey-10 rounded-[10px] p-2 space-y-3 h-[30vh] sm:h-[40vh] md:h-[50vh] xl:h-[70vh] xl:max-h-[70vh] xl:overflow-y-auto">
-            <LoadingComponent description="Loading Transaction History..." />
+          <LoadingComponent description="Loading Transaction History..." />
         </div>
       )}
-      {(historyData && historyData.length === 0) && (
+      {historyData && historyData.length === 0 && (
         <div className="flex flex-col justify-center items-center border border-grey-10 rounded-[10px] p-2 space-y-3 h-[30vh] sm:h-[40vh] md:h-[50vh] xl:h-[70vh] xl:max-h-[70vh] xl:overflow-y-auto">
-          <Empty type="bill" description="You have no transaction history at the moment." />
+          <Empty
+            type="bill"
+            description="You have no transaction history at the moment."
+          />
         </div>
       )}
       {/* If there's data, use this */}
-      {(historyData && historyData.length > 0) && 
+      {historyData && historyData.length > 0 && (
         <div className="border border-grey-10 rounded-[10px] p-2 space-y-3 xl:max-h-[70vh] xl:overflow-y-auto">
           {/* {history.map(
             ({ description, date, time, amount, textColor }, index) => (
@@ -136,7 +139,7 @@ export default function History() {
             ),
           )} */}
         </div>
-      }
+      )}
     </div>
   );
 }

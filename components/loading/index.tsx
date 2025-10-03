@@ -14,7 +14,11 @@ export default function Loading() {
   );
 }
 
-export const LoadingComponent = ({ description="Loading..." }: { description: string }) => {
+export const LoadingComponent = ({
+  description = "Loading...",
+}: {
+  description: string;
+}) => {
   return (
     <>
       <div>

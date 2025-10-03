@@ -28,7 +28,7 @@ http.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 http.interceptors.response.use(
@@ -94,7 +94,7 @@ http.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 // small registration API so the app can provide a QueryClient and a logout action

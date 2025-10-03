@@ -34,7 +34,7 @@ export function usePostSchedulePickup(
     any,
     SchedulePickupInput,
     unknown
-  >
+  >,
 ) {
   return useMutation({
     mutationFn: (data: SchedulePickupInput) => postSchedulePickup(data),
