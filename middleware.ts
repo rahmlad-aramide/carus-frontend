@@ -7,15 +7,14 @@ export function middleware(request: NextRequest) {
   const access_token = authUserValue?.access_token;
   const refresh_token = authUserValue?.refresh_token;
 
-  const protectedRoutes = [
-    "/profile",
+  const protectedRoutes = ["/profile", "/services", "/contact", "/settings"];
+  const releasedRoutes = [
+    "/dashboard",
+    "/schedule",
+    "/schedule/pickup",
     "/wallet",
     "/wallet/donate",
-    "/services",
-    "/contact",
-    "/settings",
   ];
-  const releasedRoutes = ["/dashboard", "/schedule", "/schedule/pickup"];
 
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),

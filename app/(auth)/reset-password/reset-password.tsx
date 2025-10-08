@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useChangePassword } from "@/queries/auth";
 import { toast } from "sonner";
-import { ErrorAlert } from "@/components/error-alert";
+import { ErrorAlert } from "@/components/error-component";
 
 const schema = z
   .object({

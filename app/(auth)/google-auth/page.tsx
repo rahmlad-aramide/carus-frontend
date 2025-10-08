@@ -25,7 +25,7 @@ import Image from "next/image";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCompleteGoogleSignup } from "@/queries/auth";
-import { ErrorAlert } from "@/components/error-alert";
+import { ErrorAlert } from "@/components/error-component";
 import cookie from "@/services/cookie";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";

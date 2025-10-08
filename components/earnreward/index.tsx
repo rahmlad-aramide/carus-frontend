@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 type EarnRewardProps = {
   onClose: () => void;
@@ -46,16 +47,19 @@ export default function EarnReward({ onClose }: EarnRewardProps) {
             You can Earn Reward by following these simple steps
           </p>
           <p className="text-sm md:text-base">
-            Log on to <span className="font-bold">Carus.com</span>
+            Log on to <span className="font-bold">carusrecycling.com</span>
           </p>
           <p className="text-sm md:text-base">
-            Click on <span className="font-bold">recycle waste</span>
+            Click on{" "}
+            <Link href="schedule" className="font-bold">
+              Schedule
+            </Link>
           </p>
           <p className="text-sm md:text-base">
-            Input the number of bottles to be recycled
+            Input the number of bottles to be picked up
           </p>
           <p className="text-sm md:text-base font-bold">
-            Schedule a pick up{" "}
+            Schedule the pick up{" "}
             <span className="font-normal">and get rewarded instantly</span>
           </p>
           <p>
@@ -69,10 +73,11 @@ export default function EarnReward({ onClose }: EarnRewardProps) {
           >
             <Image
               src="/wallet-money2.png"
-              alt=""
+              alt="Money icon"
               width={20}
               height={20}
               className="object-contain"
+              onClick={onClose}
             />
             Start Earning
           </Button>

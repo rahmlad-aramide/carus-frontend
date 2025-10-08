@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import History from "@/components/history";
+import History from "@/components/transaction-history";
 import DonateEarnings from "@/components/donateearnings";
 import ConvertPoints from "@/components/convertpoints";
 import RedeemPoints from "@/components/redeempoints";
@@ -79,7 +79,7 @@ export default function Wallet() {
 
       <div className="xl:flex gap-12">
         <div className="xl:w-3/7">
-          <div className="bg-[rgb(251,247,231)] rounded-[30px] w-full h-[123px] lg:h-[165px] p-5 lg:p-8 mt-8">
+          <div className="bg-[rgb(251,247,231)] rounded-[30px] w-full min-h-[123px] lg:min-h-[165px] p-5 lg:p-8 mt-8">
             <p className="text-base lg:text-[28px] font-bold lg:font-black">
               Convert Points to Giftcard
             </p>
@@ -103,12 +103,12 @@ export default function Wallet() {
               </Button>
             </div>
           </div>
-          <div className="hidden xl:block sticky mt-10 ">
+          <div className="hidden xl:block sticky mt-10">
             <History />
           </div>
         </div>
 
-        <div className="mt-7 md:mt-10 xl:mt-8 xl:w-4/7 xl:w-[560px]">
+        <div className="mt-7 md:mt-10 xl:mt-8 xl:w-4/7">
           <div className="flex items-center justify-between mb-3">
             <p className="text-grey-90 text-base lg:text-xl font-bold">
               Donate
@@ -123,7 +123,7 @@ export default function Wallet() {
           {donate.map(({ content, amount, days, image }, index) => (
             <div
               key={index}
-              className="bg-[rgb(243,243,243)] rounded-[10px] xl:rounded-[18px] px-4 py-3 xl:p-6 mb-4 lg:mb-6 w-full xl:w-[560px]"
+              className="bg-[rgb(243,243,243)] rounded-[10px] xl:rounded-[18px] px-4 py-5 xl:py-6 xl:p-6 mb-4 lg:mb-6 w-full xl:w-[560px]"
             >
               <div className="flex items-center gap-4 lg:gap-5 xl:gap-8">
                 <div>
@@ -132,7 +132,7 @@ export default function Wallet() {
                     alt=""
                     width={96}
                     height={96}
-                    className="object-contain lg:w-[282px] lg:h-[152px] xl:w-[152px] xl:h-[152px]"
+                    className="object-cover rounded-[10px] lg:w-[282px] lg:h-[152px] xl:w-[152px] xl:h-[152px]"
                   />
                 </div>
 
@@ -195,7 +195,7 @@ export default function Wallet() {
         </div>
       </div>
 
-      <div className="lg:w-4/5 xl:hidden">
+      <div className="xl:hidden">
         <History />
       </div>
 

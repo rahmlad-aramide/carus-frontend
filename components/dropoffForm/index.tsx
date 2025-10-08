@@ -14,22 +14,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import Image from "next/image";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@radix-ui/react-popover";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import InfoToolTip from "@/components/infotooltip";
-import DropoffWasteSelector from "../wasteselector(dropoff)";
+import { SchedulePickupInput } from "@/types/schedule";
+import { usePostSchedulePickup } from "@/queries/schedule";
+import { ErrorAlert } from "../error-component";
+import WasteSelector from "../wasteselector";
 
 // ✅ Validation schema
 const dropoffFormSchema = z.object({
-  noOfPlasticWaste: z.string().min(2, { message: "Minimum of 100 pieces" }),
-  noOfPlasticBag: z
+  material_amount: z.string().min(2, { message: "Minimum of 100 pieces" }),
+  container_amount: z
     .string()
     .nonempty({ message: "Please indicate number of bags" }),
   date: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, {
@@ -40,18 +43,21 @@ const dropoffFormSchema = z.object({
 type dropoffFormSchema = z.infer<typeof dropoffFormSchema>;
 type DropoffFormProps = {
   onBack: () => void;
+  address: string;
 };
 
-export default function DropoffForm({ onBack }: DropoffFormProps) {
+export default function DropoffForm({ onBack, address }: DropoffFormProps) {
   const form = useForm<dropoffFormSchema>({
     resolver: zodResolver(dropoffFormSchema),
     mode: "onChange",
     defaultValues: {
-      noOfPlasticWaste: "",
-      noOfPlasticBag: "",
+      material_amount: "",
+      container_amount: "",
       date: "",
     },
   });
+
+  const { mutate, isPending, isError, error } = usePostSchedulePickup();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -61,7 +67,21 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
   };
 
   const onSubmit = (values: dropoffFormSchema) => {
-    console.log(values);
+    const parsedDate = parse(values.date, "dd/MM/yyyy", new Date());
+    const payload: SchedulePickupInput = {
+      ...values,
+      material_amount: Number(values.material_amount),
+      container_amount: Number(values.container_amount),
+      date: format(parsedDate, "yyyy-MM-dd"),
+      material: "plastic",
+      category: "dropoff",
+      address,
+    };
+    mutate(payload, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   };
 
   return (
@@ -83,7 +103,7 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
           <p className="text-[14px] md:text-base text-grey-90 mb-3 mt-20 md:mt-30">
             Category
           </p>
-          <DropoffWasteSelector />
+          <WasteSelector />
         </div>
 
         <Form {...form}>
@@ -94,7 +114,7 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
             {/* Number of Plastic Waste */}
             <FormField
               control={form.control}
-              name="noOfPlasticWaste"
+              name="material_amount"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm md:text-base text-grey-90">
@@ -115,7 +135,7 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
             {/* Number of Plastic Bag */}
             <FormField
               control={form.control}
-              name="noOfPlasticBag"
+              name="container_amount"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm md:text-base text-grey-90 justify-between">
@@ -174,7 +194,9 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
                             field.onChange(format(selected, "dd/MM/yyyy"));
                           }
                         }}
-                        initialFocus
+                        autoFocus
+                        captionLayout="dropdown"
+                        startMonth={new Date()}
                       />
                     </PopoverContent>
                   </Popover>
@@ -213,15 +235,22 @@ export default function DropoffForm({ onBack }: DropoffFormProps) {
                 </div>
               </div>
             </div>
-
-            {/* Button */}
-
+            {isError && <ErrorAlert error={error} />}
+            {/* Submit Button */}
             <div className="col-span-1 xl:col-start-2">
               <Button
                 type="submit"
+                disabled={isPending}
                 className="w-full py-7 text-sm md:text-base font-bold"
               >
-                Schedule Dropoff
+                {isPending ? (
+                  <>
+                    <Loader2 className="animate-spin" />
+                    <span>Scheduling...</span>
+                  </>
+                ) : (
+                  "Schedule Drop-off"
+                )}
               </Button>
             </div>
           </form>

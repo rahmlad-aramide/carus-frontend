@@ -15,31 +15,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import Image from "next/image";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@radix-ui/react-popover";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
-import NotificationBell from "@/components/notificationbell";
+import NotificationBell from "@/components/notification-bell";
 import ImageContainer from "@/components/imagecontainer";
 import InfoToolTip from "@/components/infotooltip";
-import { lagosLGAs } from "@/components/lagosLGAs";
 import WasteSelector from "@/components/wasteselector";
 import { useRouter } from "next/navigation";
+import { usePostSchedulePickup } from "@/queries/schedule";
+import { SchedulePickupInput } from "@/types/schedule";
+import { ErrorAlert } from "@/components/error-component";
 
 // ✅ Validation schema
 const schedulePickupSchema = z.object({
-  noOfPlasticWaste: z.string().min(2, { message: "Minimum of 100 pieces" }),
-  noOfPlasticBag: z
+  material_amount: z.string().min(3, { message: "Minimum of 100 pieces" }),
+  container_amount: z
     .string()
     .nonempty({ message: "Please indicate number of bags" }),
-  massOfPlasticWaste: z.string().nonempty({ message: "Minimum of 1kg" }),
+  // massOfPlasticWaste: z.string().nullable(),
   address: z.string().min(5, { message: "Please enter a valid address" }),
-  lga: z.string().nonempty({ message: "Please indicate a LGA" }),
+  // lga: z.string().nullable(),
   date: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, {
     message: "Please enter date in DD/MM/YYYY format",
   }),
@@ -50,18 +52,22 @@ type SchedulePickupSchema = z.infer<typeof schedulePickupSchema>;
 export default function Page() {
   const [callOnArrival, setCallOnArrival] = useState(false);
   const router = useRouter();
+  const { mutate, isPending, isError, error } = usePostSchedulePickup();
 
   const form = useForm<SchedulePickupSchema>({
     resolver: zodResolver(schedulePickupSchema),
     mode: "onChange",
     defaultValues: {
-      noOfPlasticWaste: "",
-      noOfPlasticBag: "",
-      massOfPlasticWaste: "",
+      material_amount: "",
+      container_amount: "",
+      // massOfPlasticWaste: "1",
       date: "",
       address: "",
+      // lga: "Auto",
     },
   });
+
+  // console.log(form)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -71,7 +77,20 @@ export default function Page() {
   };
 
   const onSubmit = (values: SchedulePickupSchema) => {
-    console.log(values);
+    const parsedDate = parse(values.date, "dd/MM/yyyy", new Date());
+    const payload: SchedulePickupInput = {
+      ...values,
+      material_amount: Number(values.material_amount),
+      container_amount: Number(values.container_amount),
+      date: format(parsedDate, "yyyy-MM-dd"),
+      material: "plastic",
+      category: "pickup",
+    };
+    mutate(payload, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   };
 
   return (
@@ -110,7 +129,7 @@ export default function Page() {
           {/* Number of Plastic Waste */}
           <FormField
             control={form.control}
-            name="noOfPlasticWaste"
+            name="material_amount"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm md:text-base text-grey-90">
@@ -131,7 +150,7 @@ export default function Page() {
           {/* Number of Plastic Bag */}
           <FormField
             control={form.control}
-            name="noOfPlasticBag"
+            name="container_amount"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm md:text-base text-grey-90 justify-between">
@@ -155,11 +174,11 @@ export default function Page() {
           />
 
           {/* Mass of Plastic Waste */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="massOfPlasticWaste"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="hidden">
                 <FormLabel className="text-sm md:text-base text-grey-90 justify-between">
                   Mass of Plastic Waste
                   <InfoToolTip
@@ -188,7 +207,7 @@ export default function Page() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           {/* Address */}
           <FormField
@@ -225,11 +244,11 @@ export default function Page() {
           />
 
           {/* LGA */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="lga"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="hidden">
                 <FormLabel className="text-sm md:text-base text-grey-90">
                   Select LGA
                 </FormLabel>
@@ -249,7 +268,7 @@ export default function Page() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           {/* Date */}
           <FormField
@@ -285,10 +304,9 @@ export default function Page() {
                           field.onChange(format(selected, "dd/MM/yyyy"));
                         }
                       }}
-                      initialFocus
+                      autoFocus
                       captionLayout="dropdown"
-                      fromYear={1950}
-                      toYear={new Date().getFullYear()}
+                      startMonth={new Date()}
                     />
                   </PopoverContent>
                 </Popover>
@@ -329,7 +347,7 @@ export default function Page() {
           </div>
 
           {/*Call on Arrival */}
-          <div className="flex flex-col lg:flex-row w-full gap-5 xl:mt-8">
+          <div className="hidden flex-col lg:flex-row w-full gap-5 xl:mt-8">
             <div className="flex flex-1 items-center justify-between bg-[#F3F3F3] rounded-[10px] py-4 px-3 h-[48px]">
               <span className="text-grey-90 text-sm md:text-base font-medium">
                 Call on Arrival
@@ -372,14 +390,28 @@ export default function Page() {
             </label>
           </div>
 
-          {/* Button */}
-
+          {isError && <ErrorAlert error={error} />}
+          {/* Show form-level error */}
+          {form.formState.errors.root && (
+            <div className="mb-4 text-red-500 text-sm">
+              {form.formState.errors.root.message}
+            </div>
+          )}
+          {/* Submit Button */}
           <div className="col-span-1 xl:col-start-2">
             <Button
               type="submit"
+              disabled={isPending}
               className="w-full py-7 text-sm md:text-base font-bold"
             >
-              Schedule Pickup
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  <span>Scheduling...</span>
+                </>
+              ) : (
+                "Schedule Pickup"
+              )}
             </Button>
           </div>
         </form>

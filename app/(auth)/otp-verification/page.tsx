@@ -6,7 +6,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useResendOtp, useVerifyOtp } from "@/queries/auth";
-import { ErrorAlert } from "@/components/error-alert";
+import { ErrorAlert } from "@/components/error-component";
 import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -184,7 +184,14 @@ export default function VerifyRegistrationOTP() {
                   className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
                   disabled={isPending}
                 >
-                  {isPending ? <Loader2 className="animate-spin" /> : "Verify"}
+                  {isPending ? (
+                    <>
+                      <Loader2 className="animate-spin" />
+                      <span>Verifying...</span>
+                    </>
+                  ) : (
+                    "Verify"
+                  )}
                 </Button>
                 {isError && <ErrorAlert error={error} />}
               </form>

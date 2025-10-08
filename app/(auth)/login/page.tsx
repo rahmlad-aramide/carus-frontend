@@ -21,7 +21,7 @@ import Image from "next/image";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLogin } from "@/queries/auth";
-import { ErrorAlert } from "@/components/error-alert";
+import { ErrorAlert } from "@/components/error-component";
 import cookie from "@/services/cookie";
 import { toast } from "sonner";
 import { GoogleButton } from "../google-auth/google-button";
@@ -189,7 +189,10 @@ export default function LoginForm() {
                     disabled={isPending || isLoading}
                   >
                     {isPending ? (
-                      <Loader2 className="animate-spin" />
+                      <>
+                        <Loader2 className="animate-spin" />
+                        <span>Signing in...</span>
+                      </>
                     ) : (
                       "Sign in"
                     )}

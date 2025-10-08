@@ -29,7 +29,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRegister } from "@/queries/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { ErrorAlert } from "@/components/error-alert";
+import { ErrorAlert } from "@/components/error-component";
 import { GoogleButton } from "../google-auth/google-button";
 
 const signupSchema = z.object({
@@ -636,7 +636,10 @@ export default function SignupForm() {
                       className="rounded-[10px] w-full py-6 text-sm md:text-base font-bold"
                     >
                       {isPending ? (
-                        <Loader2 className="animate-spin" />
+                        <>
+                          <Loader2 className="animate-spin" />
+                          <span>Signing up...</span>
+                        </>
                       ) : (
                         "Sign up"
                       )}

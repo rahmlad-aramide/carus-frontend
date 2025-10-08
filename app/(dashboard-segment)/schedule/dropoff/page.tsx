@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft, Search } from "lucide-react";
-import NotificationBell from "@/components/notificationbell";
+import NotificationBell from "@/components/notification-bell";
 import ImageContainer from "@/components/imagecontainer";
 import Image from "next/image";
 import { useState } from "react";
@@ -14,39 +14,11 @@ const DropOffCentres = [
     address: "3 Obafemi Awolowo Way, Ikeja 101233, Ikeja, Lagos",
     time: "9:00am - 4:00pm",
   },
-
-  {
-    centre: "Lawma Trash Centre",
-    address: "3 Obafemi Awolowo Way, Ikeja 101233, Ikeja, Lagos",
-    time: "9:00am - 4:00pm",
-  },
-
-  {
-    centre: "Lawma Trash Centre",
-    address: "3 Obafemi Awolowo Way, Ikeja 101233, Ikeja, Lagos",
-    time: "9:00am - 4:00pm",
-  },
-
-  {
-    centre: "Lawma Trash Centre",
-    address: "3 Obafemi Awolowo Way, Ikeja 101233, Ikeja, Lagos",
-    time: "9:00am - 4:00pm",
-  },
-
-  {
-    centre: "Lawma Trash Centre",
-    address: "3 Obafemi Awolowo Way, Ikeja 101233, Ikeja, Lagos",
-    time: "9:00am - 4:00pm",
-  },
-
-  {
-    centre: "Lawma Trash Centre",
-    address: "3 Obafemi Awolowo Way, Ikeja 101233, Ikeja, Lagos",
-    time: "9:00am - 4:00pm",
-  },
 ];
+
 export default function Page() {
   const [activeCentre, setActiveCentre] = useState<number | null>(null);
+  const [centerAddress, setCenterAddress] = useState("");
   const [dropoffForm, setDropoffForm] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const router = useRouter();
@@ -58,7 +30,12 @@ export default function Page() {
   );
 
   if (dropoffForm !== null) {
-    return <DropoffForm onBack={() => setDropoffForm(null)} />;
+    return (
+      <DropoffForm
+        address={centerAddress}
+        onBack={() => setDropoffForm(null)}
+      />
+    );
   }
 
   return (
@@ -82,7 +59,7 @@ export default function Page() {
 
       <div className="px-2">
         <p className="text-sm md:text-base text-grey-90 mb-3 mt-20 md:mt-30">
-          Below are the nearest Drop off locations closest to you.
+          Below are the available Drop off locations closest to you.
         </p>
 
         {/* Search Bar */}
@@ -105,6 +82,7 @@ export default function Page() {
                   <div
                     onClick={() => {
                       setActiveCentre(index);
+                      setCenterAddress(address);
                       setDropoffForm(index);
                     }}
                     className={`mb-5 px-6 py-3 md:px-5 lg:px-7 rounded-[10px] cursor-pointer md:space-y-1

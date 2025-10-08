@@ -1,7 +1,7 @@
 "use client";
 import { useGetProfile } from "@/queries/account";
 import { usePathname } from "next/navigation";
-import NotificationBell from "@/components/notificationbell";
+import NotificationBell from "@/components/notification-bell";
 import ImageContainer from "@/components/imagecontainer";
 import { toast } from "sonner";
 

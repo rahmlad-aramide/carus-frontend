@@ -19,7 +19,7 @@ import Image from "next/image";
 import { useEditProfile, useGetProfile } from "@/queries/account";
 import { UserInfo } from "@/types/account";
 import { Loader2 } from "lucide-react";
-import { ErrorAlert } from "../error-alert";
+import { ErrorAlert } from "../error-component";
 
 // ✅ Validation schema
 const profileSchema = z.object({
@@ -274,7 +274,10 @@ export default function Profile() {
                   className="w-full py-5 font-bold"
                 >
                   {isPending ? (
-                    <Loader2 className="animate-spin" />
+                    <>
+                      <Loader2 className="animate-spin" />
+                      <span>Saving changes...</span>
+                    </>
                   ) : (
                     "Save Changes"
                   )}

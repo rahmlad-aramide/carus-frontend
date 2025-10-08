@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import History from "@/components/history";
+import History from "@/components/transaction-history";
 import EarnReward from "@/components/earnreward";
 import RedeemPoints from "@/components/redeempoints";
 
@@ -40,7 +40,7 @@ export default function Page() {
           <div className="mt-7">
             <p className="text-sm md:text-xl font-bold">Quick Action</p>
             <div className="grid grid-cols-4 gap-2 lg:gap-6 mt-3">
-              <Link href="/schedule/pickup">
+              <Link href="/schedule/dropoff">
                 <div className="flex flex-col items-center justify-center space-y-1 lg:space-y-2 bg-primary-10 rounded-[10px] p-1 md:p-3 w-full h-[64px] md:h-[80px] lg:h-[112px]">
                   <Image
                     src="/truck-remove.png"

@@ -5,7 +5,10 @@ import type { QueryClient } from "@tanstack/react-query";
 import { LogoutReason } from "@/types";
 
 const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL + "/v1",
+  baseURL:
+    process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
+      ? process.env.NEXT_PUBLIC_API_URL_LOCAL + "/v1"
+      : process.env.NEXT_PUBLIC_API_URL + "/v1",
   withCredentials: false,
   timeout: 90000,
   headers: {
@@ -63,7 +66,6 @@ http.interceptors.response.use(
 
             // Update the access token in your auth-user object
             authUser.access_token = refreshResponse.data.access_token;
-            // Note: If your backend rotates the refresh token, update it as well
             // authUser.refresh_token = refreshResponse.data.refresh_token;
             cookie.set("auth-user", authUser);
             // Update the Authorization header for the new request

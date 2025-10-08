@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  deleteSchedule,
   getSchedule,
   getScheduleById,
   postSchedulePickup,
+  updateSchedule,
 } from "@/services/schedule";
 import {
   queryOptions,
@@ -11,7 +12,13 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { scheduleKeys } from "./query-keys";
-import { SchedulePickupInput, ScheduleResponse } from "@/types/schedule";
+import {
+  PostScheduleResponse,
+  SchedulePickupInput,
+  UpdateSchedulePayload,
+} from "@/types/schedule";
+import { GeneralResponse } from "@/types";
+import { CustomError } from "@/tanstack-query";
 
 export function useGetSchedule() {
   return useQuery({
@@ -20,7 +27,7 @@ export function useGetSchedule() {
   });
 }
 
-export function useGetScheduleByIdQueryOptions(scheduleId?: string) {
+export function useGetScheduleByIdQueryOptions(scheduleId: string) {
   return queryOptions({
     queryKey: scheduleKeys.id(scheduleId),
     queryFn: () => getScheduleById(scheduleId),
@@ -30,10 +37,9 @@ export function useGetScheduleByIdQueryOptions(scheduleId?: string) {
 
 export function usePostSchedulePickup(
   options?: UseMutationOptions<
-    ScheduleResponse,
-    any,
-    SchedulePickupInput,
-    unknown
+    PostScheduleResponse,
+    CustomError,
+    SchedulePickupInput
   >,
 ) {
   return useMutation({
@@ -43,6 +49,42 @@ export function usePostSchedulePickup(
       successMessage: "Pickup Scheduled!",
       additionalDescription: "Your pickup has been scheduled successfully.",
       errorMessage: "Error scheduling pickup",
+    },
+    ...options,
+  });
+}
+
+export function useUpdateSchedule(
+  options?: UseMutationOptions<
+    GeneralResponse,
+    CustomError,
+    UpdateSchedulePayload
+  >,
+) {
+  return useMutation({
+    mutationFn: (data) => updateSchedule(data),
+    meta: {
+      invalidatesQuery: scheduleKeys.all,
+      successMessage: "Schedule status updated!",
+      additionalDescription:
+        "Your schedule status has been updated successfully.",
+      errorMessage: "Error updating schedule status",
+    },
+    ...options,
+  });
+}
+
+export function useDeleteSchedule(
+  options?: UseMutationOptions<GeneralResponse, CustomError, string>,
+) {
+  return useMutation({
+    mutationFn: (id) => deleteSchedule(id),
+    meta: {
+      invalidatesQuery: scheduleKeys.all,
+      successMessage: "Pickup Schedule Deleted!",
+      additionalDescription:
+        "Your pickup schedule has been deleted successfully.",
+      errorMessage: "Error deleting schedule status",
     },
     ...options,
   });

@@ -1,6 +1,7 @@
 import { useGetTransaction } from "@/queries/transactions";
 import { LoadingComponent } from "../loading";
 import { Empty } from "../empty";
+import { ErrorComponent } from "../error-component";
 
 const history = [
   {
@@ -101,7 +102,7 @@ const history = [
 ];
 
 export default function History() {
-  const { data, isPending, isError, error } = useGetTransaction();
+  const { data, isPending, isError, error, refetch } = useGetTransaction();
   const historyData = data?.data;
 
   return (
@@ -110,6 +111,11 @@ export default function History() {
       {isPending && (
         <div className="flex flex-col justify-center items-center border border-grey-10 rounded-[10px] p-2 space-y-3 h-[30vh] sm:h-[40vh] md:h-[50vh] xl:h-[70vh] xl:max-h-[70vh] xl:overflow-y-auto">
           <LoadingComponent description="Loading Transaction History..." />
+        </div>
+      )}
+      {isError && (
+        <div className="flex flex-col justify-center items-center border border-grey-10 rounded-[10px] p-2 space-y-3 h-[30vh] sm:h-[40vh] md:h-[50vh] xl:h-[70vh] xl:max-h-[70vh] xl:overflow-y-auto">
+          <ErrorComponent error={error} refetch={refetch} />
         </div>
       )}
       {historyData && historyData.length === 0 && (

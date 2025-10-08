@@ -3,7 +3,7 @@ import Image from "next/image";
 import { FaCheck } from "react-icons/fa";
 
 export default function WasteSelector() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string>("plastic");
 
   const handleSelect = (type: string) => {
     setSelected(type);
@@ -27,8 +27,9 @@ export default function WasteSelector() {
     activeWidth: string;
   }) => (
     <button
+      disabled
       onClick={() => handleSelect(type)}
-      className={`flex items-center gap-2 rounded-3xl py-2 px-2 transition-all duration-200 
+      className={`flex items-center gap-2 rounded-3xl py-2 px-2 transition-all duration-200 disabled:cursor-not-allowed
             ${selected === type ? activeWidth : baseWidth}
                 ${bg}
             `}
