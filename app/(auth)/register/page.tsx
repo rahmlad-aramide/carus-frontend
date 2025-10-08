@@ -21,7 +21,6 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { format } from "date-fns";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -31,6 +30,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ErrorAlert } from "@/components/error-component";
 import { GoogleButton } from "../google-auth/google-button";
+import { format, parse } from "date-fns";
 
 const signupSchema = z.object({
   option: z.enum(["individual", "business"]),
@@ -98,8 +98,13 @@ export default function SignupForm() {
   const onSubmit = (values: SignupSchema) => {
     const { option, ...rest } = values;
     console.log(`Creating an ${option} account...`);
+
+    const parsedDate = parse(rest.dob, "dd/MM/yyyy", new Date());
+    const formattedDob = format(parsedDate, "yyyy-MM-dd");
+
     const payload = {
       ...rest,
+      dob: formattedDob,
       country_code: "ng",
     };
     //@ts-expect-error dob is formatted to string
