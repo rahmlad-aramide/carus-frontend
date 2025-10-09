@@ -25,9 +25,9 @@ import {
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import NotificationBell from "@/components/notification-bell";
-import ImageContainer from "@/components/imagecontainer";
-import InfoToolTip from "@/components/infotooltip";
-import WasteSelector from "@/components/wasteselector";
+import ImageContainer from "@/components/image-container";
+import InfoToolTip from "@/components/info-tooltip";
+import WasteSelector from "@/components/waste-selector";
 import { useRouter } from "next/navigation";
 import { usePostSchedulePickup } from "@/queries/schedule";
 import { SchedulePickupInput } from "@/types/schedule";

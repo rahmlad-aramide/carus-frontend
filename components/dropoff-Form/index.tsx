@@ -23,11 +23,11 @@ import {
 } from "@radix-ui/react-popover";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
-import InfoToolTip from "@/components/infotooltip";
+import InfoToolTip from "@/components/info-tooltip";
 import { SchedulePickupInput } from "@/types/schedule";
 import { usePostSchedulePickup } from "@/queries/schedule";
 import { ErrorAlert } from "../error-component";
-import WasteSelector from "../wasteselector";
+import WasteSelector from "../waste-selector";
 
 // ✅ Validation schema
 const dropoffFormSchema = z.object({

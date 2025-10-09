@@ -2,7 +2,7 @@
 import { useGetProfile } from "@/queries/account";
 import { usePathname } from "next/navigation";
 import NotificationBell from "@/components/notification-bell";
-import ImageContainer from "@/components/imagecontainer";
+import ImageContainer from "@/components/image-container";
 import { toast } from "sonner";
 
 export const TopNav = () => {

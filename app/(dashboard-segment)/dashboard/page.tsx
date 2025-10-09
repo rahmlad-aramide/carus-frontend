@@ -4,8 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import History from "@/components/transaction-history";
-import EarnReward from "@/components/earnreward";
-import RedeemPoints from "@/components/redeempoints";
+import EarnReward from "@/components/earn-reward";
+import RedeemPoints from "@/components/redeem-points";
 
 export default function Page() {
   const [earnReward, setEarnReward] = useState(false);
