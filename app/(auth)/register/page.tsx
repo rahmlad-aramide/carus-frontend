@@ -30,7 +30,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ErrorAlert } from "@/components/error-component";
 import { GoogleButton } from "../google-auth/google-button";
-import { format, parse } from "date-fns";
+import { format, parse, isValid } from "date-fns";
 
 const signupSchema = z.object({
   option: z.enum(["individual", "business"]),
@@ -100,6 +100,14 @@ export default function SignupForm() {
     console.log(`Creating an ${option} account...`);
 
     const parsedDate = parse(rest.dob, "dd/MM/yyyy", new Date());
+    if (!isValid(parsedDate)) {
+      form.setError("dob", {
+        type: "manual",
+        message: "Please enter a valid date.",
+      });
+      return;
+    }
+
     const formattedDob = format(parsedDate, "yyyy-MM-dd");
 
     const payload = {
