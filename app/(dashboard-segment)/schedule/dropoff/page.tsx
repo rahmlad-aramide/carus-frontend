@@ -2,10 +2,10 @@
 
 import { ArrowLeft, Search } from "lucide-react";
 import NotificationBell from "@/components/notification-bell";
-import ImageContainer from "@/components/imagecontainer";
+import ImageContainer from "@/components/image-container";
 import Image from "next/image";
 import { useState } from "react";
-import DropoffForm from "@/components/dropoffForm";
+import DropoffForm from "@/components/dropoff-form";
 import { useRouter } from "next/navigation";
 
 const DropOffCentres = [

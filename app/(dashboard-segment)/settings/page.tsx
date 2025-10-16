@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import HelpandComplaints from "@/components/help&complaints";
+import HelpandComplaints from "@/components/help-complaints";
 import Notification from "@/components/notification";
 import Profile from "@/components/profile";
 // import Account from "@/components/account";

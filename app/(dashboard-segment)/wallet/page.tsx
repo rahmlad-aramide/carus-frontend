@@ -5,9 +5,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import History from "@/components/transaction-history";
-import DonateEarnings from "@/components/donateearnings";
-import ConvertPoints from "@/components/convertpoints";
-import RedeemPoints from "@/components/redeempoints";
+import DonateEarnings from "@/components/donate-earnings";
+import ConvertPoints from "@/components/convert-points";
+import RedeemPoints from "@/components/redeem-points";
 
 const donate = [
   {
@@ -47,7 +47,7 @@ export default function Wallet() {
             <p className="text-[9px] lg:[11px] lg:text-sm text-primary-80 text-right">
               User ID
               <br />{" "}
-              <span className="text-[11px] lg:text-sm lg:text-base font-bold">
+              <span className="text-[11px] lg:text-sm xl:text-base font-bold">
                 6789
               </span>
             </p>

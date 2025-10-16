@@ -39,7 +39,7 @@ export default function DonateEarnings({ onBack }: DonateEarningsProps) {
         {/* Close Button */}
         <button
           onClick={onBack}
-          className="hidden md:block absolute top-3 right-3 text-[#FF6161] bg-white text-2xl cursor-pointer hover:bg-[#FF6161] hover:text-white rounded-full flex items-center justify-center transition w-8 h-8"
+          className="flex items-center justify-center md:block absolute top-3 right-3 text-[#FF6161] bg-white text-2xl cursor-pointer hover:bg-[#FF6161] hover:text-white rounded-full transition w-8 h-8"
           aria-label="Close"
         >
           &times;

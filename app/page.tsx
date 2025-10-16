@@ -1,8 +1,8 @@
-import HeroSection from "@/components/herosection";
-import NavBar from "../components/navbar";
-import Faqs from "../components/faqs";
+import NavBar from "@/components/navbar";
+import HeroSection from "@/components/hero-section";
 import Community from "@/components/community";
-import DownloadSection from "@/components/downloadsection";
+import Faqs from "@/components/faqs";
+import DownloadSection from "@/components/download-section";
 import Footer from "@/components/footer";
 
 export default function Home() {

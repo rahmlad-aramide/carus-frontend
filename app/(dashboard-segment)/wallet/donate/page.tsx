@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import NotificationBell from "@/components/notification-bell";
-import ImageContainer from "@/components/imagecontainer";
+import ImageContainer from "@/components/image-container";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import DonateEarnings from "@/components/donateearnings";
+import DonateEarnings from "@/components/donate-earnings";
 
 const donate = [
   {
