@@ -5,7 +5,7 @@ import NotificationBell from "@/components/notification-bell";
 import ImageContainer from "@/components/image-container";
 import Image from "next/image";
 import { useState } from "react";
-import DropoffForm from "@/components/dropoff-Form";
+import DropoffForm from "@/components/dropoff-form";
 import { useRouter } from "next/navigation";
 
 const DropOffCentres = [
