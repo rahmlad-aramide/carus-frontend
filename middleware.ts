@@ -7,27 +7,23 @@ export function middleware(request: NextRequest) {
   const access_token = authUserValue?.access_token;
   const refresh_token = authUserValue?.refresh_token;
 
-  const protectedRoutes = ["/profile", "/services", "/contact", "/settings"];
-  const releasedRoutes = [
+  const protectedRoutes = [
     "/dashboard",
     "/schedule",
     "/schedule/pickup",
     "/wallet",
     "/wallet/donate",
+    "/profile",
+    "/services",
+    "/contact",
+    "/settings",
   ];
 
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),
   );
 
-  const isReleased = releasedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route),
-  );
-
-  if (isProtected) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-  if (isReleased && !access_token && !refresh_token) {
+  if (isProtected && !access_token && !refresh_token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
   return NextResponse.next();
@@ -38,9 +34,9 @@ export const config = {
     "/dashboard",
     "/schedule",
     "/schedule/pickup",
+    "/wallet",
     "/wallet/donate",
     "/profile",
-    "/wallet",
     "/services",
     "/contact",
     "/settings",
