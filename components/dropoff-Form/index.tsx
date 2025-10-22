@@ -46,7 +46,7 @@ type DropoffFormProps = {
   address: string;
 };
 
-export default function DropoffForm({ onBack, address }: DropoffFormProps) {
+export const DropoffForm = ({ onBack, address }: DropoffFormProps) => {
   const form = useForm<dropoffFormSchema>({
     resolver: zodResolver(dropoffFormSchema),
     mode: "onChange",
@@ -258,4 +258,4 @@ export default function DropoffForm({ onBack, address }: DropoffFormProps) {
       </div>
     </>
   );
-}
+};
