@@ -6,7 +6,7 @@ import ImageContainer from "@/components/image-container";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { DropoffForm } from "@/components/dropoff-form";
+import { DropOffForm } from "@/components/drop-off-form";
 
 const DropOffCentres = [
   {
@@ -31,7 +31,7 @@ export default function Page() {
 
   if (dropoffForm !== null) {
     return (
-      <DropoffForm
+      <DropOffForm
         address={centerAddress}
         onBack={() => setDropoffForm(null)}
       />
