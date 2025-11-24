@@ -11,6 +11,7 @@ export const TopNav = () => {
   const titles: Record<string, string> = {
     "/schedule": "Schedule",
     "/wallet": "Wallet",
+    "/wallet/donate": "Donate",
     "/settings": "Settings",
   };
   const title = titles[pathname] || null;

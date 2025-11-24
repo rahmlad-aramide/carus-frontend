@@ -1,7 +1,10 @@
 import {
+  ComplaintInput,
+  ComplaintResponse,
   EditProfileInput,
   EditProfileResponse,
   GetAccountResponse,
+  NewPasswordInput,
 } from "@/types/account";
 import http from "./http";
 
@@ -13,4 +16,17 @@ export async function postEditProfile(
   formData: EditProfileInput,
 ): Promise<EditProfileResponse> {
   return (await http.put("/account/edit", formData)).data;
+}
+
+//////////////////////////////////////////////////////////////////////
+export async function changePassword(
+  formData: NewPasswordInput,
+): Promise<EditProfileResponse> {
+  return (await http.put("/account/change-password", formData)).data;
+}
+
+export async function postComplaint(
+  data: ComplaintInput,
+): Promise<ComplaintResponse> {
+  return (await http.post("/account/lodge-complaint", data)).data;
 }

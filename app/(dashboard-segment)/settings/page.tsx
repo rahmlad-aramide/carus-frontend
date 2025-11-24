@@ -4,7 +4,7 @@ import { useState } from "react";
 import HelpandComplaints from "@/components/help-complaints";
 import Notification from "@/components/notification";
 import Profile from "@/components/profile";
-// import Account from "@/components/account";
+import Account from "@/components/account";
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState("Profile");
@@ -42,7 +42,7 @@ export default function Settings() {
       {/* Tab Content */}
       <div className="mt-6">
         {activeTab === "Profile" && <Profile />}
-        {/* {activeTab === "Security" && <Account />} */}
+        {activeTab === "Security" && <Account />}
         {activeTab === "Notification" && <Notification />}
         {activeTab === "Help and Complaints" && <HelpandComplaints />}
       </div>

@@ -7,8 +7,9 @@ import { LogoutReason } from "@/types";
 const http = axios.create({
   baseURL:
     process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
-      ? process.env.NEXT_PUBLIC_API_URL_LOCAL + "/v1"
+      ? process.env.NEXT_PUBLIC_RENDER_API_URL + "/v1"
       : process.env.NEXT_PUBLIC_API_URL + "/v1",
+
   withCredentials: false,
   timeout: 90000,
   headers: {

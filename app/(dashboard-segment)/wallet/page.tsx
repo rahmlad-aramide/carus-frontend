@@ -8,27 +8,26 @@ import History from "@/components/transaction-history";
 import DonateEarnings from "@/components/donate-earnings";
 import ConvertPoints from "@/components/convert-points";
 import RedeemPoints from "@/components/redeem-points";
-
-const donate = [
-  {
-    content: "Cleaner Lagos Initiative",
-    amount: "N60,000",
-    days: "30",
-    image: "/Frame91.svg",
-  },
-
-  {
-    content: "Cleaner Lagos Initiative",
-    amount: "N60,000",
-    days: "30",
-    image: "/Frame92.svg",
-  },
-];
+import { useDonationCampaigns } from "@/queries/wallet";
+import { DonationCampaignInput } from "@/types/wallet";
+import { LoadingComponent } from "@/components/loading";
+import { Empty } from "@/components/empty";
 
 export default function Wallet() {
-  const [showDonateEarnings, setShowDOnateEarnings] = useState(false);
+  const [showDonateEarnings, setShowDonateEarnings] = useState(false);
   const [showConvertPoints, setShowConvertPoints] = useState(false);
   const [showRedeemPoints, setShowRedeemPoints] = useState(false);
+  const [selectedCampaign, setSelectedCampaign] =
+    useState<DonationCampaignInput | null>(null);
+
+  const { data, isLoading, isError } = useDonationCampaigns();
+  const campaigns: DonationCampaignInput[] = data?.data || [];
+  const topCampaigns = campaigns.slice(0, 3);
+
+  const handleDonateClick = (campaign: DonationCampaignInput) => {
+    setSelectedCampaign(campaign);
+    setShowDonateEarnings(true);
+  };
 
   return (
     <div>
@@ -120,94 +119,132 @@ export default function Wallet() {
               See All
             </Link>
           </div>
-          {donate.map(({ content, amount, days, image }, index) => (
-            <div
-              key={index}
-              className="bg-[rgb(243,243,243)] rounded-[10px] xl:rounded-[18px] px-4 py-5 xl:py-6 xl:p-6 mb-4 lg:mb-6 w-full xl:w-[560px]"
-            >
-              <div className="flex items-center gap-4 lg:gap-5 xl:gap-8">
-                <div>
-                  <Image
-                    src={image}
-                    alt=""
-                    width={96}
-                    height={96}
-                    className="object-cover rounded-[10px] lg:w-[282px] lg:h-[152px] xl:w-[152px] xl:h-[152px]"
-                  />
-                </div>
 
-                <div className="flex-1">
-                  <p className="text-sm lg:text-base xl:text-xl font-bold lg:leading-loose">
-                    {content}
+          {(isError || isLoading || topCampaigns.length === 0) && (
+            <div className="flex flex-col items-center justify-center border border-grey-10 rounded-[10px] p-2 h-[250px] space-y-3 xl:overflow-y-auto w-full">
+              {isError && (
+                <div className="text-center">
+                  <p className="text-red-500">
+                    Failed to load campaigns. Please try again later.
                   </p>
-                  <p className="text-[9px] lg:text-sm xl:text-base font-bold">
-                    {amount}{" "}
-                    <span className="text-grey-40 font-regular">Raised</span>
-                  </p>
-
-                  <div className="flex items-center gap-1 lg:gap-4 mt-2 lg:mt-5">
-                    <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
-                      <Image
-                        src="/clock.png"
-                        alt=""
-                        width={10}
-                        height={10}
-                        className="object-contain lg:w-3 lg:h-3"
-                      />
-                    </div>
-                    <p className="text-[9px] lg:text-sm">{days} Days left</p>
-                  </div>
-
-                  <div className="flex items-center gap-5 mt-2 w-full">
-                    <div className="w-full h-[4px] bg-primary-10 rounded-[20px]">
-                      <div
-                        className="h-full bg-[rgb(86,155,122)] rounded-[20px]"
-                        style={{ width: `79%` }}
-                      />
-                    </div>
-
-                    <p className="text-grey-90 text-[9px] lg:text-sm float-right">
-                      79%
-                    </p>
-                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex justify-end mt-1 lg:mt-1">
-                <div
-                  onClick={() => setShowDOnateEarnings(true)}
-                  className="cursor-pointer bg-primary-60 rounded-[10px] w-[174px] xl:gap-2 h-10 flex items-center justify-center gap-2 hover:bg-primary-50"
-                >
-                  <Image
-                    src="/gift2.png"
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="object-contain"
-                  />
-                  <span className="text-white text-[13px]">
-                    Donate Earnings
-                  </span>
-                </div>
-              </div>
+              {isLoading && (
+                <LoadingComponent description="Loading campaigns..." />
+              )}
+
+              {!isLoading && !isError && topCampaigns.length === 0 && (
+                <Empty description="No donation campaigns available at the moment." />
+              )}
             </div>
-          ))}
+          )}
+
+          {!isLoading && !isError && topCampaigns.length > 0 && (
+            <div className="mt-4 grid grid-cols-1 gap-4">
+              {topCampaigns.map((campaign) => {
+                const progress =
+                  (campaign.collected_amount / campaign.goal_amount) * 100;
+
+                return (
+                  <div
+                    key={campaign.id}
+                    className="bg-[rgb(243,243,243)] rounded-[10px] xl:rounded-[18px] px-4 py-5 xl:py-6 mb-4 lg:mb-6 w-full xl:w-[560px]"
+                  >
+                    <div className="flex items-center gap-4 lg:gap-5 xl:gap-8">
+                      <div>
+                        <Image
+                          src={campaign.image || "/Frame91.svg"}
+                          alt={campaign.title}
+                          width={96}
+                          height={96}
+                          className="object-cover rounded-[10px] xl:w-[152px] xl:h-[152px]"
+                        />
+                      </div>
+
+                      <div className="flex-1">
+                        <p className="text-sm lg:text-base xl:text-xl font-bold lg:leading-loose">
+                          {campaign.title}
+                        </p>
+                        <p className="text-[9px] lg:text-sm xl:text-base font-bold">
+                          ₦{campaign.collected_amount.toLocaleString()}{" "}
+                          <span className="text-grey-40 font-regular">
+                            Raised
+                          </span>
+                        </p>
+
+                        {campaign.days_left && (
+                          <div className="flex items-center gap-1 lg:gap-4 mt-2 lg:mt-5">
+                            <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
+                              <Image
+                                src="/clock.png"
+                                alt=""
+                                width={10}
+                                height={10}
+                                className="object-contain lg:w-3 lg:h-3"
+                              />
+                            </div>
+                            <p className="text-[9px] lg:text-sm">
+                              {campaign.days_left} Days left
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="flex items-center gap-5 mt-2 w-full">
+                          <div className="w-full h-[4px] bg-primary-10 rounded-[20px]">
+                            <div
+                              className="h-full bg-[rgb(86,155,122)] rounded-[20px]"
+                              style={{ width: `${Math.min(progress, 100)}%` }}
+                            />
+                          </div>
+                          <p className="text-grey-90 text-[9px] lg:text-sm float-right">
+                            {Math.round(progress)}%
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end mt-1 lg:mt-1">
+                      <div
+                        onClick={() => handleDonateClick(campaign)}
+                        className="cursor-pointer bg-primary-60 rounded-[10px] w-[174px] xl:gap-2 h-10 flex items-center justify-center gap-2 hover:bg-primary-50"
+                      >
+                        <Image
+                          src="/gift2.png"
+                          alt=""
+                          width={16}
+                          height={16}
+                          className="object-contain"
+                        />
+                        <span className="text-white text-[13px]">
+                          Donate Earnings
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          <div className="xl:hidden mt-8">
+            <History />
+          </div>
+
+          {showDonateEarnings && selectedCampaign && (
+            <DonateEarnings
+              campaign={selectedCampaign}
+              onBack={() => setShowDonateEarnings(false)}
+            />
+          )}
+          {showConvertPoints && (
+            <ConvertPoints onBack={() => setShowConvertPoints(false)} />
+          )}
+          {showRedeemPoints && (
+            <RedeemPoints onBack={() => setShowRedeemPoints(false)} />
+          )}
         </div>
       </div>
-
-      <div className="xl:hidden">
-        <History />
-      </div>
-
-      {showDonateEarnings && (
-        <DonateEarnings onBack={() => setShowDOnateEarnings(false)} />
-      )}
-      {showConvertPoints && (
-        <ConvertPoints onBack={() => setShowConvertPoints(false)} />
-      )}
-      {showRedeemPoints && (
-        <RedeemPoints onBack={() => setShowRedeemPoints(false)} />
-      )}
     </div>
   );
 }

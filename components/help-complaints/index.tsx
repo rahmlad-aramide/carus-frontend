@@ -1,43 +1,93 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { useComplaintMessage } from "@/queries/account";
+import { Loader2 } from "lucide-react";
+
+const complaintSchema = z.object({
+  message: z.string().min(1, "Message cannot be empty"),
+});
+
+type ComplaintFormValues = z.infer<typeof complaintSchema>;
 
 export default function HelpandComplaints() {
-  const [message, setMessage] = useState("");
+  const form = useForm<ComplaintFormValues>({
+    resolver: zodResolver(complaintSchema),
+    defaultValues: {
+      message: "",
+    },
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Submitted:", message);
+  const complaintMutation = useComplaintMessage();
+
+  const onSubmit = (values: ComplaintFormValues) => {
+    complaintMutation.mutate(values, {
+      onSuccess: () => {
+        form.reset();
+        console.log("Your complaint has been received!");
+      },
+      onError: () => {
+        console.log("Failed to send complaint. Please try again.");
+      },
+    });
   };
 
   return (
-    <div className="px-7 md:px-15 mt-5 bg-[#F3F3F3] rounded-[10px] pt-5 md:pt-15 pb-20 min-h-screen">
-      <div>
+    <div className="px-7 md:px-15 mt-5 bg-[#F3F3F3] rounded-[10px] pt-5 pb-20 min-h-screen">
+      <div className="w-full max-w-lg">
         <p className="text-base md:text-[24px] text-grey-90 font-bold leading-loose pb-5">
           How can we help you?
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <label htmlFor="helpText" className="sr-only">
-            Your complaint or message
-          </label>
-          <textarea
-            id="helpText"
-            placeholder="Your text here..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full md:max-w-[500px] min-h-[150px] p-4 form-textarea rounded-[10px] text-grey-90 bg-white"
-          ></textarea>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Your complaint or message</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Your text here..."
+                      className="w-full md:max-w-[500px] min-h-[150px] p-4 form-textarea rounded-[10px] text-grey-90 bg-white"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <div>
-            <button
+            <Button
               type="submit"
-              className="py-3 w-full md:max-w-[340px] text-white font-bold bg-[#026937] rounded-[10px] mt-10"
+              className="w-full py-5 font-bold"
+              disabled={complaintMutation.isPending}
             >
-              Send
-            </button>
-          </div>
-        </form>
+              {complaintMutation.isPending ? (
+                <>
+                  <Loader2 className="animate-spin mr-2" />
+                  <span>Sending...</span>
+                </>
+              ) : (
+                "Send"
+              )}
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );
