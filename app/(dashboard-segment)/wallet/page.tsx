@@ -8,26 +8,33 @@ import History from "@/components/transaction-history";
 import DonateEarnings from "@/components/donate-earnings";
 import ConvertPoints from "@/components/convert-points";
 import RedeemPoints from "@/components/redeem-points";
-import { useDonationCampaigns } from "@/queries/wallet";
-import { DonationCampaignInput } from "@/types/wallet";
+import { useDonationCampaigns } from "@/queries/donation";
+import { Donation } from "@/types/donation";
 import { LoadingComponent } from "@/components/loading";
 import { Empty } from "@/components/empty";
+import { useWallet } from "@/queries/wallet";
 
 export default function Wallet() {
   const [showDonateEarnings, setShowDonateEarnings] = useState(false);
   const [showConvertPoints, setShowConvertPoints] = useState(false);
   const [showRedeemPoints, setShowRedeemPoints] = useState(false);
-  const [selectedCampaign, setSelectedCampaign] =
-    useState<DonationCampaignInput | null>(null);
+  const [selectedCampaign, setSelectedCampaign] = useState<Donation | null>(
+    null,
+  );
 
+  const { data: wallet, isLoading: loadingWallet } = useWallet();
   const { data, isLoading, isError } = useDonationCampaigns();
-  const campaigns: DonationCampaignInput[] = data?.data || [];
+  const campaigns: Donation[] = data?.data || [];
   const topCampaigns = campaigns.slice(0, 3);
 
-  const handleDonateClick = (campaign: DonationCampaignInput) => {
+  const handleDonateClick = (campaign: Donation) => {
     setSelectedCampaign(campaign);
     setShowDonateEarnings(true);
   };
+
+  if (loadingWallet) {
+    return <LoadingComponent description="Fetching wallet..." />;
+  }
 
   return (
     <div>
@@ -41,13 +48,15 @@ export default function Wallet() {
             <p className="text-[9px] lg:text-xl text-primary-80">
               Points
               <br />{" "}
-              <span className="text-[11px] lg:text-2xl font-black">190</span>
+              <span className="text-[11px] lg:text-2xl font-black">
+                {wallet?.data?.points ?? 0}
+              </span>
             </p>
             <p className="text-[9px] lg:[11px] lg:text-sm text-primary-80 text-right">
               User ID
               <br />{" "}
               <span className="text-[11px] lg:text-sm xl:text-base font-bold">
-                6789
+                {wallet?.data?.id ?? "---"}
               </span>
             </p>
           </div>
@@ -59,7 +68,7 @@ export default function Wallet() {
             >
               <Image
                 src="/import.svg"
-                alt=""
+                alt="import-icon"
                 width={16}
                 height={16}
                 className="object-contain w-4 h-4 lg:w-5 lg:h-5"
@@ -69,7 +78,7 @@ export default function Wallet() {
             <p className="text-[11px] lg:text-base text-primary-80 text-right">
               Total Balance <br />
               <span className="text-2xl lg:text-[33px] font-black">
-                N30,000
+                ₦{wallet?.data.naira_amount?.toLocaleString() ?? 0}
               </span>
             </p>
           </div>
@@ -93,7 +102,7 @@ export default function Wallet() {
               >
                 <Image
                   src="/convertshape-2.svg"
-                  alt=""
+                  alt="convert-shape"
                   width={16}
                   height={16}
                   className="object-contain w-4 h-4 lg:w-5 lg:h-5"
@@ -178,7 +187,7 @@ export default function Wallet() {
                             <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
                               <Image
                                 src="/clock.png"
-                                alt=""
+                                alt="clock-icon"
                                 width={10}
                                 height={10}
                                 className="object-contain lg:w-3 lg:h-3"
@@ -211,7 +220,7 @@ export default function Wallet() {
                       >
                         <Image
                           src="/gift2.png"
-                          alt=""
+                          alt="gift-icon"
                           width={16}
                           height={16}
                           className="object-contain"

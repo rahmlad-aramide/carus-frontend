@@ -4,8 +4,8 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import DonateEarnings from "@/components/donate-earnings";
-import { useDonationCampaigns } from "@/queries/wallet";
-import { DonationCampaignInput } from "@/types/wallet";
+import { useDonationCampaigns } from "@/queries/donation";
+import { Donation } from "@/types/donation";
 import { useRouter } from "next/navigation";
 import { LoadingComponent } from "@/components/loading";
 import { Empty } from "@/components/empty";
@@ -13,14 +13,15 @@ import { Empty } from "@/components/empty";
 export default function Donate() {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
-  const [selectedCampaign, setSelectedCampaign] =
-    useState<DonationCampaignInput | null>(null);
+  const [selectedCampaign, setSelectedCampaign] = useState<Donation | null>(
+    null,
+  );
 
   const { data, isLoading, error } = useDonationCampaigns();
 
   const campaigns = data?.data || [];
 
-  const handleDonateClick = (campaign: DonationCampaignInput) => {
+  const handleDonateClick = (campaign: Donation) => {
     setSelectedCampaign(campaign);
     setShowForm(true);
   };
@@ -97,7 +98,7 @@ export default function Donate() {
                         <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
                           <Image
                             src="/clock.png"
-                            alt=""
+                            alt="clock-icon"
                             width={10}
                             height={10}
                             className="object-contain lg:w-3 lg:h-3"
@@ -131,7 +132,7 @@ export default function Donate() {
                   >
                     <Image
                       src="/gift2.png"
-                      alt=""
+                      alt="gift-icon"
                       width={16}
                       height={16}
                       className="object-contain w-4 h-4 xl:w-4 xl:h-4"

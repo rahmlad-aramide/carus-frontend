@@ -2,12 +2,12 @@ import { useState } from "react";
 import { ArrowLeft, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { DonationCampaignInput } from "@/types/wallet";
-import { useContributeToCampaign } from "@/queries/wallet";
+import { Donation } from "@/types/donation";
+import { useContributeToCampaign } from "@/queries/donation";
 
 type DonateEarningsProps = {
   onBack: () => void;
-  campaign: DonationCampaignInput;
+  campaign: Donation;
 };
 
 export default function DonateEarnings({

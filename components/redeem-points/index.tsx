@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRedeemAirtime, useRedeemCash } from "@/queries/wallet";
+import { useRedeemAirtime, useRedeemCash } from "@/queries/redeem";
 import { Loader2 } from "lucide-react";
 
 const networks = [

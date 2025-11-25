@@ -1,5 +1,5 @@
 import {
-  ComplaintInput,
+  Complaint,
   ComplaintResponse,
   EditProfileInput,
   EditProfileResponse,
@@ -18,7 +18,6 @@ export async function postEditProfile(
   return (await http.put("/account/edit", formData)).data;
 }
 
-//////////////////////////////////////////////////////////////////////
 export async function changePassword(
   formData: NewPasswordInput,
 ): Promise<EditProfileResponse> {
@@ -26,7 +25,7 @@ export async function changePassword(
 }
 
 export async function postComplaint(
-  data: ComplaintInput,
+  data: Complaint,
 ): Promise<ComplaintResponse> {
   return (await http.post("/account/lodge-complaint", data)).data;
 }

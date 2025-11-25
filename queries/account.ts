@@ -13,7 +13,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import {
-  ComplaintInput,
+  Complaint,
   ComplaintResponse,
   EditProfileInput,
   EditProfileResponse,
@@ -47,7 +47,6 @@ export function useEditProfile(
   });
 }
 
-//////////////////////////////////////////////////////////////
 {
   /*Change Password */
 }
@@ -75,10 +74,10 @@ export function useNewPassword(
   /*Complaint */
 }
 export function useComplaintMessage(
-  options?: UseMutationOptions<ComplaintResponse, any, ComplaintInput, unknown>,
+  options?: UseMutationOptions<ComplaintResponse, any, Complaint, unknown>,
 ) {
   return useMutation({
-    mutationFn: (data: ComplaintInput) => postComplaint(data),
+    mutationFn: (data: Complaint) => postComplaint(data),
     meta: {
       invalidatesQuery: profileKeys.edit(),
       successMessage: "Complaint sent!",
