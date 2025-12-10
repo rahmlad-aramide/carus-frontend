@@ -15,6 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRedeemAirtime, useRedeemCash } from "@/queries/redeem";
+import { Loader2 } from "lucide-react";
 
 const networks = [
   {
@@ -106,8 +108,25 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
     },
   });
 
-  const onSubmit = (values: RedeemPointsSchema) => {
-    console.log("Submitted Data:", values);
+  const { mutate: redeemAirtime, isPending: isAirtimePending } =
+    useRedeemAirtime();
+
+  const handleAirtimeSubmit = (values: RedeemPointsSchema) => {
+    redeemAirtime({
+      network: selected,
+      points: Number(values.amount),
+      phoneNumber: values.phone,
+    });
+  };
+
+  const { mutate: redeemCash, isPending: isCashPending } = useRedeemCash();
+  const handleCashSubmit = (values: RedeemPointsSchema) => {
+    redeemCash({
+      points: Number(values.amount),
+      accountNumber: values.accountNo,
+      bankName: values.bank,
+      accountName: values.accountName,
+    });
   };
 
   return (
@@ -154,6 +173,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                   : "bg-white text-black"
               }`}
             >
+              {" "}
               Convert to Airtime
             </Button>
 
@@ -189,7 +209,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
               <Form {...form}>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  onSubmit={form.handleSubmit(handleAirtimeSubmit)}
                   className="space-y-4 mt-5"
                 >
                   {/*Amount */}
@@ -233,7 +253,10 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                       </FormItem>
                     )}
                   />
-                  <Button className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7">
+                  <Button
+                    className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
+                    disabled={isAirtimePending}
+                  >
                     <Image
                       src="/convertshape-2.svg"
                       alt=""
@@ -241,7 +264,14 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                       height={16}
                       className="object-contain w-4 h-4 lg:w-5 lg:h-5"
                     />
-                    Redeem Points
+                    {isAirtimePending ? (
+                      <>
+                        <Loader2 className="animate-spin mr-2" />
+                        <span>Redeeming...</span>
+                      </>
+                    ) : (
+                      "Redeem Points"
+                    )}
                   </Button>
                 </form>
               </Form>
@@ -254,7 +284,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
               <Form {...form}>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  onSubmit={form.handleSubmit(handleCashSubmit)}
                   className="space-y-4 mt-5"
                 >
                   {/*Amount */}
@@ -360,7 +390,10 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                     )}
                   />
 
-                  <Button className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7">
+                  <Button
+                    className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
+                    disabled={isCashPending}
+                  >
                     <Image
                       src="/convertshape-2.svg"
                       alt=""
@@ -368,7 +401,14 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                       height={16}
                       className="object-contain w-4 h-4 lg:w-5 lg:h-5"
                     />
-                    Redeem Points
+                    {isCashPending ? (
+                      <>
+                        <Loader2 className="animate-spin mr-2" />
+                        <span>Redeeming...</span>
+                      </>
+                    ) : (
+                      "Redeem Points"
+                    )}
                   </Button>
                 </form>
               </Form>

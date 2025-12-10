@@ -6,6 +6,17 @@ interface ImageContainerProps {
   isPending?: boolean;
 }
 
+function getSafeImage(image?: string) {
+  if (!image) return "/avatar.png"; // fallback
+  if (image.startsWith("/")) return image; // local path
+  try {
+    new URL(image); // absolute URL check
+    return image;
+  } catch {
+    return "/avatar.png"; // fallback if invalid
+  }
+}
+
 export default function ImageContainer({
   image,
   size = 56,
@@ -22,7 +33,7 @@ export default function ImageContainer({
         ></div>
       ) : (
         <Image
-          src={image || "/avatar.png"}
+          src={getSafeImage(image)}
           alt="Profile"
           width={size}
           height={size}

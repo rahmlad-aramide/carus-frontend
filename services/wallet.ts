@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { WalletResponse } from "@/types/wallet";
 import http from "./http";
+import { WalletResponse } from "@/types/wallet";
 
 export async function getWallet(): Promise<WalletResponse> {
   return (await http.get("/wallet")).data;

@@ -86,3 +86,17 @@ export enum CityEnum {
 export interface AccountResponse extends GeneralResponse {
   data: Account;
 }
+
+export interface NewPasswordInput {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface Complaint {
+  message: string;
+}
+
+export interface ComplaintResponse extends GeneralResponse {
+  data: Complaint;
+}
