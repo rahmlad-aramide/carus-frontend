@@ -37,10 +37,6 @@ export default function HelpandComplaints() {
     complaintMutation.mutate(values, {
       onSuccess: () => {
         form.reset();
-        console.log("Your complaint has been received!");
-      },
-      onError: () => {
-        console.log("Failed to send complaint. Please try again.");
       },
     });
   };

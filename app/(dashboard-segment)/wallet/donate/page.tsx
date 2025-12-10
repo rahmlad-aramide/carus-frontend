@@ -66,7 +66,9 @@ export default function Donate() {
         ) : (
           campaigns.map((campaign) => {
             const progress =
-              (campaign.collected_amount / campaign.goal_amount) * 100;
+              campaign.goal_amount > 0
+                ? (campaign.collected_amount / campaign.goal_amount) * 100
+                : 0;
 
             return (
               <div

@@ -18,7 +18,10 @@ export default function DonateEarnings({
   const [customAmount, setCustomAmount] = useState<string>("");
   const contributeMutation = useContributeToCampaign();
 
-  const progress = (campaign.collected_amount / campaign.goal_amount) * 100;
+  const progress =
+    campaign.goal_amount > 0
+      ? (campaign.collected_amount / campaign.goal_amount) * 100
+      : 0;
 
   const handleDonate = () => {
     const amount = selected || parseInt(customAmount);
@@ -111,7 +114,7 @@ export default function DonateEarnings({
                         <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
                           <Image
                             src="/profile-2user.svg"
-                            alt=""
+                            alt="profile-icon"
                             width={10}
                             height={10}
                             className="object-contain lg:w-3 lg:h-3"
@@ -129,7 +132,7 @@ export default function DonateEarnings({
                         <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
                           <Image
                             src="/clock.svg"
-                            alt=""
+                            alt="clock-icon"
                             width={10}
                             height={10}
                             className="object-contain lg:w-3 lg:h-3"
@@ -148,7 +151,7 @@ export default function DonateEarnings({
                 <div className="bg-white rounded-[8px] p-3 flex items-center justify-center">
                   <Image
                     src="/pngwing.svg"
-                    alt=""
+                    alt="png-icon"
                     width={35}
                     height={35}
                     className="object-contain"
@@ -215,7 +218,7 @@ export default function DonateEarnings({
                 >
                   <Image
                     src="/gift2.png"
-                    alt=""
+                    alt="gift-icon"
                     width={16}
                     height={16}
                     className="object-contain "

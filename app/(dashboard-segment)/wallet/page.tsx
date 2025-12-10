@@ -153,7 +153,9 @@ export default function Wallet() {
             <div className="mt-4 grid grid-cols-1 gap-4">
               {topCampaigns.map((campaign) => {
                 const progress =
-                  (campaign.collected_amount / campaign.goal_amount) * 100;
+                  campaign.goal_amount > 0
+                    ? (campaign.collected_amount / campaign.goal_amount) * 100
+                    : 0;
 
                 return (
                   <div
