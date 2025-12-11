@@ -10,11 +10,6 @@ const nextConfig: NextConfig = {
         hostname: "robohash.org",
         pathname: "/**",
       },
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-        pathname: "/**",
-      },
     ],
   },
 };
