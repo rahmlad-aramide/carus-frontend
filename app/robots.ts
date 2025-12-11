@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/private/",
     },
-    sitemap: "https://carus-frontend.vercel.app/sitemap.xml",
+    sitemap: "https://carus.com.ng/sitemap.xml",
   };
 }

@@ -23,9 +23,16 @@ export function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith(route),
   );
 
+  // Redirect the user to the coming soon page
+  // It's still a coming soon
+  // if (request.nextUrl.pathname !== '/') {
+  //   return NextResponse.redirect(new URL("/coming-soon", request.url));
+  // }
+
   if (isProtected && !access_token && !refresh_token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
+
   return NextResponse.next();
 }
 

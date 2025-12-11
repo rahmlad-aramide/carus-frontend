@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 export const TopNav = () => {
   const { data, isPending, isError, error } = useGetProfile();
+  console.log("data", data);
   const pathname = usePathname();
   const titles: Record<string, string> = {
     "/schedule": "Schedule",
@@ -55,7 +56,7 @@ export const TopNav = () => {
 
         <div className="hidden md:flex items-center gap-5">
           <NotificationBell />
-          <ImageContainer image={data?.data.avatar} isPending={isPending} />
+          <ImageContainer image={data?.data?.avatar} isPending={isPending} />
         </div>
       </div>
     </header>

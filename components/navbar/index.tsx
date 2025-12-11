@@ -12,14 +12,16 @@ export default function NavBar() {
       <div className="hidden md:flex justify-between items-center px-10 mt-5 max-w-screen-xl mx-auto">
         {/* Logo */}
         <div className="flex items-center gap-x-30 md:gap-x-20 lg:gap-x-30 xl:gap-x-40">
-          <Image
-            aria-hidden
-            src="/logo.png"
-            alt="Carus Logo"
-            width={235}
-            height={64}
-            className="w-[117px] h-[32px]"
-          />
+          <Link href="/" className="flex">
+            <Image
+              aria-hidden
+              src="/logo.png"
+              alt="Carus Logo"
+              width={235}
+              height={64}
+              className="w-[117px] h-[32px]"
+            />
+          </Link>
 
           {/* nav links */}
           <nav className="hidden md:flex items-center space-x-20 md:space-x-10 lg:space-x-20 xl:space-x-30">
