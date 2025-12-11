@@ -42,7 +42,7 @@ export default function DonateEarnings({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/10 flex items-center justify-center">
-      <div className="relative bg-white shadow-md w-[90%] max-w-md md:max-w-lg lg:max-w-3xl md:rounded-[20px] p-5 lg:p-8 xl:px-10 xl:py-7 max-h-screen overflow-y-auto md:max-h-none md:overflow-visible">
+      <div className="relative bg-white shadow-md w-[90%] max-w-md max-h-screen overflow-y-scroll md:rounded-[20px] p-5 lg:p-8 xl:px-10 xl:py-7">
         <div className="flex items-center gap-3 mb-7 lg:mb-2">
           <button
             onClick={onBack}
@@ -57,13 +57,13 @@ export default function DonateEarnings({
         {/* Close Button */}
         <button
           onClick={onBack}
-          className="flex items-center justify-center md:block absolute top-3 right-3 text-[#FF6161] bg-white text-2xl cursor-pointer hover:bg-[#FF6161] hover:text-white rounded-full transition w-8 h-8"
+          className="flex items-center justify-center md:block absolute top-3 right-2 text-[#FF6161] bg-white text-xl cursor-pointer"
           aria-label="Close"
         >
           <X size={20} />
         </button>
 
-        <div className="lg:grid grid-cols-2 gap-10">
+        <div className="">
           <div>
             <div className="rounded-[10px] xl:rounded-[18px]">
               <div className="w-full lg:mt-3">
@@ -85,7 +85,7 @@ export default function DonateEarnings({
                       Raised
                       <br />
                       <span className="text-[11px] lg:text-sm text-grey-100 font-regular font-bold">
-                        ₦{campaign.collected_amount.toLocaleString()}
+                        ₦{(campaign.collected_amount ?? 0).toLocaleString()}
                       </span>
                     </p>
 
@@ -94,7 +94,7 @@ export default function DonateEarnings({
                       Target
                       <br />
                       <span className="text-[11px] lg:text-sm text-grey-100 font-regular font-bold">
-                        ₦{campaign.goal_amount.toLocaleString()}
+                        ₦{(campaign.goal_amount ?? 0).toLocaleString()}
                       </span>
                     </p>
                   </div>
@@ -178,8 +178,8 @@ export default function DonateEarnings({
 
             <div>
               <div>
-                <p className="text-sm md:text-base">Select Point</p>
-                <div className="grid grid-cols-3 gap-y-5 gap-x-5 lg:gap-y-8 mt-3 mb-10">
+                <p className="text-sm md:text-base mt-5">Select Point</p>
+                <div className="grid grid-cols-3 gap-y-3 gap-x-3 lg:gap-y-8 mt-3 mb-10">
                   {[1000, 2000, 3000, 4000, 5000, 6000].map((amount) => (
                     <button
                       key={amount}
@@ -187,7 +187,7 @@ export default function DonateEarnings({
                         setSelected(amount);
                         setCustomAmount("");
                       }}
-                      className={`rounded-[10px] w-22 lg:w-25 py-5 lg:py-6 border  ${selected === amount ? "border-primary-50 text-primary-60 font-bold" : "border-grey-10 text-grey-40"}`}
+                      className={`rounded-[10px] w-22 lg:w-27 py-5 lg:py-6 border  ${selected === amount ? "border-primary-50 text-primary-60 font-bold" : "border-grey-10 text-grey-40"}`}
                     >
                       {amount}
                     </button>
