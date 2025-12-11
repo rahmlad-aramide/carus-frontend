@@ -178,7 +178,7 @@ export default function Wallet() {
                           {campaign.title}
                         </p>
                         <p className="text-[9px] lg:text-sm xl:text-base font-bold">
-                          ₦{campaign.collected_amount.toLocaleString()}{" "}
+                          ₦{(campaign.collected_amount ?? 0).toLocaleString()}{" "}
                           <span className="text-grey-40 font-regular">
                             Raised
                           </span>
