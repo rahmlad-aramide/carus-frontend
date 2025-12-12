@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -17,6 +18,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRedeemAirtime, useRedeemCash } from "@/queries/redeem";
 import { Loader2 } from "lucide-react";
+import { useWallet } from "@/queries/wallet";
+import { usePointToNaira } from "@/queries/configuration";
+import { toast } from "sonner";
 
 const networks = [
   {
@@ -108,25 +112,52 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
     },
   });
 
+  const { data: wallet } = useWallet();
+  const { data: rate } = usePointToNaira();
+  const conversionRate = rate?.data?.value ?? 0;
+  const userPoints = Number(wallet?.data?.points ?? 0);
+
   const { mutate: redeemAirtime, isPending: isAirtimePending } =
     useRedeemAirtime();
+  const { mutate: redeemCash, isPending: isCashPending } = useRedeemCash();
 
   const handleAirtimeSubmit = (values: RedeemPointsSchema) => {
-    redeemAirtime({
-      network: selected,
-      points: Number(values.amount),
-      phoneNumber: values.phone,
-    });
+    if (!selected) return toast("Please select a network");
+
+    redeemAirtime(
+      {
+        network: selected.toLowerCase(),
+        points: Number(values.amount),
+        phoneNumber: values.phone,
+      },
+      {
+        onSuccess: (res) =>
+          toast(res.message || "Airtime redeemed successfully!"),
+        onError: (err: any) =>
+          toast(err?.response?.data?.message || "Failed to redeem airtime"),
+      },
+    );
   };
 
-  const { mutate: redeemCash, isPending: isCashPending } = useRedeemCash();
   const handleCashSubmit = (values: RedeemPointsSchema) => {
-    redeemCash({
-      points: Number(values.amount),
-      accountNumber: values.accountNo,
-      bankName: values.bank,
-      accountName: values.accountName,
-    });
+    if (!values.bank || !values.accountNo || !values.accountName) {
+      toast("Please fill in all bank details");
+      return;
+    }
+
+    redeemCash(
+      {
+        points: Number(values.amount),
+        accountNumber: values.accountNo,
+        bankName: values.bank,
+        accountName: values.accountName,
+      },
+      {
+        onSuccess: (res) => toast(res.message || "Cash redeemed successfully!"),
+        onError: (err: any) =>
+          toast(err?.response?.data?.message || "Failed to redeem cash"),
+      },
+    );
   };
 
   return (
@@ -148,7 +179,9 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
           <div className="bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] w-full rounded-[22px] px-6 py-4 mt-3">
             <div className="flex justify-between items-end">
               <p className="text-primary-80 text-[11px]">
-                100 Points is equivalent to 5 Naira
+                {conversionRate
+                  ? `${conversionRate} Points = ₦1`
+                  : "Loading rate..."}
               </p>
 
               <div className="flex flex-col items-end justify-between">
@@ -156,7 +189,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                   Points
                 </span>
                 <span className="text-xl lg:text-[28px] text-primary-80 font-black leading-snug">
-                  190
+                  {userPoints}
                 </span>
               </div>
             </div>
@@ -219,7 +252,10 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm text-grey-90 flex items-center justify-between">
-                          Amount <span className="text-[9px]">190 points</span>
+                          Amount{" "}
+                          <span className="text-[9px]">
+                            {userPoints} points
+                          </span>
                         </FormLabel>
                         <FormControl>
                           <Input

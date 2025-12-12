@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { usePointToNaira } from "@/queries/configuration";
+import { useWallet } from "@/queries/wallet";
+import { postRedeemCash } from "@/services/redeem";
+import { toast } from "sonner";
 
 const convertPointsSchema = z.object({
   amount: z.string({ message: "Enter a valid amount" }),
@@ -37,9 +43,44 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
       phone: "",
     },
   });
+  const [isPending, setIsPending] = useState(false);
+  const { data: pointRate, isLoading: rateLoading } = usePointToNaira();
+  const { data: wallet, isLoading: walletLoading } = useWallet();
 
-  const onSubmit = (values: ConvertPointsSchema) => {
-    console.log("Submitted Data:", values);
+  const conversionRate = pointRate?.data;
+  const userPoints = Number(wallet?.data?.points ?? 0);
+
+  const amount = form.watch("amount");
+  const conversionValue = Number(conversionRate?.value ?? 1);
+  const calculatedPoints = amount ? Number(amount) / conversionValue : 0;
+
+  const onSubmit = async (values: ConvertPointsSchema) => {
+    if (!conversionRate) return;
+
+    const pointsToRedeem = calculatedPoints;
+
+    try {
+      setIsPending(true);
+
+      const response = await postRedeemCash({
+        points: Math.floor(pointsToRedeem),
+        accountNumber: values.phone,
+        bankName: "Wallet Conversion",
+        accountName: values.email,
+      });
+
+      if (response.status_code === 200) {
+        toast(response.message || "Points redeemed successfully!");
+        form.reset();
+        onBack();
+      } else {
+        toast(response.message || "Failed to redeem points");
+      }
+    } catch (error: any) {
+      toast(error?.response?.data?.message || "An error occurred");
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -60,7 +101,9 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
         <div className="bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] w-full rounded-[22px] px-6 py-4 overflow-hidden mt-5">
           <div className="flex justify-between items-end">
             <p className="text-primary-80 text-[11px]">
-              100 Points is equivalent to 5 Naira
+              {rateLoading
+                ? "Loading rate..."
+                : `1 Point is equivalent to ₦${conversionValue}`}
             </p>
 
             <div className="flex flex-col items-end justify-between">
@@ -68,7 +111,7 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
                 Points
               </span>
               <span className="text-xl lg:text-[28px] text-primary-80 font-black leading-snug">
-                190
+                {walletLoading ? "..." : userPoints}
               </span>
             </div>
           </div>
@@ -87,7 +130,10 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm text-grey-90 flex items-center justify-between">
-                    Amount <span className="text-[9px]">190 points</span>
+                    Amount{" "}
+                    <span className="text-[9px]">
+                      {calculatedPoints.toFixed(2)} points
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -140,7 +186,26 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
                 </FormItem>
               )}
             />
-            <Button className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7">
+
+            <Button
+              type="submit"
+              disabled={
+                calculatedPoints <= 0 ||
+                calculatedPoints > userPoints ||
+                rateLoading ||
+                walletLoading ||
+                isPending
+              }
+              className={`py-6 w-full text-sm text-white rounded-[10px] flex items-center justify-center gap-2 mt-7 ${
+                calculatedPoints <= 0 ||
+                calculatedPoints > userPoints ||
+                rateLoading ||
+                walletLoading ||
+                isPending
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[rgb(2,105,55)]"
+              }`}
+            >
               <Image
                 src="/convertshape-2.svg"
                 alt=""
@@ -148,7 +213,7 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
                 height={16}
                 className="object-contain w-4 h-4 lg:w-5 lg:h-5"
               />
-              Convert Points
+              {isPending ? "Processing..." : "Convert Points"}
             </Button>
           </form>
         </Form>

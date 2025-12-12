@@ -1,27 +1,28 @@
-import {
-  getConfigurations,
-  getLocationConfig,
-  getPointToNairaRate,
-} from "@/services/configuration";
+import { getPointToNairaRate } from "@/services/configuration";
+
 import { useQuery } from "@tanstack/react-query";
 
-export function useConfigurations() {
-  return useQuery({
-    queryKey: ["configurations"],
-    queryFn: getConfigurations,
-  });
-}
+// export function useConfigurations() {
+//   return useQuery({
+//     queryKey: ["configurations"],
+//     queryFn: getConfigurations,
+//   });
+// }
 
 export function usePointToNaira() {
   return useQuery({
     queryKey: ["pointToNaira"],
-    queryFn: getPointToNairaRate,
+    queryFn: async () => {
+      const res = await getPointToNairaRate();
+      console.log("POINT RATE RESPONSE:", res);
+      return res;
+    },
   });
 }
 
-export function useLocationConfig() {
-  return useQuery({
-    queryKey: ["locationConfig"],
-    queryFn: getLocationConfig,
-  });
-}
+// export function useLocationConfig() {
+//   return useQuery({
+//     queryKey: ["locationConfig"],
+//     queryFn: getLocationConfig,
+//   });
+// }

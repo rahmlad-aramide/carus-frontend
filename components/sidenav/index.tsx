@@ -76,7 +76,7 @@ export default function SideNav() {
                   } ${isProfile ? "md:hidden" : ""}`}
                 >
                   {isActive ? (
-                    <Icon size={24} color="#026937" variant="Bold" />
+                    <Icon size={24} color="#026937" variant="Outline" />
                   ) : (
                     <Icon size={24} color="#6D6D6D" />
                   )}{" "}
