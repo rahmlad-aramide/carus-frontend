@@ -7,7 +7,7 @@ export interface GeneralResponse {
 export interface PointToNairaConfig {
   id: number;
   type: string;
-  value: string; // it comes as a string from backend
+  value: string;
 }
 
 export interface PointToNairaResponse extends GeneralResponse {

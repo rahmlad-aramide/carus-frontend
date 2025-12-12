@@ -4,11 +4,12 @@ export interface Donation {
   id: number;
   title: string;
   description: string;
-  goal_amount: number;
+  target: number;
   collected_amount: number;
   days_left?: number;
   image?: string;
-  donations_count?: number;
+  amountRaised: number;
+  numberOfDonors: number;
 }
 
 export interface DonationResponse extends GeneralResponse {
@@ -18,4 +19,16 @@ export interface DonationResponse extends GeneralResponse {
 export interface ContributionRequest {
   campaignId: number;
   amount: number;
+}
+
+export interface ContributionResponse {
+  status: number;
+  message: string;
+  data: {
+    id: string;
+    amount: number;
+    donation: Donation;
+    createdAt: string;
+    updatedAt: string;
+  };
 }

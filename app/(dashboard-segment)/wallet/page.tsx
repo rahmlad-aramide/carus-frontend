@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import History from "@/components/transaction-history";
-import DonateEarnings from "@/components/donate-earnings";
 import ConvertPoints from "@/components/convert-points";
 import RedeemPoints from "@/components/redeem-points";
 import { useDonationCampaigns } from "@/queries/donation";
@@ -15,22 +14,13 @@ import { Empty } from "@/components/empty";
 import { useWallet } from "@/queries/wallet";
 
 export default function Wallet() {
-  const [showDonateEarnings, setShowDonateEarnings] = useState(false);
   const [showConvertPoints, setShowConvertPoints] = useState(false);
   const [showRedeemPoints, setShowRedeemPoints] = useState(false);
-  const [selectedCampaign, setSelectedCampaign] = useState<Donation | null>(
-    null,
-  );
 
   const { data: wallet, isLoading: loadingWallet } = useWallet();
   const { data, isLoading, isError } = useDonationCampaigns();
   const campaigns: Donation[] = data?.data || [];
   const topCampaigns = campaigns.slice(0, 3);
-
-  const handleDonateClick = (campaign: Donation) => {
-    setSelectedCampaign(campaign);
-    setShowDonateEarnings(true);
-  };
 
   if (loadingWallet) {
     return <LoadingComponent description="Fetching wallet..." />;
@@ -50,13 +40,6 @@ export default function Wallet() {
               <br />{" "}
               <span className="text-[11px] lg:text-2xl font-black">
                 {wallet?.data?.points ?? 0}
-              </span>
-            </p>
-            <p className="text-[9px] lg:[11px] lg:text-sm text-primary-80 text-right">
-              User ID
-              <br />{" "}
-              <span className="text-[11px] lg:text-sm xl:text-base font-bold">
-                {wallet?.data?.id ?? "---"}
               </span>
             </p>
           </div>
@@ -152,10 +135,10 @@ export default function Wallet() {
           {!isLoading && !isError && topCampaigns.length > 0 && (
             <div className="mt-4 grid grid-cols-1 gap-4">
               {topCampaigns.map((campaign) => {
-                const progress =
-                  campaign.goal_amount > 0
-                    ? (campaign.collected_amount / campaign.goal_amount) * 100
-                    : 0;
+                const target = Number(campaign.target) || 0;
+                const raised = Number(campaign.amountRaised) || 0;
+
+                const progress = target > 0 ? (raised / target) * 100 : 0;
 
                 return (
                   <div
@@ -163,43 +146,25 @@ export default function Wallet() {
                     className="bg-[rgb(243,243,243)] rounded-[10px] xl:rounded-[18px] px-4 py-5 xl:py-6 mb-4 lg:mb-6 w-full xl:w-[560px]"
                   >
                     <div className="flex items-center gap-4 lg:gap-5 xl:gap-8">
-                      <div>
-                        <Image
-                          src={campaign.image || "/Frame91.svg"}
-                          alt={campaign.title}
-                          width={96}
-                          height={96}
-                          className="object-cover rounded-[10px] xl:w-[152px] xl:h-[152px]"
-                        />
-                      </div>
+                      <Image
+                        src={campaign.image || "/Frame91.svg"}
+                        alt={campaign.title}
+                        width={96}
+                        height={96}
+                        className="object-cover rounded-[10px] xl:w-[152px] xl:h-[152px]"
+                      />
 
                       <div className="flex-1">
                         <p className="text-sm lg:text-base xl:text-xl font-bold lg:leading-loose">
                           {campaign.title}
                         </p>
+
                         <p className="text-[9px] lg:text-sm xl:text-base font-bold">
-                          ₦{(campaign.collected_amount ?? 0).toLocaleString()}{" "}
+                          ₦{raised.toLocaleString()}{" "}
                           <span className="text-grey-40 font-regular">
                             Raised
                           </span>
                         </p>
-
-                        {campaign.days_left && (
-                          <div className="flex items-center gap-1 lg:gap-4 mt-2 lg:mt-5">
-                            <div className="bg-[rgba(232,232,232)] w-4 h-4 lg:w-6 lg:h-6 rounded-full flex items-center justify-center">
-                              <Image
-                                src="/clock.png"
-                                alt="clock-icon"
-                                width={10}
-                                height={10}
-                                className="object-contain lg:w-3 lg:h-3"
-                              />
-                            </div>
-                            <p className="text-[9px] lg:text-sm">
-                              {campaign.days_left} Days left
-                            </p>
-                          </div>
-                        )}
 
                         <div className="flex items-center gap-5 mt-2 w-full">
                           <div className="w-full h-[4px] bg-primary-10 rounded-[20px]">
@@ -216,8 +181,8 @@ export default function Wallet() {
                     </div>
 
                     <div className="flex justify-end mt-1 lg:mt-1">
-                      <div
-                        onClick={() => handleDonateClick(campaign)}
+                      <Link
+                        href={`/wallet/donate-earnings/${campaign.id}`}
                         className="cursor-pointer bg-primary-60 rounded-[10px] w-[174px] xl:gap-2 h-10 flex items-center justify-center gap-2 hover:bg-primary-50"
                       >
                         <Image
@@ -230,7 +195,7 @@ export default function Wallet() {
                         <span className="text-white text-[13px]">
                           Donate Earnings
                         </span>
-                      </div>
+                      </Link>
                     </div>
                   </div>
                 );
@@ -242,12 +207,6 @@ export default function Wallet() {
             <History />
           </div>
 
-          {showDonateEarnings && selectedCampaign && (
-            <DonateEarnings
-              campaign={selectedCampaign}
-              onBack={() => setShowDonateEarnings(false)}
-            />
-          )}
           {showConvertPoints && (
             <ConvertPoints onBack={() => setShowConvertPoints(false)} />
           )}
