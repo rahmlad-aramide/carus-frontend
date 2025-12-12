@@ -5,7 +5,6 @@ export interface Donation {
   title: string;
   description: string;
   target: number;
-  collected_amount: number;
   days_left?: number;
   image?: string;
   amountRaised: number;

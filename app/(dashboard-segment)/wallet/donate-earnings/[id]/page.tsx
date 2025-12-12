@@ -11,11 +11,14 @@ import {
 } from "@/queries/donation";
 import { ArrowLeft } from "lucide-react";
 import { LoadingComponent } from "@/components/loading";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function DonatePage() {
+  const DONATION_PRESETS = [1000, 2000, 3000, 4000, 5000, 6000];
+
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { id } = useParams();
-  console.log("Campaign ID from params:", id);
   const campaignId = id as string;
 
   const { data, isLoading, isError } = useDonationCampaign(campaignId);
@@ -57,6 +60,11 @@ export default function DonatePage() {
       { campaignId: campaign.id, amount },
       {
         onSuccess: (response: ContributionResponse) => {
+          queryClient.invalidateQueries({
+            queryKey: ["donation-campaign", campaignId],
+          });
+          queryClient.invalidateQueries({ queryKey: ["donation-campaigns"] });
+
           setCampaign((prev) =>
             prev
               ? {
@@ -158,7 +166,7 @@ export default function DonatePage() {
             <p className="text-sm md:text-base mt-5 lg:mt-0">Select Point</p>
 
             <div className="grid grid-cols-3 gap-3 lg:gap-y-8 mt-3 mb-10">
-              {[1000, 2000, 3000, 4000, 5000, 6000].map((amount) => (
+              {DONATION_PRESETS.map((amount) => (
                 <button
                   key={amount}
                   onClick={() => {

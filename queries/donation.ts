@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import {
   contributeToCampaign,
   getDonationCampaign,
@@ -29,9 +27,13 @@ export const useDonationCampaign = (id: string) =>
 
 //Contribute to campaign
 export function useContributeToCampaign(
-  options?: UseMutationOptions<ContributionResponse, any, ContributionRequest>,
+  options?: UseMutationOptions<
+    ContributionResponse,
+    Error,
+    ContributionRequest
+  >,
 ) {
-  return useMutation<ContributionResponse, any, ContributionRequest>({
+  return useMutation<ContributionResponse, Error, ContributionRequest>({
     mutationFn: ({ campaignId, amount }) =>
       contributeToCampaign(campaignId, amount),
 
