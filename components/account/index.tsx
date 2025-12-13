@@ -63,7 +63,7 @@ export default function Account() {
     <div className="flex items-center justify-center px-5 md:px-15 mt-5 bg-[#F3F3F3] rounded-[10px] pt-5 pb-20">
       <div className="w-full max-w-md mx-auto">
         <p className="text-base lg:text-xl font-bold text-grey-90 mb-7">
-          Change your Password
+          Change Your Password
         </p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

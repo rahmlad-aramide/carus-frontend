@@ -88,7 +88,7 @@ export default function DonatePage() {
       <div className="w-full lg:max-w-5xl mt-22 lg:mt-30 lg:px-3 border rounded-[10px] lg:rounded-[20px] p-2 lg:p-8">
         {isLoading ? (
           <div className="col-span-full mt-25 flex flex-col justify-center items-center p-2 space-y-3 h-[250px] text-center py-10">
-            <LoadingComponent description="Fetching wallet..." />
+            <LoadingComponent description="Loading campaign..." />
           </div>
         ) : isError || !campaign ? (
           <div className="flex min-h-[250px] justify-center items-center text-red-500 text-center rounded-[10px] border border-grey-10 p-4">
