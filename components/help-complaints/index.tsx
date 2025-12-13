@@ -44,7 +44,7 @@ export default function HelpandComplaints() {
   return (
     <div className="px-7 md:px-15 mt-5 bg-[#F3F3F3] rounded-[10px] pt-5 pb-20 min-h-screen">
       <div className="w-full max-w-lg">
-        <p className="text-base md:text-[24px] text-grey-90 font-bold leading-loose pb-5">
+        <p className="text-base lg:text-xl text-grey-90 font-bold leading-loose pb-5">
           How can we help you?
         </p>
 
@@ -55,7 +55,9 @@ export default function HelpandComplaints() {
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your complaint or message</FormLabel>
+                  <FormLabel className="text-sm lg:text-base">
+                    Your complaint or message
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Your text here..."

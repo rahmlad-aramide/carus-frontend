@@ -44,14 +44,16 @@ export default function SideNav() {
       >
         <div>
           <div className="pt-8 md:pt-10 px-5 md:px-12">
-            <Image
-              aria-hidden
-              src="/logo.png"
-              alt="Carus Logo"
-              width={235}
-              height={64}
-              className="w-[88px] md:w-[117px] h-[24px] md:h-[32px]"
-            />
+            <Link href="/">
+              <Image
+                aria-hidden
+                src="/logo.png"
+                alt="Carus Logo"
+                width={235}
+                height={64}
+                className="w-[88px] md:w-[117px] h-[24px] md:h-[32px]"
+              />
+            </Link>
           </div>
 
           <nav className="flex flex-col justify-center space-y-8 mt-8 md:mt-15 pl-4 pr-2 md:px-12">
