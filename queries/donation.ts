@@ -3,8 +3,12 @@ import {
   getDonationCampaign,
   getDonationCampaigns,
 } from "@/services/donation";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { ContributionRequest, ContributionResponse } from "@/types/donation";
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+} from "@tanstack/react-query";
 
 //Get List of campaigns
 export const useDonationCampaigns = () =>
@@ -14,7 +18,7 @@ export const useDonationCampaigns = () =>
   });
 
 //Get a campaign
-export const useDonationCampaign = (id: number) =>
+export const useDonationCampaign = (id: string) =>
   useQuery({
     queryKey: ["donation-campaign", id],
     queryFn: () => getDonationCampaign(id),
@@ -22,26 +26,23 @@ export const useDonationCampaign = (id: number) =>
   });
 
 //Contribute to campaign
-export const useContributeToCampaign = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      campaignId,
-      amount,
-    }: {
-      campaignId: number;
-      amount: number;
-    }) => contributeToCampaign(campaignId, amount),
-    onSuccess: (data) => {
-      toast.success("Donation successful! Thank you for your contribution.");
-      queryClient.invalidateQueries({ queryKey: ["donation-campaigns"] });
-      queryClient.invalidateQueries({ queryKey: ["donation-campaign"] });
+export function useContributeToCampaign(
+  options?: UseMutationOptions<
+    ContributionResponse,
+    Error,
+    ContributionRequest
+  >,
+) {
+  return useMutation<ContributionResponse, Error, ContributionRequest>({
+    mutationFn: ({ campaignId, amount }) =>
+      contributeToCampaign(campaignId, amount),
+
+    meta: {
+      successMessage: "Donation successful!",
+      additionalDescription: "Thank you for your contribution.",
+      errorMessage: "Failed to process donation. Please try again.",
     },
-    onError: (error) => {
-      toast.error(
-        error?.response?.data?.message ||
-          "Failed to process donation. Please try again.",
-      );
-    },
+
+    ...options,
   });
-};
+}

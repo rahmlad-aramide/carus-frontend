@@ -1,4 +1,5 @@
 "use client";
+
 import { useGetProfile } from "@/queries/account";
 import { usePathname } from "next/navigation";
 import NotificationBell from "@/components/notification-bell";
@@ -7,19 +8,23 @@ import { toast } from "sonner";
 
 export const TopNav = () => {
   const { data, isPending, isError, error } = useGetProfile();
-  console.log("data", data);
   const pathname = usePathname();
-  const titles: Record<string, string> = {
-    "/schedule": "Schedule",
-    "/wallet": "Wallet",
-    "/wallet/donate": "Donate",
-    "/settings": "Settings",
+
+  // Function to handle dynamic routes
+  const getTitle = (path: string) => {
+    if (path.startsWith("/schedule")) return "Schedule";
+    if (path.startsWith("/wallet/donate-earnings")) return "Donate Earnings";
+    if (path.startsWith("/wallet/donate")) return "Donate";
+    if (path.startsWith("/wallet")) return "Wallet";
+    if (path.startsWith("/settings")) return "Settings";
+    return null;
   };
-  const title = titles[pathname] || null;
+
+  const title = getTitle(pathname || "");
 
   if (isError) {
     toast.error("Error getting your details", {
-      description: error.response?.data?.message || error.message,
+      description: error?.response?.data?.message || error?.message,
     });
   }
 

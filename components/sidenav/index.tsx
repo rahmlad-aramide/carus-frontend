@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarTick, Home, Setting2, Wallet } from "iconsax-react";
-import { FaUser } from "react-icons/fa";
 import { httpLogout } from "@/services/http";
 
 export default function SideNav() {
@@ -17,7 +16,6 @@ export default function SideNav() {
     { href: "/schedule", label: "Schedule", icon: CalendarTick },
     { href: "/wallet", label: "Wallet", icon: Wallet },
     { href: "/settings", label: "Settings", icon: Setting2 },
-    { href: "/profile", label: "Profile", icon: FaUser },
   ];
 
   return (
@@ -58,8 +56,6 @@ export default function SideNav() {
 
           <nav className="flex flex-col justify-center space-y-8 mt-8 md:mt-15 pl-4 pr-2 md:px-12">
             {navLinks.map(({ href, label, icon: Icon }) => {
-              const isProfile = label === "Profile";
-
               const isActive =
                 pathname === href || pathname.startsWith(`${href}`);
 
@@ -73,7 +69,7 @@ export default function SideNav() {
                     isActive
                       ? "bg-white text-primary-60 cursor-default"
                       : "text-grey-40 hover:bg-white hover:text-primary-40"
-                  } ${isProfile ? "md:hidden" : ""}`}
+                  }`}
                 >
                   {isActive ? (
                     <Icon size={24} color="#026937" variant="Outline" />

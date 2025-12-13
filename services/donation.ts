@@ -1,5 +1,9 @@
 import http from "./http";
-import { DonationResponse } from "@/types/donation";
+import {
+  ContributionResponse,
+  Donation,
+  DonationResponse,
+} from "@/types/donation";
 
 // Get all campaigns
 export async function getDonationCampaigns(): Promise<DonationResponse> {
@@ -9,8 +13,8 @@ export async function getDonationCampaigns(): Promise<DonationResponse> {
 
 // Get a single campaign by ID
 export async function getDonationCampaign(
-  id: number,
-): Promise<DonationResponse> {
+  id: string,
+): Promise<{ data: Donation }> {
   const res = await http.get(`/donation/campaigns/${id}`);
   return res.data;
 }
@@ -19,7 +23,7 @@ export async function getDonationCampaign(
 export async function contributeToCampaign(
   campaignId: number,
   amount: number,
-): Promise<DonationResponse> {
+): Promise<ContributionResponse> {
   const res = await http.post("/donation/contribute", {
     campaignId,
     amount,
