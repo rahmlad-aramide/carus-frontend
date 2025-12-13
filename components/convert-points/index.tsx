@@ -18,7 +18,6 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { usePointToNaira } from "@/queries/configuration";
 import { useWallet } from "@/queries/wallet";
-import { postRedeemCash } from "@/services/redeem";
 import { toast } from "sonner";
 
 const convertPointsSchema = z.object({
@@ -50,44 +49,27 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
   const conversionRate = pointRate?.data;
   const userPoints = Number(wallet?.data?.points ?? 0);
 
-  const amount = form.watch("amount");
-  const conversionValue = Number(conversionRate?.value ?? 1);
-  const calculatedPoints = amount ? Number(amount) / conversionValue : 0;
+  const amount = Number(form.watch("amount") || 0);
+  const pointsPerNaira = Number(conversionRate?.value ?? 1);
+  const calculatedPoints = amount * pointsPerNaira;
 
   const onSubmit = async (values: ConvertPointsSchema) => {
-    if (!conversionRate) return;
+    console.log("Conversion attempted:", {
+      amount: calculatedPoints,
+      email: values.email,
+      phone: values.phone,
+    });
 
-    const pointsToRedeem = calculatedPoints;
-
-    try {
-      setIsPending(true);
-
-      const response = await postRedeemCash({
-        points: Math.floor(pointsToRedeem),
-        accountNumber: values.phone,
-        bankName: "Wallet Conversion",
-        accountName: values.email,
-      });
-
-      if (response.status_code === 200) {
-        toast(response.message || "Points redeemed successfully!");
-        form.reset();
-        onBack();
-      } else {
-        toast(response.message || "Failed to redeem points");
-      }
-    } catch (error: any) {
-      toast(error?.response?.data?.message || "An error occurred");
-    } finally {
-      setIsPending(false);
-    }
+    toast("Conversion feature not ready yet.");
+    form.reset();
+    onBack();
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/10 flex items-center justify-center">
       <div className="relative bg-white shadow-md rounded-[20px] w-[90%] md:max-w-md p-5 md:p-8 lg:p-10">
         <p className="text-base lg:text-xl text-grey-90 font-bold mt-3">
-          Redeem Points
+          Convert Points
         </p>
 
         {/*Close Button */}
@@ -103,7 +85,7 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
             <p className="text-primary-80 text-[11px]">
               {rateLoading
                 ? "Loading rate..."
-                : `1 Point is equivalent to ₦${conversionValue}`}
+                : `${pointsPerNaira} Points = ₦1`}
             </p>
 
             <div className="flex flex-col items-end justify-between">
@@ -132,7 +114,9 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
                   <FormLabel className="text-sm text-grey-90 flex items-center justify-between">
                     Amount{" "}
                     <span className="text-[9px]">
-                      {calculatedPoints.toFixed(2)} points
+                      {conversionRate
+                        ? `${pointsPerNaira} Points = ₦1`
+                        : "Loading rate..."}
                     </span>
                   </FormLabel>
                   <FormControl>
@@ -142,6 +126,13 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
                       {...field}
                     />
                   </FormControl>
+                  {calculatedPoints > 0 && (
+                    <p className="text-xs text-gray-500">
+                      This will deduct{" "}
+                      <b>{calculatedPoints.toLocaleString()}</b> points from
+                      your wallet
+                    </p>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}

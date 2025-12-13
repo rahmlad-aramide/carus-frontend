@@ -21,8 +21,8 @@ export default function Settings() {
               onClick={() => setActiveTab(tab)}
               className={`pb-1 px-3 md:px-5 ${
                 activeTab === tab
-                  ? "text-primary-60 text-[13px] md:text-xl font-bold"
-                  : "text-grey-40 text-[13px] md:text-xl"
+                  ? "text-primary-60 text-sm md:text-xl font-bold"
+                  : "text-grey-40 text-sm md:text-xl"
               }`}
             >
               {tab}

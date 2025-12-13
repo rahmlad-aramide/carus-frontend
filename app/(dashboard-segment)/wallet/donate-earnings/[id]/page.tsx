@@ -34,25 +34,9 @@ export default function DonatePage() {
     }
   }, [data]);
 
-  if (isLoading || !campaign)
-    return <LoadingComponent description="Loading campaign..." />;
-
-  if (isError || !campaign) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-red-500 text-center">
-          Failed to load campaign. Please try again later.
-        </p>
-      </div>
-    );
-  }
-
-  const raised = Number(campaign.amountRaised) || 0;
-  const target = Number(campaign.target) || 0;
-  const donors = Number(campaign.numberOfDonors) || 0;
-  const progress = target > 0 ? (raised / target) * 100 : 0;
-
   const handleDonate = () => {
+    if (!campaign) return;
+
     const amount = selected || parseInt(customAmount);
     if (!amount || amount <= 0) return;
 
@@ -81,11 +65,16 @@ export default function DonatePage() {
     );
   };
 
+  const raised = Number(campaign?.amountRaised ?? 0);
+  const target = Number(campaign?.target ?? 0);
+  const donors = Number(campaign?.numberOfDonors ?? 0);
+  const progress = target > 0 ? (raised / target) * 100 : 0;
+
   return (
     <div>
-      <div className="fixed top-0 z-40 bg-white md:pr-12 h-16 md:h-20 pt-8 md:pt-18 pb-10 w-full md:w-[calc(100%-16rem)]">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
+      {/* Header */}
+      <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-16 md:h-20 pt-12 md:pt-18 pb-10 w-full md:w-[calc(100%-16rem)]">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => router.back()}
             className="bg-[#F3F3F3] rounded-[10px] text-[#292D32] p-2"
@@ -97,121 +86,141 @@ export default function DonatePage() {
       </div>
 
       <div className="w-full lg:max-w-5xl mt-22 lg:mt-30 lg:px-3 border rounded-[10px] lg:rounded-[20px] p-2 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column */}
-          <div>
-            <div className="rounded-[10px] xl:rounded-[18px]">
-              <Image
-                src={campaign.image || "/Frame90.svg"}
-                alt={campaign.title}
-                width={340}
-                height={200}
-                className="object-cover rounded-[9px] w-full max-h-[200px]"
-              />
+        {isLoading ? (
+          <div className="col-span-full mt-25 flex flex-col justify-center items-center p-2 space-y-3 h-[250px] text-center py-10">
+            <LoadingComponent description="Fetching wallet..." />
+          </div>
+        ) : isError || !campaign ? (
+          <div className="flex min-h-[250px] justify-center items-center text-red-500 text-center rounded-[10px] border border-grey-10 p-4">
+            Failed to load campaign. Please try again later.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left Column */}
+            <div>
+              <div className="rounded-[10px] xl:rounded-[18px]">
+                <Image
+                  src={campaign.image || "/Frame90.svg"}
+                  alt={campaign.title}
+                  width={340}
+                  height={200}
+                  className="object-cover rounded-[9px] w-full max-h-[200px]"
+                />
 
-              <div className="space-y-2 mt-2">
-                <p className="text-sm lg:text-base xl:text-xl font-bold">
-                  {campaign.title}
-                </p>
-
-                <div className="flex justify-between">
-                  <p className="text-[9px] lg:text-[11px] text-grey-40">
-                    Raised
-                    <br />
-                    <span className="text-[11px] lg:text-sm text-grey-100 font-bold">
-                      ₦{raised.toLocaleString()}
-                    </span>
+                <div className="space-y-2 mt-2">
+                  <p className="text-sm lg:text-base xl:text-xl font-bold">
+                    {campaign.title}
                   </p>
 
-                  <p className="text-[9px] lg:text-[11px] text-grey-40">
-                    Target
-                    <br />
-                    <span className="text-[11px] lg:text-sm text-grey-100 font-bold">
-                      ₦{target.toLocaleString()}
-                    </span>
-                  </p>
-                </div>
-
-                <div className="w-full h-[4px] bg-primary-10 rounded-[20px] mt-3">
-                  <div
-                    className="h-full bg-[rgb(86,155,122)] rounded-[20px]"
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                  />
-                </div>
-
-                <div className="flex items-center gap-8 mt-3">
-                  <div className="flex items-center gap-2">
-                    <Image
-                      src="/profile-2user.svg"
-                      alt="donors"
-                      width={14}
-                      height={14}
-                    />
-                    <p className="text-[9px] lg:text-[11px] text-grey-90">
-                      {donors} Donations
+                  <div className="flex justify-between">
+                    <p className="text-[9px] lg:text-[11px] text-grey-40">
+                      Raised
+                      <br />
+                      <span className="text-[11px] lg:text-sm text-grey-100 font-bold">
+                        ₦{raised.toLocaleString()}
+                      </span>
                     </p>
+
+                    <p className="text-[9px] lg:text-[11px] text-grey-40">
+                      Target
+                      <br />
+                      <span className="text-[11px] lg:text-sm text-grey-100 font-bold">
+                        ₦{target.toLocaleString()}
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="w-full h-[4px] bg-primary-10 rounded-[20px] mt-3">
+                    <div
+                      className="h-full bg-[rgb(86,155,122)] rounded-[20px]"
+                      style={{ width: `${Math.min(progress, 100)}%` }}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-8 mt-3">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src="/profile-2user.svg"
+                        alt="donors"
+                        width={14}
+                        height={14}
+                      />
+                      <p className="text-[9px] lg:text-[11px] text-grey-90">
+                        {donors} Donations
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* Description */}
+              <p className="text-[11px] md:text-sm text-justify mt-6">
+                {campaign.description}
+              </p>
             </div>
 
-            {/* Description */}
-            <p className="text-[11px] md:text-sm text-justify mt-6">
-              {campaign.description}
-            </p>
-          </div>
+            {/* Right Column */}
+            <div>
+              <p className="text-sm md:text-base mt-5 lg:mt-0">Select Point</p>
 
-          {/* Right Column */}
-          <div>
-            <p className="text-sm md:text-base mt-5 lg:mt-0">Select Point</p>
+              <div className="grid grid-cols-3 gap-3 lg:gap-y-8 mt-3 mb-10">
+                {DONATION_PRESETS.map((amount) => (
+                  <button
+                    key={amount}
+                    onClick={() => {
+                      setSelected(amount);
+                      setCustomAmount("");
+                    }}
+                    className={`rounded-[10px] w-full py-5 border ${
+                      selected === amount
+                        ? "border-primary-50 text-primary-60 font-bold"
+                        : "border-grey-10 text-grey-40"
+                    }`}
+                  >
+                    {amount}
+                  </button>
+                ))}
+              </div>
 
-            <div className="grid grid-cols-3 gap-3 lg:gap-y-8 mt-3 mb-10">
-              {DONATION_PRESETS.map((amount) => (
-                <button
-                  key={amount}
-                  onClick={() => {
-                    setSelected(amount);
-                    setCustomAmount("");
+              <label className="text-sm md:text-base block">
+                Enter Point
+                <input
+                  type="number"
+                  value={customAmount}
+                  onChange={(e) => {
+                    setCustomAmount(e.target.value);
+                    setSelected(null);
                   }}
-                  className={`rounded-[10px] w-full py-5 border ${
-                    selected === amount
-                      ? "border-primary-50 text-primary-60 font-bold"
-                      : "border-grey-10 text-grey-40"
-                  }`}
-                >
-                  {amount}
-                </button>
-              ))}
+                  placeholder="Enter point manually"
+                  className="rounded-[10px] w-full p-3 bg-[rgb(243,243,243)] mt-2"
+                />
+              </label>
+
+              <Button
+                onClick={handleDonate}
+                disabled={
+                  contributeMutation.isPending ||
+                  (!selected && !customAmount) ||
+                  progress >= 100
+                }
+                className={`cursor-pointer rounded-[10px] w-full h-10 flex items-center justify-center mt-8 ${
+                  progress >= 100
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-primary"
+                }`}
+              >
+                <Image src="/gift2.png" alt="gift" width={16} height={16} />
+                <span className="text-white text-sm">
+                  {progress >= 100
+                    ? "Campaign Fully Funded"
+                    : contributeMutation.isPending
+                      ? "Processing..."
+                      : "Donate Now"}
+                </span>
+              </Button>
             </div>
-
-            <label className="text-sm md:text-base block">
-              Enter Point
-              <input
-                type="number"
-                value={customAmount}
-                onChange={(e) => {
-                  setCustomAmount(e.target.value);
-                  setSelected(null);
-                }}
-                placeholder="Enter point manually"
-                className="rounded-[10px] w-full p-3 bg-[rgb(243,243,243)] mt-2"
-              />
-            </label>
-
-            <Button
-              onClick={handleDonate}
-              disabled={
-                contributeMutation.isPending || (!selected && !customAmount)
-              }
-              className="cursor-pointer rounded-[10px] w-full h-10 flex items-center justify-center mt-8"
-            >
-              <Image src="/gift2.png" alt="gift" width={16} height={16} />
-              <span className="text-white text-sm">
-                {contributeMutation.isPending ? "Processing..." : "Donate Now"}
-              </span>
-            </Button>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

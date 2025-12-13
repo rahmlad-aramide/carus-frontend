@@ -13,7 +13,7 @@ export const TopNav = () => {
   // Function to handle dynamic routes
   const getTitle = (path: string) => {
     if (path.startsWith("/schedule")) return "Schedule";
-    if (path.startsWith("/wallet/donate-earnings")) return "Donate Earnings";
+    if (path.startsWith("/wallet/donate-earnings")) return "Donate";
     if (path.startsWith("/wallet/donate")) return "Donate";
     if (path.startsWith("/wallet")) return "Wallet";
     if (path.startsWith("/settings")) return "Settings";

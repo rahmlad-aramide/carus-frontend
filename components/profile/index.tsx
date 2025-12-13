@@ -100,7 +100,7 @@ export default function Profile() {
   return (
     <div className="flex-1 flex items-center justify-center px-5 md:px-15 mt-5 bg-[#F3F3F3] rounded-[10px] pt-5 pb-20">
       <div className="w-full max-w-5xl">
-        <p className="text-base font-bold text-grey-90 mb-7">
+        <p className="text-base lg:text-xl font-bold text-grey-90 mb-7">
           Personal Information
         </p>
         <Form {...form}>
@@ -156,7 +156,7 @@ export default function Profile() {
                   name="first_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base font-bold">
+                      <FormLabel className="text-sm lg:text-base font-bold">
                         First Name
                       </FormLabel>
                       <FormControl>
@@ -177,7 +177,7 @@ export default function Profile() {
                   name="last_name"
                   render={({ field }) => (
                     <FormItem className="lg-col-start-3">
-                      <FormLabel className="text-base font-bold">
+                      <FormLabel className="text-sm lg:text-base font-bold">
                         Last Name
                       </FormLabel>
                       <FormControl>
@@ -198,7 +198,7 @@ export default function Profile() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base font-bold">
+                      <FormLabel className="text-sm lg:text-base font-bold">
                         Email Address
                       </FormLabel>
                       <FormControl>
@@ -219,7 +219,7 @@ export default function Profile() {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base font-bold">
+                      <FormLabel className="text-sm lg:text-base font-bold">
                         Number
                       </FormLabel>
                       <FormControl>
@@ -252,7 +252,7 @@ export default function Profile() {
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-base font-bold">
+                      <FormLabel className="text-sm lg:text-base font-bold">
                         Home Address
                       </FormLabel>
                       <FormControl>

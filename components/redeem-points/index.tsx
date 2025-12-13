@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -81,30 +80,40 @@ const banks = [
   "Carbon (One Finance)",
 ];
 
-const redeemPointsSchema = z.object({
-  amount: z.string({ message: "Enter a valid amount" }),
-  phone: z
-    .string()
-    .regex(/^\d{11}$/, { message: "Phone Number must be at most 11 digits" }),
-  accountNo: z
-    .string()
-    .regex(/^\d{10}$/, { message: "Enter your 10 digits account number" }),
-  accountName: z.string().min(2, { message: "Enter your full Account Name" }),
-  bank: z.string().nonempty({ message: "Please select a bank" }),
+const airtimeSchema = z.object({
+  amount: z.string().min(1, "Enter a valid amount"),
+  phone: z.string().regex(/^\d{11}$/, "Phone number must be 11 digits"),
 });
 
-type RedeemPointsSchema = z.infer<typeof redeemPointsSchema>;
+const cashSchema = z.object({
+  amount: z.string().min(1, "Enter a valid amount"),
+  accountNo: z
+    .string()
+    .regex(/^\d{10}$/, "Enter your 10 digits account number"),
+  accountName: z.string().min(2, "Enter account name"),
+  bank: z.string().nonempty("Please select a bank"),
+});
+
 type RedeemPointsProps = {
   onBack: () => void;
 };
 export default function RedeemPoints({ onBack }: RedeemPointsProps) {
   const [option, setOption] = useState<"airtime" | "cash">("airtime");
   const [selected, setSelected] = useState("");
-  const form = useForm<RedeemPointsSchema>({
-    resolver: zodResolver(redeemPointsSchema),
+
+  const airtimeForm = useForm<z.infer<typeof airtimeSchema>>({
+    resolver: zodResolver(airtimeSchema),
     mode: "onChange",
     defaultValues: {
       phone: "",
+      amount: "",
+    },
+  });
+
+  const cashForm = useForm<z.infer<typeof cashSchema>>({
+    resolver: zodResolver(cashSchema),
+    mode: "onChange",
+    defaultValues: {
       amount: "",
       accountNo: "",
       accountName: "",
@@ -114,50 +123,58 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
   const { data: wallet } = useWallet();
   const { data: rate } = usePointToNaira();
-  const conversionRate = rate?.data?.value ?? 0;
+
+  const conversionRate = Number(rate?.data?.value ?? 0);
   const userPoints = Number(wallet?.data?.points ?? 0);
 
-  const { mutate: redeemAirtime, isPending: isAirtimePending } =
+  const airtimeAmount = Number(airtimeForm.watch("amount") || 0);
+  const cashAmount = Number(cashForm.watch("amount") || 0);
+
+  const airtimePointsToRedeem =
+    conversionRate && airtimeAmount > 0
+      ? Math.floor(airtimeAmount * conversionRate)
+      : 0;
+
+  const cashPointsToRedeem =
+    conversionRate && cashAmount > 0
+      ? Math.floor(cashAmount * conversionRate)
+      : 0;
+
+  const { mutate: redeemAirtime, isPending: airtimePending } =
     useRedeemAirtime();
-  const { mutate: redeemCash, isPending: isCashPending } = useRedeemCash();
+  const { mutate: redeemCash, isPending: cashPending } = useRedeemCash();
 
-  const handleAirtimeSubmit = (values: RedeemPointsSchema) => {
-    if (!selected) return toast("Please select a network");
-
-    redeemAirtime(
-      {
-        network: selected.toLowerCase(),
-        points: Number(values.amount),
-        phoneNumber: values.phone,
-      },
-      {
-        onSuccess: (res) =>
-          toast(res.message || "Airtime redeemed successfully!"),
-        onError: (err: any) =>
-          toast(err?.response?.data?.message || "Failed to redeem airtime"),
-      },
-    );
+  const validatePoints = (points: number) => {
+    if (points > userPoints) {
+      toast("Insufficient points");
+      return false;
+    }
+    return true;
   };
 
-  const handleCashSubmit = (values: RedeemPointsSchema) => {
-    if (!values.bank || !values.accountNo || !values.accountName) {
-      toast("Please fill in all bank details");
-      return;
-    }
+  const handleAirtimeSubmit = (values: z.infer<typeof airtimeSchema>) => {
+    if (!selected) return toast("Please select a network");
+    if (!validatePoints(airtimePointsToRedeem)) return;
 
-    redeemCash(
-      {
-        points: Number(values.amount),
-        accountNumber: values.accountNo,
-        bankName: values.bank,
-        accountName: values.accountName,
-      },
-      {
-        onSuccess: (res) => toast(res.message || "Cash redeemed successfully!"),
-        onError: (err: any) =>
-          toast(err?.response?.data?.message || "Failed to redeem cash"),
-      },
-    );
+    redeemAirtime({
+      network: selected.toLowerCase(),
+      points: airtimePointsToRedeem,
+      phoneNumber: values.phone,
+    });
+  };
+
+  const handleCashSubmit = (values: z.infer<typeof cashSchema>) => {
+    if (!values.bank || !values.accountNo || !values.accountName) {
+      return toast("Please fill in all bank details");
+    }
+    if (!validatePoints(cashPointsToRedeem)) return;
+
+    redeemCash({
+      points: cashPointsToRedeem,
+      accountNumber: values.accountNo,
+      bankName: values.bank,
+      accountName: values.accountName,
+    });
   };
 
   return (
@@ -240,21 +257,23 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
               {/*Input Fields */}
 
-              <Form {...form}>
+              <Form {...airtimeForm}>
                 <form
-                  onSubmit={form.handleSubmit(handleAirtimeSubmit)}
+                  onSubmit={airtimeForm.handleSubmit(handleAirtimeSubmit)}
                   className="space-y-4 mt-5"
                 >
                   {/*Amount */}
                   <FormField
-                    control={form.control}
+                    control={airtimeForm.control}
                     name="amount"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm text-grey-90 flex items-center justify-between">
                           Amount{" "}
                           <span className="text-[9px]">
-                            {userPoints} points
+                            {conversionRate
+                              ? `${conversionRate} Points = ₦1`
+                              : "Loading rate..."}
                           </span>
                         </FormLabel>
                         <FormControl>
@@ -264,6 +283,13 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                             {...field}
                           />
                         </FormControl>
+                        {airtimePointsToRedeem > 0 && (
+                          <p className="text-xs text-gray-500">
+                            This will deduct{" "}
+                            <b>{airtimePointsToRedeem.toLocaleString()}</b>{" "}
+                            points from your wallet
+                          </p>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -271,7 +297,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
                   {/* Phone Number */}
                   <FormField
-                    control={form.control}
+                    control={airtimeForm.control}
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
@@ -291,7 +317,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                   />
                   <Button
                     className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
-                    disabled={isAirtimePending}
+                    disabled={airtimePending}
                   >
                     <Image
                       src="/convertshape-2.svg"
@@ -300,7 +326,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                       height={16}
                       className="object-contain w-4 h-4 lg:w-5 lg:h-5"
                     />
-                    {isAirtimePending ? (
+                    {airtimePending ? (
                       <>
                         <Loader2 className="animate-spin mr-2" />
                         <span>Redeeming...</span>
@@ -318,19 +344,24 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
             <div>
               {/*Input Fields */}
 
-              <Form {...form}>
+              <Form {...cashForm}>
                 <form
-                  onSubmit={form.handleSubmit(handleCashSubmit)}
+                  onSubmit={cashForm.handleSubmit(handleCashSubmit)}
                   className="space-y-4 mt-5"
                 >
                   {/*Amount */}
                   <FormField
-                    control={form.control}
+                    control={cashForm.control}
                     name="amount"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm text-grey-90">
-                          Amount
+                        <FormLabel className="text-sm text-grey-90 flex items-center justify-between">
+                          Amount{" "}
+                          <span className="text-[9px]">
+                            {conversionRate
+                              ? `${conversionRate} Points = ₦1`
+                              : "Loading rate..."}
+                          </span>
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -339,6 +370,13 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                             {...field}
                           />
                         </FormControl>
+                        {cashPointsToRedeem > 0 && (
+                          <p className="text-xs text-gray-500">
+                            This will deduct{" "}
+                            <b>{cashPointsToRedeem.toLocaleString()}</b> points
+                            from your wallet
+                          </p>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -346,7 +384,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
                   {/* Phone Number */}
                   <FormField
-                    control={form.control}
+                    control={cashForm.control}
                     name="accountNo"
                     render={({ field }) => (
                       <FormItem>
@@ -367,7 +405,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
                   {/* Bank */}
                   <FormField
-                    control={form.control}
+                    control={cashForm.control}
                     name="bank"
                     render={({ field }) => (
                       <FormItem>
@@ -407,7 +445,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
                   {/* Account Name */}
                   <FormField
-                    control={form.control}
+                    control={cashForm.control}
                     name="accountName"
                     render={({ field }) => (
                       <FormItem>
@@ -428,7 +466,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
                   <Button
                     className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
-                    disabled={isCashPending}
+                    disabled={cashPending}
                   >
                     <Image
                       src="/convertshape-2.svg"
@@ -437,7 +475,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                       height={16}
                       className="object-contain w-4 h-4 lg:w-5 lg:h-5"
                     />
-                    {isCashPending ? (
+                    {cashPending ? (
                       <>
                         <Loader2 className="animate-spin mr-2" />
                         <span>Redeeming...</span>

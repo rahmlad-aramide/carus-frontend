@@ -17,13 +17,29 @@ export default function Wallet() {
   const [showConvertPoints, setShowConvertPoints] = useState(false);
   const [showRedeemPoints, setShowRedeemPoints] = useState(false);
 
-  const { data: wallet, isLoading: loadingWallet } = useWallet();
+  const { data: wallet, isLoading: loadingWallet, error } = useWallet();
   const { data, isLoading, isError } = useDonationCampaigns();
   const campaigns: Donation[] = data?.data || [];
   const topCampaigns = campaigns.slice(0, 3);
 
   if (loadingWallet) {
-    return <LoadingComponent description="Fetching wallet..." />;
+    return (
+      <div className="col-span-full mt-25 flex flex-col justify-center items-center border border-grey-10 rounded-[10px] p-2 space-y-3 h-[250px] text-center py-10">
+        <LoadingComponent description="Fetching wallet..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500">
+            Failed to fetch wallet. Please try again later.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
