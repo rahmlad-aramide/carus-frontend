@@ -6,7 +6,6 @@ export function middleware(request: NextRequest) {
   const authUserValue = authUser ? JSON.parse(authUser.value) : null;
   const access_token = authUserValue?.access_token;
   const refresh_token = authUserValue?.refresh_token;
-
   const protectedRoutes = [
     "/dashboard",
     "/schedule",
@@ -18,21 +17,12 @@ export function middleware(request: NextRequest) {
     "/contact",
     "/settings",
   ];
-
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route),
   );
-
-  // Redirect the user to the coming soon page
-  // It's still a coming soon
-  // if (request.nextUrl.pathname !== '/') {
-  //   return NextResponse.redirect(new URL("/coming-soon", request.url));
-  // }
-
   if (isProtected && !access_token && !refresh_token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
-
   return NextResponse.next();
 }
 

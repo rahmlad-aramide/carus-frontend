@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import localFont from "next/font/local";
-import QueryProvider from "./query-provider";
+
 import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/context/auth-context";
+import WakeServer from "@/components/wake-server";
+
 import { GoogleAuthProvider } from "./google-auth-provider";
+import QueryProvider from "./query-provider";
+
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Carus Recycling",
@@ -26,7 +30,10 @@ export default function RootLayout({
       <body className={satoshi.className}>
         <QueryProvider>
           <GoogleAuthProvider>
-            <UserProvider>{children}</UserProvider>
+            <UserProvider>
+              <WakeServer />
+              {children}
+            </UserProvider>
           </GoogleAuthProvider>
           <Toaster richColors />
         </QueryProvider>

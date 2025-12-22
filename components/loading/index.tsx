@@ -24,10 +24,11 @@ export const LoadingComponent = ({
       <div>
         <Image
           src={"/assets/carus-loader.gif"}
-          alt="Loading history data"
+          alt="Loading..."
           width={353}
           height={349}
           className="w-20"
+          unoptimized
         />
       </div>
       <p className="text-sm text-gray-500">{description}</p>
