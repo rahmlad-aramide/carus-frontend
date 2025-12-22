@@ -12,7 +12,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Carus Recycling",
-  description: "Carus Recycling",
+  description:
+    "Carus Recycling - Let's work together to reduce waste, promote recycling, and create a greener future.",
 };
 
 const satoshi = localFont({
