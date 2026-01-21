@@ -1,11 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "../ui/button";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -14,14 +8,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { useRedeemAirtime, useRedeemCash } from "@/queries/redeem";
-import { Loader2 } from "lucide-react";
 import { useWallet } from "@/queries/wallet";
 import { usePointToNaira } from "@/queries/configuration";
-import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { transactionKeys, walletKeys } from "@/queries/query-keys";
 
-const networks = [
+import { Button } from "../ui/button";
+import { formatToLocaleNaira } from "@/lib/helpers";
+
+const networks: {
+  network: "MTN" | "AIRTEL" | "GLO" | "9MOBILE";
+  image: string;
+}[] = [
   {
     network: "MTN",
     image: "/mtn.svg",
@@ -98,8 +106,15 @@ type RedeemPointsProps = {
   onBack: () => void;
 };
 export default function RedeemPoints({ onBack }: RedeemPointsProps) {
+  const queryClient = useQueryClient();
   const [option, setOption] = useState<"airtime" | "cash">("airtime");
-  const [selected, setSelected] = useState("");
+  const [selectedNetwork, setSelectedNetwork] = useState<
+    "MTN" | "AIRTEL" | "GLO" | "9MOBILE" | null
+  >(null);
+  const queriesInvalidation = () => {
+    queryClient.invalidateQueries({ queryKey: transactionKeys.all });
+    queryClient.invalidateQueries({ queryKey: walletKeys.all });
+  };
 
   const airtimeForm = useForm<z.infer<typeof airtimeSchema>>({
     resolver: zodResolver(airtimeSchema),
@@ -140,9 +155,20 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
       ? Math.floor(cashAmount * conversionRate)
       : 0;
 
-  const { mutate: redeemAirtime, isPending: airtimePending } =
-    useRedeemAirtime();
-  const { mutate: redeemCash, isPending: cashPending } = useRedeemCash();
+  const { mutate: redeemAirtime, isPending: airtimePending } = useRedeemAirtime(
+    {
+      onSuccess: () => {
+        queriesInvalidation();
+        onBack();
+      },
+    },
+  );
+  const { mutate: redeemCash, isPending: cashPending } = useRedeemCash({
+    onSuccess: () => {
+      queriesInvalidation();
+      onBack();
+    },
+  });
 
   const validatePoints = (points: number) => {
     if (points > userPoints) {
@@ -153,11 +179,11 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
   };
 
   const handleAirtimeSubmit = (values: z.infer<typeof airtimeSchema>) => {
-    if (!selected) return toast("Please select a network");
+    if (!selectedNetwork) return toast("Please select a network");
     if (!validatePoints(airtimePointsToRedeem)) return;
 
     redeemAirtime({
-      network: selected.toLowerCase(),
+      network: selectedNetwork.toLowerCase(),
       points: airtimePointsToRedeem,
       phoneNumber: values.phone,
     });
@@ -180,7 +206,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
   return (
     <div className="fixed inset-0 z-50 bg-black/10 flex items-center justify-center">
       <div className=" lg:overflow-y-auto lg:max-h-screen w-[90%] md:max-w-md ">
-        <div className="relative bg-white shadow-md rounded-[20px] p-5 md:p-8 lg:p-10">
+        <div className="relative max-h-[80vh] overflow-y-auto bg-white shadow-md rounded-[20px] p-5 md:p-8 lg:p-10">
           <p className="text-base lg:text-xl text-grey-90 font-bold mt-3">
             Redeem Points
           </p>
@@ -206,7 +232,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                   Points
                 </span>
                 <span className="text-xl lg:text-[28px] text-primary-80 font-black leading-snug">
-                  {userPoints}
+                  {formatToLocaleNaira(userPoints)}
                 </span>
               </div>
             </div>
@@ -217,7 +243,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
               onClick={() => {
                 setOption("airtime");
               }}
-              className={`rounded-full py-4 px-3 lg:px-7 text-center text-sm ${
+              className={`rounded-full py-4 px-3 lg:px-7 text-center text-sm hover:text-white ${
                 option === "airtime"
                   ? "bg-[#CCE1D7] text-black"
                   : "bg-white text-black"
@@ -229,7 +255,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
             <Button
               onClick={() => setOption("cash")}
-              className={`rounded-full py-4 px-3 lg:px-7 text-center text-sm ${
+              className={`rounded-full py-4 px-3 lg:px-7 text-center text-sm hover:text-white ${
                 option === "cash"
                   ? "bg-[#CCE1D7] text-black"
                   : "bg-white text-black"
@@ -246,8 +272,8 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                 {networks.map(({ network, image }) => (
                   <button
                     key={network}
-                    onClick={() => setSelected(network)}
-                    className={`flex flex-col items-center justify-center gap-2 text-[10px] text-grey-90 rounded-[10px] p-2 lg:p-3 ${selected === network ? "border border-primary-30 bg-[rgb(243,243,243)]" : "bg-[rgb(243,243,243)]"}`}
+                    onClick={() => setSelectedNetwork(network)}
+                    className={`flex flex-col items-center justify-center gap-2 text-[10px] text-grey-90 rounded-[10px] p-2 lg:p-3 ${selectedNetwork === network ? "border border-primary-30 bg-[rgb(243,243,243)]" : "bg-[rgb(243,243,243)]"}`}
                   >
                     <Image src={image} alt={network} width={24} height={24} />
                     {network}
@@ -319,20 +345,22 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                     className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
                     disabled={airtimePending}
                   >
-                    <Image
-                      src="/convertshape-2.svg"
-                      alt=""
-                      width={16}
-                      height={16}
-                      className="object-contain w-4 h-4 lg:w-5 lg:h-5"
-                    />
                     {airtimePending ? (
                       <>
                         <Loader2 className="animate-spin mr-2" />
                         <span>Redeeming...</span>
                       </>
                     ) : (
-                      "Redeem Points"
+                      <>
+                        <Image
+                          src="/convertshape-2.svg"
+                          alt=""
+                          width={16}
+                          height={16}
+                          className="object-contain w-4 h-4 lg:w-5 lg:h-5"
+                        />
+                        Redeem Points
+                      </>
                     )}
                   </Button>
                 </form>
@@ -468,20 +496,22 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                     className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
                     disabled={cashPending}
                   >
-                    <Image
-                      src="/convertshape-2.svg"
-                      alt=""
-                      width={16}
-                      height={16}
-                      className="object-contain w-4 h-4 lg:w-5 lg:h-5"
-                    />
                     {cashPending ? (
                       <>
                         <Loader2 className="animate-spin mr-2" />
                         <span>Redeeming...</span>
                       </>
                     ) : (
-                      "Redeem Points"
+                      <>
+                        <Image
+                          src="/convertshape-2.svg"
+                          alt=""
+                          width={16}
+                          height={16}
+                          className="object-contain w-4 h-4 lg:w-5 lg:h-5"
+                        />
+                        Redeem Points
+                      </>
                     )}
                   </Button>
                 </form>

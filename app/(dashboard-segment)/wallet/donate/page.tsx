@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { LoadingComponent } from "@/components/loading";
 import { Empty } from "@/components/empty";
 import Link from "next/link";
+import { formatToLocaleNaira } from "@/lib/helpers";
 
 export default function Donate() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function Donate() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.back()}
-            className="bg-[#F3F3F3] rounded-[10px] text-[#292D32] p-2"
+            className="cursor-pointer bg-[#F3F3F3] rounded-[10px] text-[#292D32] p-2 hover:scale-90 active:scale-100 transiton duration-200"
           >
             <ArrowLeft />
           </button>
@@ -64,13 +65,15 @@ export default function Donate() {
                 className="bg-[rgb(243,243,243)] rounded-[10px] xl:rounded-[18px] px-4 py-3 xl:p-6 mb-1 lg:mb-4"
               >
                 <div className="flex items-center gap-4 lg:gap-5 xl:gap-6">
-                  <Image
-                    src={campaign.image || "/Frame91.svg"}
-                    alt={campaign.title}
-                    width={96}
-                    height={96}
-                    className="object-cover rounded-[10px] xl:w-[152px] xl:h-[152px]"
-                  />
+                  {campaign.image && (
+                    <Image
+                      src={campaign.image}
+                      alt={campaign.title}
+                      width={96}
+                      height={96}
+                      className="object-cover rounded-[10px] xl:w-[152px] xl:h-[152px]"
+                    />
+                  )}
 
                   <div className="flex-1 lg:mt-5 xl:mt-3">
                     <p className="text-sm lg:text-base xl:text-xl font-bold">
@@ -78,7 +81,7 @@ export default function Donate() {
                     </p>
 
                     <p className="text-[9px] lg:text-sm xl:text-base font-bold">
-                      ₦{raised.toLocaleString()}{" "}
+                      ₦{formatToLocaleNaira(raised)}{" "}
                       <span className="text-grey-40 font-regular">Raised</span>
                     </p>
 
@@ -117,7 +120,7 @@ export default function Donate() {
                 {/* Donate Button */}
                 <div className="flex justify-end lg:pb-2">
                   <Link
-                    href={`/wallet/donate-earnings/${campaign.id}`}
+                    href={`/wallet/donate/${campaign.id}`}
                     className="cursor-pointer bg-primary-60 hover:bg-primary-50 rounded-[10px] w-[40px] xl:w-[174px] xl:gap-2 h-10 flex items-center justify-center"
                   >
                     <Image

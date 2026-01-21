@@ -1,20 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Donation, ContributionResponse } from "@/types/donation";
 import {
   useContributeToCampaign,
   useDonationCampaign,
 } from "@/queries/donation";
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
+import { Donation, ContributionResponse } from "@/types/donation";
 import { LoadingComponent } from "@/components/loading";
 import { useQueryClient } from "@tanstack/react-query";
+import { useWallet } from "@/queries/wallet";
 
 export default function DonatePage() {
-  const DONATION_PRESETS = [1000, 2000, 3000, 4000, 5000, 6000];
+  const DONATION_PRESETS = [1000, 2000, 3000, 4000, 5000, 10000];
 
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -22,23 +25,49 @@ export default function DonatePage() {
   const campaignId = id as string;
 
   const { data, isLoading, isError } = useDonationCampaign(campaignId);
-  const [campaign, setCampaign] = useState<Donation | null>(null);
+  const {
+    data: wallet,
+    isPending: loadingWallet,
+    isError: walletError,
+    refetch: refetchWallet,
+  } = useWallet();
   const [selected, setSelected] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState<string>("");
 
   const contributeMutation = useContributeToCampaign();
-
-  useEffect(() => {
-    if (data?.data) {
-      setCampaign(data.data);
-    }
-  }, [data]);
+  const campaign = data?.data;
 
   const handleDonate = () => {
     if (!campaign) return;
 
-    const amount = selected || parseInt(customAmount);
-    if (!amount || amount <= 0) return;
+    // Check if wallet is loading
+    if (loadingWallet) {
+      toast.loading("Loading wallet balance...");
+      return;
+    }
+
+    // Check if wallet has error
+    if (walletError) {
+      toast.error("Failed to load wallet balance", {
+        action: {
+          label: "Retry",
+          onClick: () => refetchWallet(),
+        },
+      });
+      return;
+    }
+
+    const amount = selected || parseFloat(customAmount);
+
+    if (!amount || amount <= 0) {
+      toast.info("Please enter a valid amount greater than 0");
+      return;
+    }
+
+    if (amount > Number(wallet?.data?.points ?? 0)) {
+      toast.info("Insufficient point balance. Please enter a lower amount.");
+      return;
+    }
 
     contributeMutation.mutate(
       { campaignId: campaign.id, amount },
@@ -48,16 +77,6 @@ export default function DonatePage() {
             queryKey: ["donation-campaign", campaignId],
           });
           queryClient.invalidateQueries({ queryKey: ["donation-campaigns"] });
-
-          setCampaign((prev) =>
-            prev
-              ? {
-                  ...prev,
-                  amountRaised: prev.amountRaised + response.data.amount,
-                  numberOfDonors: prev.numberOfDonors + 1,
-                }
-              : prev,
-          );
           setSelected(null);
           setCustomAmount("");
         },
@@ -77,7 +96,7 @@ export default function DonatePage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.back()}
-            className="bg-[#F3F3F3] rounded-[10px] text-[#292D32] p-2"
+            className="cursor-pointer bg-[#F3F3F3] rounded-[10px] text-[#292D32] p-2 hover:scale-90 active:scale-100 transiton duration-200"
           >
             <ArrowLeft />
           </button>
@@ -99,13 +118,15 @@ export default function DonatePage() {
             {/* Left Column */}
             <div>
               <div className="rounded-[10px] xl:rounded-[18px]">
-                <Image
-                  src={campaign.image || "/Frame90.svg"}
-                  alt={campaign.title}
-                  width={340}
-                  height={200}
-                  className="object-cover rounded-[9px] w-full max-h-[200px]"
-                />
+                {campaign.image && (
+                  <Image
+                    src={campaign.image}
+                    alt={campaign.title}
+                    width={340}
+                    height={200}
+                    className="object-cover rounded-[9px] w-full max-h-[200px]"
+                  />
+                )}
 
                 <div className="space-y-2 mt-2">
                   <p className="text-sm lg:text-base xl:text-xl font-bold">
@@ -146,7 +167,7 @@ export default function DonatePage() {
                         height={14}
                       />
                       <p className="text-[9px] lg:text-[11px] text-grey-90">
-                        {donors} Donations
+                        {donors} {donors === 1 ? "Donor" : "Donors"}
                       </p>
                     </div>
                   </div>
@@ -177,7 +198,7 @@ export default function DonatePage() {
                         : "border-grey-10 text-grey-40"
                     }`}
                   >
-                    {amount}
+                    {amount.toLocaleString()}
                   </button>
                 ))}
               </div>
@@ -188,8 +209,17 @@ export default function DonatePage() {
                   type="number"
                   value={customAmount}
                   onChange={(e) => {
-                    setCustomAmount(e.target.value);
-                    setSelected(null);
+                    const value = e.target.value;
+                    if (value === "" || parseFloat(value) >= 0) {
+                      setCustomAmount(value);
+                      setSelected(null);
+                    }
+                  }}
+                  onBlur={(e) => {
+                    if (e.target.value && parseFloat(e.target.value) <= 0) {
+                      toast.info("Please enter a positive value");
+                      setCustomAmount("");
+                    }
                   }}
                   placeholder="Enter point manually"
                   className="rounded-[10px] w-full p-3 bg-[rgb(243,243,243)] mt-2"

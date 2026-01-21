@@ -8,3 +8,11 @@ export const getSchedulePreposition = (category: string) => {
       break;
   }
 };
+
+export const formatToLocaleNaira = (amount: string | number): string => {
+  const number = parseFloat(amount.toString());
+  return number.toLocaleString("ng-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};

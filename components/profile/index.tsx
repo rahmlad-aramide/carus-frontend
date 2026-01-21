@@ -36,6 +36,7 @@ type ProfileSchema = z.infer<typeof profileSchema>;
 
 export default function Profile() {
   const [image, setImage] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const { data, isPending: isProfilePending } = useGetProfile();
   const { mutate, isPending, isError, error } = useEditProfile();
 
@@ -57,6 +58,7 @@ export default function Profile() {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
+      setAvatarFile(e.target.files[0]);
       setImage(URL.createObjectURL(e.target.files[0]));
     }
   };
@@ -69,6 +71,7 @@ export default function Profile() {
           first_name: profileData.first_name,
           last_name: profileData.last_name,
           phone: profileData.phone || "",
+          avatar: profileData.avatar || "",
         }
       : {
           address: "",
@@ -76,25 +79,27 @@ export default function Profile() {
           first_name: "",
           last_name: "",
           phone: "",
+          avatar: "",
         };
     if (userData) {
       reset(userData);
-    }
-    if (profileData?.avatar) {
-      setImage(profileData?.avatar);
+      setImage(userData.avatar);
     }
   }, [profileData, reset]);
 
-  //   let a = {
-  //     "first_name": "Abdrahman",
-  //     "last_name": "Oladimeji",
-  //     "email": "abdrahmanoladimeji02@gmail.com",
-  //     "phone": "9023600083",
-  //     "address": "Novas Apartment, Lugbe"
-  // }
   const onSubmit = (values: ProfileSchema) => {
-    console.log(values);
-    mutate(values);
+    const formData = new FormData();
+    formData.append("first_name", values.first_name);
+    formData.append("last_name", values.last_name);
+    formData.append("email", values.email);
+    formData.append("phone", values.phone);
+    formData.append("address", values.address);
+
+    if (avatarFile) {
+      formData.append("avatar", avatarFile);
+    }
+
+    mutate(formData);
   };
 
   return (
@@ -116,8 +121,12 @@ export default function Profile() {
                       className={`w-full h-full bg-grey-10 animate-pulse rounded-full`}
                     ></div>
                   ) : (
-                    <Avatar className="size-full object-cover">
-                      <AvatarImage src={image || ""} />
+                    <Avatar className="size-full">
+                      <AvatarImage
+                        src={image || profileData?.avatar || ""}
+                        alt="Profile"
+                        className="object-cover w-full h-full"
+                      />
                       <AvatarFallback>
                         {profileData?.first_name.slice(0, 3)}
                       </AvatarFallback>

@@ -13,7 +13,6 @@ export const TopNav = () => {
   // Function to handle dynamic routes
   const getTitle = (path: string) => {
     if (path.startsWith("/schedule")) return "Schedule";
-    if (path.startsWith("/wallet/donate-earnings")) return "Donate";
     if (path.startsWith("/wallet/donate")) return "Donate";
     if (path.startsWith("/wallet")) return "Wallet";
     if (path.startsWith("/settings")) return "Settings";
@@ -30,7 +29,7 @@ export const TopNav = () => {
 
   return (
     <header>
-      <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-2 md:pr-12 h-25 md:h-20 md:pt-18 md:pb-10 w-full md:w-[calc(100%-16rem)]">
+      <div className="fixed top-0 z-40 bg-white flex justify-between items-center px-4 md:pr-12 h-25 md:h-20 md:pt-18 md:pb-10 w-full md:w-[calc(100%-16rem)]">
         {title ? (
           <h1 className="text-xl md:text-3xl font-black">{title}</h1>
         ) : (
@@ -61,7 +60,11 @@ export const TopNav = () => {
 
         <div className="hidden md:flex items-center gap-5">
           <NotificationBell />
-          <ImageContainer image={data?.data?.avatar} isPending={isPending} />
+          <ImageContainer
+            image={data?.data?.avatar}
+            alt={data?.data.first_name}
+            isPending={isPending}
+          />
         </div>
       </div>
     </header>

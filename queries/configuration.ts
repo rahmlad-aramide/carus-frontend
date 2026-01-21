@@ -14,7 +14,6 @@ export function usePointToNaira() {
     queryKey: ["pointToNaira"],
     queryFn: async () => {
       const res = await getPointToNairaRate();
-      console.log("POINT RATE RESPONSE:", res);
       return res;
     },
   });

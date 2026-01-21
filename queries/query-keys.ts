@@ -17,6 +17,10 @@ export const transactionKeys = {
   all: ["transaction"] as const,
 };
 
+export const walletKeys = {
+  all: ["wallet"] as const,
+};
+
 export const profileKeys = {
   all: ["profile"] as const,
   edit: () => [...profileKeys.all, "edit"] as const,

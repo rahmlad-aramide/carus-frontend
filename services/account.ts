@@ -13,7 +13,7 @@ export async function getProfile(): Promise<GetAccountResponse> {
 }
 
 export async function postEditProfile(
-  formData: EditProfileInput,
+  formData: FormData,
 ): Promise<EditProfileResponse> {
   return (await http.put("/account/edit", formData)).data;
 }

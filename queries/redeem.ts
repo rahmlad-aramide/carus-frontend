@@ -4,28 +4,36 @@ import {
   RedeemCashInput,
   RedeemResponse,
 } from "@/types/redeem";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 
 // Airtime Mutation
-export function useRedeemAirtime() {
-  return useMutation<RedeemResponse, Error, RedeemAirtimeInput>({
-    mutationFn: (data) => postRedeemAirtime(data),
+export function useRedeemAirtime(
+  options?: UseMutationOptions<RedeemResponse, Error, RedeemAirtimeInput>,
+) {
+  return useMutation({
+    mutationFn: (data: RedeemAirtimeInput) => postRedeemAirtime(data),
     meta: {
       successMessage: "Success!",
-      additionalDescription: "You will be credited shortly.",
-      errorMessage: "Error redeeming airtime",
+      additionalDescription:
+        "You will be credited once your request is approved.",
+      errorMessage: "Error redeeming point to airtime",
     },
+    ...options,
   });
 }
 
 // Cash Mutation
-export function useRedeemCash() {
-  return useMutation<RedeemResponse, Error, RedeemCashInput>({
-    mutationFn: (data) => postRedeemCash(data),
+export function useRedeemCash(
+  options?: UseMutationOptions<RedeemResponse, Error, RedeemCashInput>,
+) {
+  return useMutation({
+    mutationFn: (data: RedeemCashInput) => postRedeemCash(data),
     meta: {
       successMessage: "Success!",
-      additionalDescription: "Your cash redemption is being processed.",
-      errorMessage: "Error redeeming cash",
+      additionalDescription:
+        "You will be credited once your request is approved.",
+      errorMessage: "Error redeeming point to cash",
     },
+    ...options,
   });
 }

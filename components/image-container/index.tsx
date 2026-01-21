@@ -1,19 +1,19 @@
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ImageContainerProps {
   image?: string;
   size?: number;
   isPending?: boolean;
+  alt?: string;
 }
 
 function getSafeImage(image?: string) {
-  if (!image) return "/avatar.png"; // fallback
-  if (image.startsWith("/")) return image; // local path
+  if (!image) return "/avatar.png";
   try {
-    new URL(image); // absolute URL check
     return image;
   } catch {
-    return "/avatar.png"; // fallback if invalid
+    return "/avatar.png";
   }
 }
 
@@ -21,6 +21,7 @@ export default function ImageContainer({
   image,
   size = 56,
   isPending,
+  alt,
 }: ImageContainerProps) {
   return (
     <div
@@ -32,13 +33,16 @@ export default function ImageContainer({
           className={`w-full h-full bg-grey-10 animate-pulse rounded-full`}
         ></div>
       ) : (
-        <Image
-          src={getSafeImage(image)}
-          alt="Profile"
-          width={size}
-          height={size}
-          className="w-full h-full object-cover"
-        />
+        <>
+          <Avatar className="size-full">
+            <AvatarImage
+              src={getSafeImage(image)}
+              alt="Profile picture"
+              className="object-cover w-full h-full"
+            />
+            <AvatarFallback>{alt?.slice(0, 3)}</AvatarFallback>
+          </Avatar>
+        </>
       )}
     </div>
   );

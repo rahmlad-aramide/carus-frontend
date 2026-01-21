@@ -28,17 +28,12 @@ export function useGetProfile() {
 }
 
 export function useEditProfile(
-  options?: UseMutationOptions<
-    EditProfileResponse,
-    any,
-    EditProfileInput,
-    unknown
-  >,
+  options?: UseMutationOptions<EditProfileResponse, any, FormData, unknown>,
 ) {
   return useMutation({
-    mutationFn: (data: EditProfileInput) => postEditProfile(data),
+    mutationFn: (data: FormData) => postEditProfile(data),
     meta: {
-      invalidatesQuery: profileKeys.edit(),
+      invalidatesQuery: profileKeys.all,
       successMessage: "Profile Updated!",
       additionalDescription: "Your profile has been updated successfully.",
       errorMessage: "Error updating profile",

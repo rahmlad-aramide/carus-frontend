@@ -9,6 +9,7 @@ export default function Loading() {
         width={1080}
         height={1080}
         className="flex w-auto aspect-square h-full max-h-svh object-center"
+        unoptimized
       />
     </div>
   );

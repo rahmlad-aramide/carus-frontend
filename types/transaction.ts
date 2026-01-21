@@ -5,8 +5,9 @@ export interface Transactions {
   amount: string;
   charges: string;
   date: string;
-  type: string;
-  status: string;
+  type: "airtime" | "cash";
+  status: "pending" | "paid" | "declined";
+  description: string;
 }
 
 export interface TransactionsResponse extends GeneralResponse {
