@@ -57,7 +57,7 @@ http.interceptors.response.use(
         // Exclude specific 401 errors from the refresh token logic
         if (
           error.response.data.message === "Please verify your email first" ||
-          error.response.data.message === "Invalid Credentials"
+          error.response.data.message === "Invalid credentials"
         ) {
           return Promise.reject(error);
         }

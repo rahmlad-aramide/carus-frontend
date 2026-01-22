@@ -72,7 +72,7 @@ export default function Wallet() {
               >
                 <Image
                   src="/convertshape-2.svg"
-                  alt="convert-shape"
+                  alt="convert vector"
                   width={16}
                   height={16}
                   className="object-contain w-4 h-4 lg:w-5 lg:h-5"

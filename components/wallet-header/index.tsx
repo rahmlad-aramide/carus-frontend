@@ -83,7 +83,7 @@ export default function WalletHeader({
             Redeem Points
           </Button>
           <div className="text-[11px] lg:text-base text-primary-80 text-right">
-            <p>Available Balance</p>
+            <p>Naira Balance</p>
             {isLoading ? (
               <Skeleton className="h-10 w-36 mt-1 bg-grey-20" />
             ) : (

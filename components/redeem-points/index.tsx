@@ -172,7 +172,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
   const validatePoints = (points: number) => {
     if (points > userPoints) {
-      toast("Insufficient points");
+      toast.info("Insufficient points");
       return false;
     }
     return true;
@@ -191,7 +191,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
 
   const handleCashSubmit = (values: z.infer<typeof cashSchema>) => {
     if (!values.bank || !values.accountNo || !values.accountName) {
-      return toast("Please fill in all bank details");
+      return toast.info("Please fill in all bank details");
     }
     if (!validatePoints(cashPointsToRedeem)) return;
 

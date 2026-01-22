@@ -1,10 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import {
   Form,
   FormControl,
@@ -18,17 +13,22 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
+import { format, isValid, parse } from "date-fns";
+import { CalendarIcon, Loader2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
-import { CalendarIcon, Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useCompleteGoogleSignup } from "@/queries/auth";
 import { ErrorAlert } from "@/components/error-component";
-import cookie from "@/services/cookie";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import cookie from "@/services/cookie";
 
 const authSchema = z.object({
   phone: z
@@ -66,7 +66,27 @@ export default function Page() {
   });
 
   const onSubmit = async (values: Schema) => {
-    mutate({ ...values, email: googleEmail, country_code: "ng" });
+    const { dob, ...rest } = values;
+
+    const parsedDate = parse(dob, "dd/MM/yyyy", new Date());
+    if (!isValid(parsedDate)) {
+      form.setError("dob", {
+        type: "manual",
+        message: "Please enter a valid date.",
+      });
+      return;
+    }
+
+    const formattedDob = format(parsedDate, "yyyy-MM-dd");
+
+    const payload = {
+      ...rest,
+      dob: formattedDob,
+      country_code: "ng",
+      email: googleEmail,
+    };
+    console.log(payload);
+    mutate(payload);
   };
 
   return (
