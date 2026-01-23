@@ -46,7 +46,7 @@ export default function History() {
                   <p
                     className={`text-sm md:text-base font-bold ${direction === "debit" ? "text-red-500" : "text-[rgb(0,177,91)]"}`}
                   >
-                    {formatToLocaleNaira(amount)}
+                    ₦{formatToLocaleNaira(amount)}
                   </p>
                 </div>
                 <div className="flex justify-between">
