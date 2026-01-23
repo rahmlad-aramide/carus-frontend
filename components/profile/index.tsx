@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEditProfile, useGetProfile } from "@/queries/account";
-import { UserInfo } from "@/types/account";
 import { Loader2 } from "lucide-react";
 import { ErrorAlert } from "../error-component";
 
@@ -78,8 +77,6 @@ export default function Profile() {
         address: profileData.address || "",
       };
 
-      // Pass { keepDefaultValues: true } if you don't want to overwrite
-      // user input during background refreshes
       reset(userData);
       setImage(profileData.avatar || null);
     }

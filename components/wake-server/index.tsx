@@ -57,7 +57,7 @@ export default function WakeServer() {
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_RENDER_API_URL}/health`, {
       mode: "no-cors",
-    }).catch((err) => console.log("Server waking up!"));
+    }).catch((err) => console.log("Server waking up!", err));
 
     const titleStyle = `
       color: #2ecc71; 

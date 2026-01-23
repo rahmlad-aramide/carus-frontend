@@ -10,7 +10,6 @@ interface ImageUploadProps {
 export const ImageUpload = ({
   onFileSelect,
   defaultValue,
-  className,
 }: ImageUploadProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     defaultValue || null,

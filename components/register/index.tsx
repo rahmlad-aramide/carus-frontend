@@ -97,6 +97,7 @@ export default function SignupForm() {
 
   const onSubmit = (values: SignupSchema) => {
     const { option, ...rest } = values;
+    console.log("🚀 ~ onSubmit ~ option:", option);
 
     const parsedDate = parse(rest.dob, "dd/MM/yyyy", new Date());
     if (!isValid(parsedDate)) {
