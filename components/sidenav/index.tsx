@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarTick, Home, Setting2, Wallet } from "iconsax-react";
 import { httpLogout } from "@/services/http";
+import { Menu } from "lucide-react";
 
 export default function SideNav() {
   const pathname = usePathname();
@@ -23,9 +24,9 @@ export default function SideNav() {
       {/* Mobile Button */}
       <button
         onClick={() => setSideBarOpen(!sideBarOpen)}
-        className="fixed top-4 right-8 z-50 md:hidden mt-5"
+        className="fixed top-4 right-8 z-50 md:hidden mt-5 active:scale-90 hover:scale-100 scale-100"
       >
-        ☰
+        <Menu />
       </button>
 
       {/* Overlay */}

@@ -342,7 +342,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                     )}
                   />
                   <Button
-                    className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
+                    className="py-6 w-full text-sm rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
                     disabled={airtimePending}
                   >
                     {airtimePending ? (
@@ -493,7 +493,7 @@ export default function RedeemPoints({ onBack }: RedeemPointsProps) {
                   />
 
                   <Button
-                    className="py-6 w-full text-sm text-white bg-[rgb(2,105,55)] rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
+                    className="py-6 w-full text-sm rounded-[10px] cursor-pointer flex items-center justify-center gap-2 mt-7"
                     disabled={cashPending}
                   >
                     {cashPending ? (
