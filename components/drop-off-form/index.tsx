@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { format, isValid, parse } from "date-fns";
-import Image from "next/image";
 import {
   Popover,
   PopoverTrigger,

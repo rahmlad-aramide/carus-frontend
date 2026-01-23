@@ -87,7 +87,7 @@ export default function WakeServer() {
         "--------------------------------------------------",
       noteStyle,
     );
-  }, []);
+  }, [logo]);
 
   return null;
 }

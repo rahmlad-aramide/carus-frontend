@@ -7,11 +7,11 @@ import {
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Donation, ContributionResponse } from "@/types/donation";
+import { ContributionResponse } from "@/types/donation";
 import { LoadingComponent } from "@/components/loading";
 import { useQueryClient } from "@tanstack/react-query";
 import { useWallet } from "@/queries/wallet";
@@ -72,7 +72,7 @@ export default function DonatePage() {
     contributeMutation.mutate(
       { campaignId: campaign.id, amount },
       {
-        onSuccess: (response: ContributionResponse) => {
+        onSuccess: (_response: ContributionResponse) => {
           queryClient.invalidateQueries({
             queryKey: ["donation-campaign", campaignId],
           });
