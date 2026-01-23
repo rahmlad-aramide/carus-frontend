@@ -57,43 +57,40 @@ export default function Profile() {
   const { reset } = form;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      setAvatarFile(e.target.files[0]);
-      setImage(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files?.[0];
+    if (file) {
+      // If there was a previous local preview, revoke it
+      if (image && image.startsWith("blob:")) {
+        URL.revokeObjectURL(image);
+      }
+      setAvatarFile(file);
+      setImage(URL.createObjectURL(file));
     }
   };
 
   useEffect(() => {
-    const userData: UserInfo = profileData
-      ? {
-          address: profileData.address || "",
-          email: profileData.email,
-          first_name: profileData.first_name,
-          last_name: profileData.last_name,
-          phone: profileData.phone || "",
-          avatar: profileData.avatar || "",
-        }
-      : {
-          address: "",
-          email: "",
-          first_name: "",
-          last_name: "",
-          phone: "",
-          avatar: "",
-        };
-    if (userData) {
+    if (profileData) {
+      const userData = {
+        first_name: profileData.first_name || "",
+        last_name: profileData.last_name || "",
+        email: profileData.email || "",
+        phone: profileData.phone || "",
+        address: profileData.address || "",
+      };
+
+      // Pass { keepDefaultValues: true } if you don't want to overwrite
+      // user input during background refreshes
       reset(userData);
-      setImage(userData.avatar);
+      setImage(profileData.avatar || null);
     }
   }, [profileData, reset]);
 
   const onSubmit = (values: ProfileSchema) => {
     const formData = new FormData();
-    formData.append("first_name", values.first_name);
-    formData.append("last_name", values.last_name);
-    formData.append("email", values.email);
-    formData.append("phone", values.phone);
-    formData.append("address", values.address);
+    // Loop through values to keep it DRY
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
     if (avatarFile) {
       formData.append("avatar", avatarFile);

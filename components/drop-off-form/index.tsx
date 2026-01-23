@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { format, parse } from "date-fns";
+import { format, isValid, parse } from "date-fns";
 import Image from "next/image";
 import {
   Popover,
@@ -24,10 +24,11 @@ import {
 import { CalendarIcon, Loader2 } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import InfoToolTip from "@/components/info-tooltip";
-import { SchedulePickupInput } from "@/types/schedule";
 import { usePostSchedulePickup } from "@/queries/schedule";
 import { ErrorAlert } from "../error-component";
 import WasteSelector from "../waste-selector";
+import { useState } from "react";
+import { ImageUpload } from "../image-upload";
 
 // ✅ Validation schema
 const dropoffFormSchema = z.object({
@@ -47,6 +48,7 @@ type DropoffFormProps = {
 };
 
 export const DropOffForm = ({ onBack, address }: DropoffFormProps) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const form = useForm<dropoffFormSchema>({
     resolver: zodResolver(dropoffFormSchema),
     mode: "onChange",
@@ -59,27 +61,34 @@ export const DropOffForm = ({ onBack, address }: DropoffFormProps) => {
 
   const { mutate, isPending, isError, error } = usePostSchedulePickup();
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const file = e.target.files[0];
-      console.log("Selected file:", file);
-    }
-  };
-
   const onSubmit = (values: dropoffFormSchema) => {
+    // 1. Initialize FormData
+    const formData = new FormData();
+
+    // 2. Handle Date Formatting safely
     const parsedDate = parse(values.date, "dd/MM/yyyy", new Date());
-    const payload: SchedulePickupInput = {
-      ...values,
-      material_amount: Number(values.material_amount),
-      container_amount: Number(values.container_amount),
-      date: format(parsedDate, "yyyy-MM-dd"),
-      material: "plastic",
-      category: "dropoff",
-      address,
-    };
-    mutate(payload, {
+    const formattedDate = isValid(parsedDate)
+      ? format(parsedDate, "yyyy-MM-dd")
+      : values.date;
+
+    // 3. Construct the Payload Logic
+    formData.append("material_amount", String(values.material_amount));
+    formData.append("container_amount", String(values.container_amount));
+    formData.append("date", formattedDate);
+    formData.append("material", "plastic");
+    formData.append("category", "dropoff");
+    formData.append("address", address); // Passed from props
+
+    // 4. Append the image from the state
+    if (selectedFile) {
+      formData.append("image", selectedFile);
+    }
+
+    // 5. Submit
+    mutate(formData, {
       onSuccess: () => {
         form.reset();
+        setSelectedFile(null);
       },
     });
   };
@@ -163,7 +172,7 @@ export const DropOffForm = ({ onBack, address }: DropoffFormProps) => {
               control={form.control}
               name="date"
               render={({ field }) => (
-                <FormItem className="flex flex-col">
+                <FormItem className="flex flex-col z-20">
                   <FormLabel className="text-sm md:text-base text-grey-90">
                     Drop-off Date
                   </FormLabel>
@@ -206,7 +215,7 @@ export const DropOffForm = ({ onBack, address }: DropoffFormProps) => {
             />
 
             {/* Photos of Trash */}
-            <div>
+            <div className="relative -z-10">
               <label
                 htmlFor="photos"
                 className="text-sm md:text-base text-grey-90 font-medium"
@@ -214,26 +223,10 @@ export const DropOffForm = ({ onBack, address }: DropoffFormProps) => {
                 Photos of trash
               </label>
 
-              <div className="bg-[#F3F3F3] flex items-center justify-center w-full h-[96px] rounded-[10px] mt-2 cursor-pointer relative">
-                {/* Hidden Input */}
-                <input
-                  id="photos"
-                  type="file"
-                  accept="image/*"
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  onChange={handleImageChange}
-                />
-
-                {/* Icon */}
-                <div className="relative w-5 h-5 pointer-events-none">
-                  <Image
-                    src="/gallery-import.png"
-                    alt="upload image"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
+              <ImageUpload
+                onFileSelect={(file) => setSelectedFile(file)}
+                defaultValue={null}
+              />
             </div>
             {isError && <ErrorAlert error={error} />}
             {/* Submit Button */}

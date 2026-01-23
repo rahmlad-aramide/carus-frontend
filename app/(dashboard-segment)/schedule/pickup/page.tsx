@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { format, parse } from "date-fns";
+import { format, isValid, parse } from "date-fns";
 import Image from "next/image";
 import {
   Popover,
@@ -30,10 +30,9 @@ import InfoToolTip from "@/components/info-tooltip";
 import WasteSelector from "@/components/waste-selector";
 import { useRouter } from "next/navigation";
 import { usePostSchedulePickup } from "@/queries/schedule";
-import { SchedulePickupInput } from "@/types/schedule";
 import { ErrorAlert } from "@/components/error-component";
+import { ImageUpload } from "@/components/image-upload";
 
-// ✅ Validation schema
 const schedulePickupSchema = z.object({
   material_amount: z.string().min(3, { message: "Minimum of 100 pieces" }),
   container_amount: z
@@ -51,6 +50,7 @@ type SchedulePickupSchema = z.infer<typeof schedulePickupSchema>;
 
 export default function Page() {
   const [callOnArrival, setCallOnArrival] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const router = useRouter();
   const { mutate, isPending, isError, error } = usePostSchedulePickup();
 
@@ -67,28 +67,33 @@ export default function Page() {
     },
   });
 
-  // console.log(form)
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const file = e.target.files[0];
-      console.log("Selected file:", file);
-    }
-  };
-
   const onSubmit = (values: SchedulePickupSchema) => {
+    // 2. Initialize FormData
+    const formData = new FormData();
+
+    // 3. Handle Date Formatting safely
     const parsedDate = parse(values.date, "dd/MM/yyyy", new Date());
-    const payload: SchedulePickupInput = {
-      ...values,
-      material_amount: Number(values.material_amount),
-      container_amount: Number(values.container_amount),
-      date: format(parsedDate, "yyyy-MM-dd"),
-      material: "plastic",
-      category: "pickup",
-    };
-    mutate(payload, {
+    const formattedDate = isValid(parsedDate)
+      ? format(parsedDate, "yyyy-MM-dd")
+      : values.date;
+
+    // 4. Append all text/number fields
+    formData.append("material_amount", String(values.material_amount));
+    formData.append("container_amount", String(values.container_amount));
+    formData.append("date", formattedDate);
+    formData.append("address", values.address);
+    formData.append("material", "plastic");
+    formData.append("category", "pickup");
+
+    // 5. Append the image with the specific key "image"
+    if (selectedFile) {
+      formData.append("image", selectedFile);
+    }
+
+    mutate(formData, {
       onSuccess: () => {
         form.reset();
+        setSelectedFile(null);
       },
     });
   };
@@ -316,7 +321,7 @@ export default function Page() {
           />
 
           {/* Photos of Trash */}
-          <div>
+          <div className="relative -z-10">
             <label
               htmlFor="photos"
               className="text-sm md:text-base text-grey-90 font-medium"
@@ -324,26 +329,10 @@ export default function Page() {
               Photos of trash
             </label>
 
-            <div className="bg-[#F3F3F3] flex items-center justify-center w-full h-[96px] rounded-[10px] mt-2 cursor-pointer relative">
-              {/* Hidden Input */}
-              <input
-                id="photos"
-                type="file"
-                accept="image/*"
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                onChange={handleImageChange}
-              />
-
-              {/* Icon */}
-              <div className="relative w-5 h-5 pointer-events-none">
-                <Image
-                  src="/gallery-import.png"
-                  alt="upload image"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
+            <ImageUpload
+              onFileSelect={(file) => setSelectedFile(file)}
+              defaultValue={null}
+            />
           </div>
 
           {/*Call on Arrival */}

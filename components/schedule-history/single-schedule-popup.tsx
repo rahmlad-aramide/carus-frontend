@@ -128,10 +128,10 @@ export const SingleSchedulePopup: FC<ISingleScheduleProp> = ({
             </div>
           </div>
           {activeTab !== "completed" && (
-            <div className="flex justify-end gap-10 mt-10">
+            <div className="flex gap-4 sm:gap-10 mt-10">
               <Button
                 type="button"
-                className="w-[180px] py-2 text-[9px] md:text-sm font-bold text-green-60 bg-white border border-primary-60 rounded-[10px] cursor-pointer"
+                className="flex-1 py-2 text-[9px] md:text-sm font-bold text-green-60 bg-white border border-primary-60 rounded-[10px] cursor-pointer"
                 onClick={() => setShowInnerModal("delete")}
               >
                 Delete
@@ -139,7 +139,7 @@ export const SingleSchedulePopup: FC<ISingleScheduleProp> = ({
               {activeTab !== "missed" && (
                 <Button
                   type="button"
-                  className="w-[180px] py-2 text-[9px] text-white md:text-sm font-bold bg-primary-60 rounded-[10px] cursor-pointer"
+                  className="flex-1 py-2 text-[9px] text-white md:text-sm font-bold bg-primary-60 rounded-[10px] cursor-pointer"
                   onClick={() => setShowInnerModal("missed")}
                 >
                   Missed

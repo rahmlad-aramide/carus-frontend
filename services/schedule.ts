@@ -15,7 +15,7 @@ export async function getScheduleById(id?: string): Promise<ScheduleResponse> {
 }
 
 export async function postSchedulePickup(
-  formData: SchedulePickupInput,
+  formData: FormData,
 ): Promise<PostScheduleResponse> {
   return await http.post("/schedule/pickup", formData);
 }

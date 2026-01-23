@@ -36,14 +36,10 @@ export function useGetScheduleByIdQueryOptions(scheduleId: string) {
 }
 
 export function usePostSchedulePickup(
-  options?: UseMutationOptions<
-    PostScheduleResponse,
-    CustomError,
-    SchedulePickupInput
-  >,
+  options?: UseMutationOptions<PostScheduleResponse, CustomError, FormData>,
 ) {
   return useMutation({
-    mutationFn: (data: SchedulePickupInput) => postSchedulePickup(data),
+    mutationFn: (data: FormData) => postSchedulePickup(data),
     meta: {
       invalidatesQuery: scheduleKeys.pickup(),
       successMessage: "Pickup Scheduled!",
