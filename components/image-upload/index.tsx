@@ -42,10 +42,18 @@ export const ImageUpload = ({
     <div
       style={
         previewUrl
-          ? { backgroundImage: `url(${previewUrl})`, minHeight: 250 }
-          : { backgroundColor: "#F3F3F3" }
+          ? {
+              backgroundImage: `url(${previewUrl})`,
+              minHeight: 250,
+              backgroundSize: "cover",
+            }
+          : {
+              backgroundImage: 'url("/gallery-import.png")',
+              backgroundColor: "#F3F3F3",
+              backgroundSize: 16,
+            }
       }
-      className="bg-cover bg-center flex items-center justify-center w-full h-[96px] rounded-[10px] mt-2 cursor-pointer relative"
+      className="bg-center bg-no-repeat flex items-center justify-center w-full h-[96px] rounded-[10px] mt-2 cursor-pointer relative"
     >
       {/* Hidden Input */}
       <input
@@ -57,7 +65,7 @@ export const ImageUpload = ({
       />
 
       {/* Icon */}
-      <div className="relative w-4 h-4 pointer-events-none">
+      <div className="relative w-4 h-4 pointer-events-none -z-10">
         <Image
           src="/gallery-import.png"
           alt="upload image"

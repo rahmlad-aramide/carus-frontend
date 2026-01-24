@@ -48,6 +48,8 @@ type DropoffFormProps = {
 
 export const DropOffForm = ({ onBack, address }: DropoffFormProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [openDatePicker, setOpenDatePicker] = useState(false);
+
   const form = useForm<dropoffFormSchema>({
     resolver: zodResolver(dropoffFormSchema),
     mode: "onChange",
@@ -175,7 +177,10 @@ export const DropOffForm = ({ onBack, address }: DropoffFormProps) => {
                   <FormLabel className="text-sm md:text-base text-grey-90">
                     Drop-off Date
                   </FormLabel>
-                  <Popover>
+                  <Popover
+                    open={openDatePicker}
+                    onOpenChange={setOpenDatePicker}
+                  >
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
@@ -200,6 +205,7 @@ export const DropOffForm = ({ onBack, address }: DropoffFormProps) => {
                         onSelect={(selected) => {
                           if (selected) {
                             field.onChange(format(selected, "dd/MM/yyyy"));
+                            setOpenDatePicker(false);
                           }
                         }}
                         autoFocus

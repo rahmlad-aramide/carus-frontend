@@ -51,6 +51,7 @@ type SchedulePickupSchema = z.infer<typeof schedulePickupSchema>;
 export default function Page() {
   const [callOnArrival, setCallOnArrival] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [openDatePicker, setOpenDatePicker] = useState(false);
   const router = useRouter();
   const { mutate, isPending, isError, error } = usePostSchedulePickup();
 
@@ -227,7 +228,7 @@ export default function Page() {
                   <div className="relative">
                     <Input
                       className="rounded-[10px] w-full py-6 text-sm bg-[#F3F3F3] border-none"
-                      placeholder="Turn on location"
+                      placeholder="Enter pick up address"
                       {...field}
                     />
                     <button
@@ -284,7 +285,7 @@ export default function Page() {
                 <FormLabel className="text-sm md:text-base text-grey-90">
                   Pick up Date
                 </FormLabel>
-                <Popover>
+                <Popover open={openDatePicker} onOpenChange={setOpenDatePicker}>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
@@ -300,7 +301,7 @@ export default function Page() {
                       <CalendarIcon className="flex justify-end h-4 w-4" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-auto p-0 z-50" align="start">
                     <Calendar
                       mode="single"
                       selected={field.value ? new Date(field.value) : undefined}
@@ -308,6 +309,7 @@ export default function Page() {
                         if (selected) {
                           field.onChange(format(selected, "dd/MM/yyyy"));
                         }
+                        setOpenDatePicker(false);
                       }}
                       autoFocus
                       captionLayout="dropdown"
@@ -321,7 +323,7 @@ export default function Page() {
           />
 
           {/* Photos of Trash */}
-          <div className="relative -z-10">
+          <div>
             <label
               htmlFor="photos"
               className="text-sm md:text-base text-grey-90 font-medium"

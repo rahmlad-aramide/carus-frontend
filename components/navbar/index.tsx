@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Menu } from "lucide-react";
 
 export default function NavBar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,20 +23,19 @@ export default function NavBar() {
               className="w-[117px] h-[32px]"
             />
           </Link>
-
-          {/* nav links */}
-          <nav className="hidden md:flex items-center space-x-20 md:space-x-10 lg:space-x-20 xl:space-x-30">
-            <Link href="/" className="text-primary-60 font-bold">
-              Home
-            </Link>
-            <Link href="" className="text-grey-100">
-              Service
-            </Link>
-            <Link href="" className="text-grey-100">
-              Contact
-            </Link>
-          </nav>
         </div>
+        {/* nav links */}
+        <nav className="hidden md:flex items-center space-x-20 md:space-x-10 lg:space-x-20 xl:space-x-30">
+          <Link href="/" className="text-primary-60 font-bold">
+            Home
+          </Link>
+          <Link href="#" className="text-grey-100">
+            Services
+          </Link>
+          <Link href="#" className="text-grey-100">
+            Contact
+          </Link>
+        </nav>
 
         {/* Right side: auth buttons */}
         <div className="flex items-center gap-4">
@@ -68,9 +68,9 @@ export default function NavBar() {
 
           <button
             onClick={() => setSidebarOpen(true)}
-            className="px-2 text-[#292D32] text-2xl"
+            className="px-2 text-[#292D32] text-2xl active:scale-90 hover:scale-100 scale-100"
           >
-            ☰
+            <Menu />
           </button>
         </div>
 
@@ -82,7 +82,7 @@ export default function NavBar() {
         )}
 
         <aside
-          className={`pb-8 md:hidden fixed top-0 w-full bg-white z-50 transform transition-transform duration-300 ease-in-out 
+          className={`pb-8 md:hidden fixed top-0 w-full shadow-2xl bg-white z-50 transform transition-transform duration-300 ease-in-out 
         ${sidebarOpen ? "translate-x-0" : "translate-x-full"}
         `}
         >
@@ -113,7 +113,7 @@ export default function NavBar() {
             </Link>
 
             <Link
-              href="/service"
+              href="#"
               onClick={() => setSidebarOpen(false)}
               className="text-grey-100"
             >
@@ -121,7 +121,7 @@ export default function NavBar() {
             </Link>
 
             <Link
-              href="/contact"
+              href="#"
               onClick={() => setSidebarOpen(false)}
               className="text-grey-100"
             >
@@ -133,14 +133,14 @@ export default function NavBar() {
             <Link
               href="/login"
               onClick={() => setSidebarOpen(false)}
-              className="px-4 py-3 text-center text-primary-60 font-bold rounded-lg border border-primary-60 w-[155px]"
+              className="px-4 py-2 text-center text-primary-60 font-bold rounded-lg border border-primary-60 w-[155px]"
             >
               Log In
             </Link>
             <Link
               href="/register"
               onClick={() => setSidebarOpen(false)}
-              className="px-4 py-3 text-center bg-primary text-white rounded-lg w-[155px]"
+              className="px-4 py-2 text-center bg-primary text-white rounded-lg w-[155px]"
             >
               Sign Up
             </Link>

@@ -12,11 +12,11 @@ import { LoadingComponent } from "@/components/loading";
 import { Empty } from "@/components/empty";
 import { useWallet } from "@/queries/wallet";
 import { formatToLocaleNaira } from "@/lib/helpers";
-import WalletHeader from "@/components/wallet-header";
+import { ErrorComponent } from "@/components/error-component";
 import ConvertPoints from "@/components/convert-points";
 import History from "@/components/transaction-history";
 import RedeemPoints from "@/components/redeem-points";
-import { ErrorComponent } from "@/components/error-component";
+import WalletHeader from "@/components/wallet-header";
 
 export default function Wallet() {
   const [showConvertPoints, setShowConvertPoints] = useState(false);
@@ -102,12 +102,10 @@ export default function Wallet() {
           {(isError || isPending || topCampaigns.length === 0) && (
             <div className="flex flex-col items-center justify-center border border-grey-10 rounded-[10px] p-2 h-[250px] space-y-3 xl:overflow-y-auto w-full">
               {isError && (
-                <div className="text-center">
-                  <ErrorComponent
-                    error={campaignError}
-                    refetch={refetchCampaigns}
-                  />
-                </div>
+                <ErrorComponent
+                  error={campaignError}
+                  refetch={refetchCampaigns}
+                />
               )}
 
               {isPending && (
