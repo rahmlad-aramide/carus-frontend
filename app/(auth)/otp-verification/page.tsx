@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/input-otp";
 import z from "zod";
 import cookie from "@/services/cookie";
+import { useCountdown } from "@/hooks/useCountdown";
+import Link from "next/link";
 
 const FormSchema = z.object({
   otp: z.string().min(6, {
@@ -39,7 +41,15 @@ export default function VerifyRegistrationOTP() {
       otp: "",
     },
   });
-  const [timeLeft, setTimeLeft] = useState(600);
+  const { timeLeft, resetTimer } = useCountdown("otp_expiry", 10);
+  const formatTime = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const isExpired = timeLeft <= 0;
 
   const { mutate, isPending, isError, error } = useVerifyOtp({
     onSuccess(data) {
@@ -55,28 +65,12 @@ export default function VerifyRegistrationOTP() {
     error: errorResendingOtp,
   } = useResendOtp({
     onSuccess() {
-      setTimeLeft(600);
+      resetTimer();
+      toast.success("OTP Resent", {
+        description: "A new verification code has been sent to your email.",
+      });
     },
   });
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      // Decrement the timeLeft by 1 second
-      setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-      // Check if the countdown has reached zero
-      if (timeLeft === 0) {
-        // Stop the countdown
-        clearInterval(intervalId);
-        // Call the onTimeout callback function (if provided)
-      }
-    }, 1000); // Update every 1 second
-
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, [timeLeft]);
-
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
 
   const handleResentOTP = () => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -160,10 +154,10 @@ export default function VerifyRegistrationOTP() {
                     </FormItem>
                   )}
                 />
-                {timeLeft > 0 ? (
+                {!isExpired ? (
                   <p className="text-center my-7">
-                    Code expires in {minutes > 0 && `${minutes} minutes`}{" "}
-                    {seconds} seconds
+                    Code expires in{" "}
+                    <span className="font-bold">{formatTime(timeLeft)}</span>
                   </p>
                 ) : isResendingError ? (
                   <ErrorAlert error={errorResendingOtp} />
@@ -194,6 +188,15 @@ export default function VerifyRegistrationOTP() {
                   )}
                 </Button>
                 {isError && <ErrorAlert error={error} />}
+                {(isError && error.response.data.message) ===
+                  "Account has already been verified" && (
+                  <Link
+                    href="/login"
+                    className="text-center text-primary hover:underline cursor-pointer"
+                  >
+                    Proceed to Login
+                  </Link>
+                )}
               </form>
             </Form>
           </div>

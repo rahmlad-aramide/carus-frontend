@@ -39,10 +39,30 @@ const signupSchema = z.object({
   email: z.email({ message: "Invalid email address" }),
   phone: z
     .string()
-    .regex(/^\d{10}$/, { message: "Enter 10 digits without the leading 0" }),
+    .regex(/^(\d{10}|\d{11}|\+234\d{10})$/, {
+      message: "Enter a valid phone number",
+    })
+    .transform((val) => {
+      if (val.length === 11) {
+        return val.substring(1);
+      }
+      if (val.startsWith("+234")) {
+        return val.substring(4);
+      }
+      return val;
+    }),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters" }),
+    .min(8, { message: "Password must be at least 8 characters" })
+    .regex(/[A-Z]/, {
+      message: "Password must include at least one uppercase letter",
+    })
+    .regex(/[a-z]/, {
+      message: "Password must include at least one lowercase letter",
+    })
+    .regex(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/, {
+      message: "Password must include at least one special character",
+    }),
   address: z.string().optional(),
   gender: z.string().nonempty({ message: "Please select a gender" }),
   dob: z.string().regex(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, {
@@ -85,6 +105,7 @@ export default function SignupForm() {
   const [page, setPage] = useState(1);
   const [accepted, setAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [openDatePicker, setOpenDatePicker] = useState(false);
 
   const handleContinue = async () => {
     const isValid = await form.trigger(
@@ -96,8 +117,12 @@ export default function SignupForm() {
   };
 
   const onSubmit = (values: SignupSchema) => {
+    if (!accepted) {
+      toast.info("You must accept the Terms and Conditions to proceed.");
+      return;
+    }
     const { option, ...rest } = values;
-    console.log("🚀 ~ onSubmit ~ option:", option);
+    console.log("🚀 Account type:", option);
 
     const parsedDate = parse(rest.dob, "dd/MM/yyyy", new Date());
     if (!isValid(parsedDate)) {
@@ -177,12 +202,13 @@ export default function SignupForm() {
                   page >= 1 ? "bg-[#026937]" : "bg-[#D3D3D3]"
                 }`}
               />
-              <div
+              <button
+                onClick={() => setPage(1)}
                 className={`w-4 h-4 flex items-center mr-2 justify-center rounded-full text-white text-[9px] 
         ${page >= 1 ? "bg-[#026937]" : "bg-[#D3D3D3]"}`}
               >
                 1
-              </div>
+              </button>
               <div
                 className={`h-[2px] w-37 rounded-[30px] mr-2 ${
                   page >= 2 ? "bg-[#026937]" : "bg-[#D3D3D3]"
@@ -455,7 +481,10 @@ export default function SignupForm() {
                           <FormLabel className="text-base font-bold">
                             Date of Birth
                           </FormLabel>
-                          <Popover>
+                          <Popover
+                            open={openDatePicker}
+                            onOpenChange={setOpenDatePicker}
+                          >
                             <PopoverTrigger asChild>
                               <Button
                                 variant={"outline"}
@@ -489,6 +518,7 @@ export default function SignupForm() {
                                     field.onChange(
                                       format(selected, "dd/MM/yyyy"),
                                     );
+                                    setOpenDatePicker(false);
                                   }
                                 }}
                                 autoFocus

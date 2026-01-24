@@ -18,7 +18,7 @@ import { CalendarIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -45,6 +45,8 @@ type Schema = z.infer<typeof authSchema>;
 export default function Page() {
   const router = useRouter();
   const googleEmail = cookie.get("google-email");
+  const [openDatePicker, setOpenDatePicker] = useState(false);
+
   const { mutate, isError, isPending, error } = useCompleteGoogleSignup({
     onSuccess(data) {
       cookie.set("auth-user", data.data);
@@ -202,7 +204,10 @@ export default function Page() {
                         <FormLabel className="text-base font-bold">
                           Date of Birth
                         </FormLabel>
-                        <Popover>
+                        <Popover
+                          open={openDatePicker}
+                          onOpenChange={setOpenDatePicker}
+                        >
                           <PopoverTrigger asChild>
                             <Button
                               variant={"outline"}
@@ -231,6 +236,7 @@ export default function Page() {
                                   field.onChange(
                                     format(selected, "dd/MM/yyyy"),
                                   );
+                                  setOpenDatePicker(false);
                                 }
                               }}
                               autoFocus

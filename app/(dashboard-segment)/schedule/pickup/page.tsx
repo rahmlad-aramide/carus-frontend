@@ -51,6 +51,7 @@ type SchedulePickupSchema = z.infer<typeof schedulePickupSchema>;
 export default function Page() {
   const [callOnArrival, setCallOnArrival] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [openDatePicker, setOpenDatePicker] = useState(false);
   const router = useRouter();
   const { mutate, isPending, isError, error } = usePostSchedulePickup();
 
@@ -284,7 +285,7 @@ export default function Page() {
                 <FormLabel className="text-sm md:text-base text-grey-90">
                   Pick up Date
                 </FormLabel>
-                <Popover>
+                <Popover open={openDatePicker} onOpenChange={setOpenDatePicker}>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
@@ -308,6 +309,7 @@ export default function Page() {
                         if (selected) {
                           field.onChange(format(selected, "dd/MM/yyyy"));
                         }
+                        setOpenDatePicker(false);
                       }}
                       autoFocus
                       captionLayout="dropdown"
