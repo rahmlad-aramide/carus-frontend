@@ -119,7 +119,36 @@ export default function HeroSection() {
           </Link>
         </div>
       </div>
+      <div className="flex flex-1 flex-col-reverse justify-center md:flex-row-reverse md:justify-between gap-x-10 md:gap-x-15 lg:gap-x-20 md:max-w-6xl items-center mt-28 mx-auto px-7 md:px-10">
+        <div className="w-full md:w-1/2 my-auto flex flex-col items-center justify-center md:items-start">
+          <p className="text-2xl lg:text-3xl xl:text-4xl font-black text-center md:text-left lg:text-left">
+            Schedule Pickup
+          </p>
+          <p className="text-base lg:text-xl xl:text-2xl mt-4 text-center md:text-justify max-w-2xl">
+            Scheduling a waste pickup is quick and easy. Start by logging into
+            your account and heading to the Schedule Page. Select the type of
+            waste you wish to recycle, such as plastics, electronics, or
+            organics. Choose your preferred pickup date and time slot from our
+            available options. Provide your exact location details for accurate
+            collection. Once submitted, our system will confirm your request and
+            assign a nearby collection partner. With every scheduled collection,
+            you&apos;re taking a step towards a cleaner, greener planet.
+          </p>
+        </div>
 
+        <div className="w-full md:w-1/2 flex items-center justify-center bg-[#ECF6F2] rounded-[20px] px-4 md:py-0 lg:py-10 mb-8">
+          <div className="relative w-full h-[350px] md:h-[310px] xl:h-[400px] flex">
+            <Image
+              src="/schedule.gif"
+              alt="preview"
+              className="rounded-3xl my-auto shadow-lg"
+              width={1512}
+              height={1024}
+              unoptimized
+            />
+          </div>
+        </div>
+      </div>
       <div className="flex flex-1 flex-col-reverse justify-center md:flex-row md:justify-between gap-x-10 md:gap-x-15 lg:gap-x-20 md:max-w-6xl items-center mt-28 mx-auto px-7 md:px-10">
         <div className="w-full md:w-1/2 my-auto flex flex-col items-center justify-center md:items-start">
           <p className="text-2xl lg:text-3xl xl:text-4xl font-black text-center md:text-left lg:text-left">

@@ -72,7 +72,7 @@ export default function DonatePage() {
     contributeMutation.mutate(
       { campaignId: campaign.id, amount },
       {
-        onSuccess: (_response: ContributionResponse) => {
+        onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: ["donation-campaign", campaignId],
           });

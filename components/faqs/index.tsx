@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     id: 2,
-    question: "How to earn points on Ridot?",
+    question: "How to earn points on Carus?",
     answer:
       "We reward users with points for recycling. By properly sorting and disposing of recyclable materials, such as plastics, glass, paper, and metal, you can accumulate points based on the volume or weight of recyclables you recycle.",
   },
@@ -36,7 +36,7 @@ export default function Faqs() {
     setSelectedQuesId((prev) => (prev === id ? null : id));
   };
   return (
-    <div className="flex flex-col md:flex-row justify-center gap-x-20 px-7 md:px-10 xl:px-20 mt-40 mb-30">
+    <div className="flex flex-col md:flex-row justify-center gap-x-20 px-7 md:px-10 xl:px-20 mt-20 mb-30">
       <div className="space-y-3 md:w-1/3 mb-15 md:mb-0">
         <p className="text-base">FAQs</p>
         <p className="text-2xl md:text-5xl lg:text-[58px] leading-snug font-black ">

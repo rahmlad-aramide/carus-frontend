@@ -13,39 +13,22 @@ export default function DownloadSection() {
             <p className="text-white text-center font-black text-2xl leading-tight">
               Streamline your waste
               <br /> management efforts with
-              <br /> our powerful app
+              <br /> our powerful platform
             </p>
             <p className="text-base lg:text-xl text-white text-center">
-              Get our mobile app on any device
-              <br /> you use on the App Store or Google
-              <br /> Playstore
+              Access our platform on any device
+              <br /> with a web browser and start
+              <br /> recycling today
             </p>
 
-            <div className="flex gap-5 mt-15 ">
-              <div className="flex bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-2 py-2 space-x-1 items-center">
-                <div className="relative w-6 h-6">
-                  <Image
-                    src="/playstore.png"
-                    alt="PlayStore Icon"
-                    width={24}
-                    height={24}
-                    priority
-                  />
-                </div>
-                <p className="text-sm">Get on Playstore</p>
-              </div>
-              <div className="flex bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-2 py-2 space-x-1 items-center">
-                <div className="relative w-6 h-6">
-                  <Image
-                    src="/apple.png"
-                    alt="Apple Icon"
-                    width={24}
-                    height={24}
-                    priority
-                  />
-                </div>
-                <p className="text-sm">Get on App Store</p>
-              </div>
+            <div className="flex justify-center mt-6">
+              <Link
+                href="/register"
+                className="flex space-x-2 bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-4 py-2 items-center hover:bg-primary-50 duration-300"
+              >
+                <p className="text-sm font-semibold">Get Started Now</p>
+                <TbArrowNarrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </div>
@@ -58,38 +41,21 @@ export default function DownloadSection() {
           <div className="w-full space-y-6 md:pl-10 md:w-2/3">
             <p className="text-white text-center md:text-left font-black md:text-2xl lg:text-[26px] xl:text-[33px] leading-tight">
               Streamline your waste management <br /> efforts with our powerful
-              app
+              platform
             </p>
             <p className="text-base lg:text-xl text-white">
-              Get our mobile app on any device you use on the <br /> App Store
-              or Google Playstore
+              Access our platform on any device with a web browser <br /> and
+              start recycling today
             </p>
 
-            <div className="flex gap-7 mt-15">
-              <div className="flex bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-3 py-2 space-x-2 items-center">
-                <div className="relative w-6 h-6">
-                  <Image
-                    src="/playstore.png"
-                    alt="PlayStore Icon"
-                    width={24}
-                    height={24}
-                    priority
-                  />
-                </div>
-                <p className="text-base">Get on Playstore</p>
-              </div>
-              <div className="flex bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-3 py-2 space-x-2 items-center">
-                <div className="relative w-6 h-6">
-                  <Image
-                    src="/apple.png"
-                    alt="Apple Icon"
-                    width={24}
-                    height={24}
-                    priority
-                  />
-                </div>
-                <p className="text-base">Get on App Store</p>
-              </div>
+            <div className="flex mt-6">
+              <Link
+                href="/register"
+                className="flex space-x-2 bg-[#D6F3E5] border border-primary-50 rounded-[6px] px-4 py-2 items-center hover:bg-primary-50 duration-300"
+              >
+                <p className="text-base font-semibold">Get Started Now</p>
+                <TbArrowNarrowRight className="h-5 w-5" />
+              </Link>
             </div>
           </div>
 

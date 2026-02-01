@@ -10,9 +10,9 @@ import { DropOffForm } from "@/components/drop-off-form";
 
 const DropOffCentres = [
   {
-    centre: "Lawma Trash Centre",
-    address: "3 Obafemi Awolowo Way, Ikeja 101233, Ikeja, Lagos",
-    time: "9:00am - 4:00pm",
+    centre: "CarusRecycling Collection Centre",
+    address: "Kogberegbe street, off Ikotun-egbe road, Ikotun, Lagos",
+    time: "9:00am - 5:00pm",
   },
 ];
 

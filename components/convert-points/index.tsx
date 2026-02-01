@@ -203,7 +203,7 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
                 height={16}
                 className="object-contain w-4 h-4 lg:w-5 lg:h-5"
               />
-              {isPending ? "Processing..." : "Convert Points"}
+              Convert Points
             </Button>
           </form>
         </Form>
