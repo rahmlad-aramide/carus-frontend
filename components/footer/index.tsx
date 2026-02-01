@@ -70,6 +70,8 @@ export default function Footer() {
           <Link
             href="https://www.facebook.com/profile.php?id=61555591944603&mibextid=LQQJ4d"
             className="text-white bg-primary-60 p-2 rounded-[6px] text-base"
+            target="_blank"
+            rel="noreferrer noopener"
           >
             <FaFacebook />
           </Link>
@@ -77,6 +79,8 @@ export default function Footer() {
           <Link
             href="https://www.linkedin.com/company/carusrecycling/?viewAsMember=true"
             className="text-white bg-primary-60 p-2 rounded-[6px] text-base"
+            target="_blank"
+            rel="noreferrer noopener"
           >
             <FaLinkedin />
           </Link>
@@ -84,6 +88,8 @@ export default function Footer() {
           <Link
             href="https://x.com/carusrecycling"
             className="text-white bg-primary-60 p-2 rounded-[6px] text-base"
+            target="_blank"
+            rel="noreferrer noopener"
           >
             <FaTwitter />
           </Link>

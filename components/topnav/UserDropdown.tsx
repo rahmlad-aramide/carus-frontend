@@ -28,7 +28,7 @@ export default function UserDropdown() {
         <span className="mr-3 h-14 w-14 overflow-hidden rounded-full">
           <ImageContainer
             image={data?.data?.avatar}
-            alt={data?.data.first_name}
+            alt={data?.data?.first_name}
             isPending={isPending}
           />
         </span>
@@ -60,9 +60,9 @@ export default function UserDropdown() {
       >
         <div>
           <span className="block font-medium">
-            {data?.data.first_name} {data?.data.last_name}
+            {data?.data?.first_name} {data?.data?.last_name}
           </span>
-          <span className="mt-0.5 block">{data?.data.email}</span>
+          <span className="mt-0.5 block">{data?.data?.email}</span>
         </div>
 
         <ul className="flex flex-col gap-1 pt-4 pb-3">
