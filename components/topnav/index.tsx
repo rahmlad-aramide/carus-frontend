@@ -3,8 +3,8 @@
 import { useGetProfile } from "@/queries/account";
 import { usePathname } from "next/navigation";
 import NotificationBell from "@/components/notification-bell";
-import ImageContainer from "@/components/image-container";
 import { toast } from "sonner";
+import UserDropdown from "./UserDropdown";
 
 export const TopNav = () => {
   const { data, isPending, isError, error } = useGetProfile();
@@ -60,11 +60,7 @@ export const TopNav = () => {
 
         <div className="hidden md:flex items-center gap-5">
           <NotificationBell />
-          <ImageContainer
-            image={data?.data?.avatar}
-            alt={data?.data.first_name}
-            isPending={isPending}
-          />
+          <UserDropdown />
         </div>
       </div>
     </header>

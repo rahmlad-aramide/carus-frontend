@@ -128,8 +128,8 @@ export default function Community() {
   }, [cards]);
 
   return (
-    <div>
-      <h1 className="text-[24px] md:text-[33px] lg:text-[48px] font-black text-center mt-20">
+    <div className="py-20">
+      <h1 className="text-[24px] md:text-[33px] lg:text-[48px] font-black text-center">
         Join Our Community{" "}
       </h1>
       <div className="overflow-hidden w-full mt-15">

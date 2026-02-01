@@ -27,7 +27,7 @@ export default function Notification() {
   return (
     <div className="px-7 md:px-15 mt-5 bg-[#F3F3F3] rounded-[10px] pt-5 md:pt-15 pb-20 min-h-screen">
       {/* Login Alerts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 space-y-5 md:space-y-10">
+      <div className="hidden grid-cols-1 md:grid-cols-2 space-y-5 md:space-y-10">
         <div>
           <p className="text-base text-grey-90 font-bold leading-loose">
             Login Alerts

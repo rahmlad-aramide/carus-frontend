@@ -29,10 +29,10 @@ export default function NavBar() {
           <Link href="/" className="text-primary-60 font-bold">
             Home
           </Link>
-          <Link href="#" className="text-grey-100">
+          <Link href="#services" className="text-grey-100">
             Services
           </Link>
-          <Link href="#" className="text-grey-100">
+          <Link href="#contact" className="text-grey-100">
             Contact
           </Link>
         </nav>
@@ -113,15 +113,15 @@ export default function NavBar() {
             </Link>
 
             <Link
-              href="#"
+              href="#services"
               onClick={() => setSidebarOpen(false)}
               className="text-grey-100"
             >
-              Service
+              Services
             </Link>
 
             <Link
-              href="#"
+              href="#contact"
               onClick={() => setSidebarOpen(false)}
               className="text-grey-100"
             >

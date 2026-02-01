@@ -1,5 +1,6 @@
 import NavBar from "@/components/navbar";
 import HeroSection from "@/components/hero-section";
+import Services from "@/components/services";
 import Community from "@/components/community";
 import Faqs from "@/components/faqs";
 import DownloadSection from "@/components/download-section";
@@ -10,9 +11,10 @@ export default function Home() {
     <div>
       <NavBar />
       <HeroSection />
+      <Services />
       <Community />
-      <Faqs />
       <DownloadSection />
+      <Faqs />
       <Footer />
     </div>
   );

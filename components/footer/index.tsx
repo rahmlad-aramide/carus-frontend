@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FaWhatsapp, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaLinkedin, FaTwitter, FaInstagram, FaFacebook } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <div className="">
+    <div className="" id="contact">
       {/* flex form and bg image */}
       <div className="w-full flex flex-col md:flex-row md:px-10 lg:px-15 md:gap-20 lg:gap-40 mt-15 md:mt-30">
         {/* Logo + text */}
@@ -27,23 +27,38 @@ export default function Footer() {
 
         <div className="flex px-7 md:px-0 gap-x-30 md:gap-x-30 lg:gap-x-50">
           <div className="space-y-4 md:w-1/5">
-            <p className="text-grey-30 text-xl font-bold">Product</p>
-            <p className="text-grey-90">Recycle</p>
-            <p className="text-grey-90">Business</p>
-            <p className="text-grey-90">Donations</p>
+            <p className="text-grey-30 text-xl font-bold">Products</p>
+            <ul className="flex flex-col space-y-4">
+              <li>
+                <Link href="/login" className="text-grey-90">
+                  Recycle
+                </Link>
+              </li>
+              <li>
+                <Link href="/login" className="text-grey-90">
+                  Donations
+                </Link>
+              </li>
+            </ul>
           </div>
 
           <div className="flex flex-col space-y-4 md:w-1/5">
             <p className="text-grey-30 text-xl font-bold">Company</p>
-            <Link href="/contact" className="text-grey-90">
+            <Link
+              href="mailto:carusrecycling@gmail.com"
+              className="text-grey-90"
+            >
               Contact
             </Link>
-            <Link href="/about" className="text-grey-90">
+            <Link href="/login" className="text-grey-90">
+              Business
+            </Link>
+            {/* <Link href="/#about" className="text-grey-90">
               About
             </Link>
             <Link href="/blog" className="text-grey-90">
               Blog
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
@@ -53,28 +68,30 @@ export default function Footer() {
         {/* Social Icons */}
         <div className="flex justify-start flex-1 space-x-4 pt-5">
           <Link
-            href=""
+            href="https://www.facebook.com/profile.php?id=61555591944603&mibextid=LQQJ4d"
             className="text-white bg-primary-60 p-2 rounded-[6px] text-base"
           >
-            <FaWhatsapp />
+            <FaFacebook />
           </Link>
 
           <Link
-            href=""
+            href="https://www.linkedin.com/company/carusrecycling/?viewAsMember=true"
             className="text-white bg-primary-60 p-2 rounded-[6px] text-base"
           >
             <FaLinkedin />
           </Link>
 
           <Link
-            href=""
+            href="https://x.com/carusrecycling"
             className="text-white bg-primary-60 p-2 rounded-[6px] text-base"
           >
             <FaTwitter />
           </Link>
 
           <Link
-            href=""
+            href="https://www.instagram.com/carusrecycling"
+            target="_blank"
+            rel="noreferrer noopener"
             className="text-white bg-primary-60 p-2 rounded-[6px] text-base"
           >
             <FaInstagram />
@@ -83,7 +100,7 @@ export default function Footer() {
       </div>
 
       <p className="mt-7 mb-15 text-primary-60 px-7 md:px-10 lg:px-15">
-        Copyright © Carus. 2025.
+        Copyright © Carus 2025.
       </p>
     </div>
   );
