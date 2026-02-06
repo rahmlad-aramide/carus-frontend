@@ -105,13 +105,15 @@ export default function Page() {
             </div>
           </div>
 
-          <Link
-            href={"https://chat.whatsapp.com/LtZQhfRGaRG2Fe3ZJ2USOY?mode=gi_c"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div className="mt-7">
-              <p className="text-sm md:text-xl font-bold">Tips and Resources</p>
+          <div className="mt-7">
+            <p className="text-sm md:text-xl font-bold">Tips and Resources</p>
+            <Link
+              href={
+                "https://chat.whatsapp.com/LtZQhfRGaRG2Fe3ZJ2USOY?mode=gi_c"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[118px] lg:h-[195px] w-full rounded-[12px] overflow-hidden mt-3 px-8 pt-5">
                 <Image
                   src="/Community.png"
@@ -125,8 +127,8 @@ export default function Page() {
                   <br /> community
                 </p>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
         </div>
 
         <aside className="xl:w-1/3 xl:mt-25 sticky top-0">
