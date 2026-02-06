@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import History from "@/components/transaction-history";
+import { useState } from "react";
+
 import EarnReward from "@/components/earn-reward";
+import History from "@/components/transaction-history";
 import RedeemPoints from "@/components/redeem-points";
 
 export default function Page() {
@@ -104,22 +105,28 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="mt-7">
-            <p className="text-sm md:text-xl font-bold">Tips and Resources</p>
-            <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[118px] lg:h-[195px] w-full rounded-[12px] overflow-hidden mt-3 px-8 pt-5">
-              <Image
-                src="/Community.png"
-                alt="Waste Bin"
-                width={500}
-                height={300}
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-h-full object-contain"
-              />
-              <p className="text-[10px] md:text-sm lg:text-base text-primary-60 font-bold leading-snug">
-                Join Our
-                <br /> community
-              </p>
+          <Link
+            href={"https://chat.whatsapp.com/LtZQhfRGaRG2Fe3ZJ2USOY?mode=gi_c"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="mt-7">
+              <p className="text-sm md:text-xl font-bold">Tips and Resources</p>
+              <div className="relative bg-gradient-to-r from-[rgba(255,237,193,0.3)] to-[rgba(171,205,188,1)] h-[118px] lg:h-[195px] w-full rounded-[12px] overflow-hidden mt-3 px-8 pt-5">
+                <Image
+                  src="/Community.png"
+                  alt="Waste Bin"
+                  width={500}
+                  height={300}
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-h-full object-contain"
+                />
+                <p className="text-[10px] md:text-sm lg:text-base text-primary-60 font-bold leading-snug">
+                  Join Our
+                  <br /> community
+                </p>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
 
         <aside className="xl:w-1/3 xl:mt-25 sticky top-0">
