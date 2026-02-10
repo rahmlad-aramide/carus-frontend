@@ -29,9 +29,9 @@ export function useNotifications(page: number = 1, pageSize: number = 10) {
 }
 
 export function useInfiniteNotifications(pageSize: number = 10) {
-  return useInfiniteQuery({
+  return useInfiniteQuery<GetNotificationsResponse, any, GetNotificationsResponse, string[], number>({
     queryKey: [...notificationKeys.all, "infinite"],
-    queryFn: ({ pageParam = 1 }) => getNotifications(pageParam as number, pageSize),
+    queryFn: ({ pageParam }) => getNotifications(pageParam, pageSize),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const { currentPage, totalPages } = lastPage.pagination;
