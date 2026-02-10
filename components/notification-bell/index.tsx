@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Empty } from "../empty";
 import { useNotifications, useMarkAsRead } from "@/queries/notifications";
 import { formatDistanceToNow } from "date-fns";
@@ -121,11 +122,15 @@ export default function NotificationBell() {
                 </ul>
               )}
             </div>
-            {notifications.length > 0 && (
+            {!isLoading && (
               <div className="p-2 border-t text-center bg-gray-50">
-                <button className="text-xs text-green-700 font-semibold hover:underline">
+                <Link
+                  href="/notifications"
+                  onClick={() => setShowNotifications(false)}
+                  className="text-xs text-green-700 font-semibold hover:underline"
+                >
                   View all notifications
-                </button>
+                </Link>
               </div>
             )}
           </div>

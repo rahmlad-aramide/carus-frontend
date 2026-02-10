@@ -7,6 +7,7 @@ import {
   updateFcmToken,
 } from "@/services/notifications";
 import {
+  useInfiniteQuery,
   useMutation,
   UseMutationOptions,
   useQuery,
@@ -24,6 +25,18 @@ export function useNotifications(page: number = 1, pageSize: number = 10) {
   return useQuery({
     queryKey: notificationKeys.list(page, pageSize),
     queryFn: () => getNotifications(page, pageSize),
+  });
+}
+
+export function useInfiniteNotifications(pageSize: number = 10) {
+  return useInfiniteQuery({
+    queryKey: [...notificationKeys.all, "infinite"],
+    queryFn: ({ pageParam = 1 }) => getNotifications(pageParam as number, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const { currentPage, totalPages } = lastPage.pagination;
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
   });
 }
 
