@@ -28,7 +28,7 @@ export function useNotifications(page: number = 1, pageSize: number = 10) {
 }
 
 export function useMarkAsRead(
-  options?: UseMutationOptions<MarkNotificationReadResponse, any, string, unknown>,
+  options?: UseMutationOptions<MarkNotificationReadResponse, Error, string, unknown>,
 ) {
   const queryClient = useQueryClient();
   const { onSuccess, ...restOptions } = options || {};
