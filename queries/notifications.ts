@@ -53,7 +53,7 @@ export function useMarkAsRead(
 export function useUpdateFcmToken(
   options?: UseMutationOptions<
     UpdateFcmTokenResponse,
-    any,
+    Error,
     UpdateFcmTokenRequest,
     unknown
   >,
