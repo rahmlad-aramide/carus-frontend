@@ -31,3 +31,10 @@ export const scheduleKeys = {
   id: (scheduleId: string) => [...scheduleKeys.all, scheduleId],
   pickup: () => [...scheduleKeys.all, "pickup"] as const,
 };
+
+export const notificationKeys = {
+  all: ["notifications"] as const,
+  list: (page: number, pageSize: number) =>
+    [...notificationKeys.all, "list", { page, pageSize }] as const,
+  unreadCount: () => [...notificationKeys.all, "unreadCount"] as const,
+};
