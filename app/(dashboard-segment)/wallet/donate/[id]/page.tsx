@@ -11,7 +11,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { ContributionResponse } from "@/types/donation";
 import { LoadingComponent } from "@/components/loading";
 import { useQueryClient } from "@tanstack/react-query";
 import { useWallet } from "@/queries/wallet";
