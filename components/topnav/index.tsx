@@ -16,6 +16,7 @@ export const TopNav = () => {
     if (path.startsWith("/wallet/donate")) return "Donate";
     if (path.startsWith("/wallet")) return "Wallet";
     if (path.startsWith("/settings")) return "Settings";
+    if (path.startsWith("/notifications")) return "Notifications";
     return null;
   };
 

@@ -7,6 +7,7 @@ import {
   updateFcmToken,
 } from "@/services/notifications";
 import {
+  useInfiniteQuery,
   useMutation,
   UseMutationOptions,
   useQuery,
@@ -27,8 +28,20 @@ export function useNotifications(page: number = 1, pageSize: number = 10) {
   });
 }
 
+export function useInfiniteNotifications(pageSize: number = 10) {
+  return useInfiniteQuery<GetNotificationsResponse, any, GetNotificationsResponse, string[], number>({
+    queryKey: [...notificationKeys.all, "infinite"],
+    queryFn: ({ pageParam }) => getNotifications(pageParam, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const { currentPage, totalPages } = lastPage.pagination;
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+  });
+}
+
 export function useMarkAsRead(
-  options?: UseMutationOptions<MarkNotificationReadResponse, Error, string, unknown>,
+  options?: UseMutationOptions<MarkNotificationReadResponse, any, string, unknown>,
 ) {
   const queryClient = useQueryClient();
   const { onSuccess, ...restOptions } = options || {};
@@ -53,7 +66,7 @@ export function useMarkAsRead(
 export function useUpdateFcmToken(
   options?: UseMutationOptions<
     UpdateFcmTokenResponse,
-    Error,
+    any,
     UpdateFcmTokenRequest,
     unknown
   >,
