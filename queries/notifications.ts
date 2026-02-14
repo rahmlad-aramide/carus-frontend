@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -13,7 +12,6 @@ import {
   UseMutationOptions,
   useQuery,
   useQueryClient,
-  InfiniteData,
 } from "@tanstack/react-query";
 import { notificationKeys } from "./query-keys";
 import {

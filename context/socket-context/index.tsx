@@ -60,16 +60,22 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     newSocket.on("connect", () => {
       setIsConnected(true);
+      console.log("Socket connected");
     });
 
     newSocket.on("disconnect", () => {
       setIsConnected(false);
     });
 
+    const notificationSound = new Audio("/sounds/notification-sound.mp3");
+
     newSocket.on("notification", (data) => {
       queryClient.invalidateQueries({ queryKey: notificationKeys.all });
+      notificationSound.play().catch((err) => {
+        console.error("Audio playback failed:", err);
+      });
       toast.info(data.title || "New Notification", {
-        description: data.message || "You have a new notification",
+        position: "top-center",
       });
     });
 
@@ -77,8 +83,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     return () => {
       newSocket.disconnect();
+      setSocket(null);
+      setIsConnected(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryClient, user]);
 
   return (
