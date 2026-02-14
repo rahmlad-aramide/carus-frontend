@@ -4,6 +4,7 @@ import Script from "next/script";
 
 import { Toaster } from "@/components/ui/sonner";
 import { UserProvider } from "@/context/auth-context";
+import { SocketProvider } from "@/context/socket-context";
 import WakeServer from "@/components/wake-server";
 
 import { GoogleAuthProvider } from "./google-auth-provider";
@@ -46,8 +47,10 @@ export default function RootLayout({
         <QueryProvider>
           <GoogleAuthProvider>
             <UserProvider>
-              <WakeServer />
-              {children}
+              <SocketProvider>
+                <WakeServer />
+                {children}
+              </SocketProvider>
             </UserProvider>
           </GoogleAuthProvider>
           <Toaster richColors />

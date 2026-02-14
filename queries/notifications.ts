@@ -13,6 +13,7 @@ import {
   UseMutationOptions,
   useQuery,
   useQueryClient,
+  InfiniteData,
 } from "@tanstack/react-query";
 import { notificationKeys } from "./query-keys";
 import {
