@@ -12,6 +12,7 @@ import {
   UseMutationOptions,
   useQuery,
   useQueryClient,
+  InfiniteData,
 } from "@tanstack/react-query";
 import { notificationKeys } from "./query-keys";
 import {
@@ -29,7 +30,13 @@ export function useNotifications(page: number = 1, pageSize: number = 10) {
 }
 
 export function useInfiniteNotifications(pageSize: number = 10) {
-  return useInfiniteQuery<GetNotificationsResponse, any, GetNotificationsResponse, string[], number>({
+  return useInfiniteQuery<
+    GetNotificationsResponse,
+    any,
+    InfiniteData<GetNotificationsResponse>,
+    string[],
+    number
+  >({
     queryKey: [...notificationKeys.all, "infinite"],
     queryFn: ({ pageParam }) => getNotifications(pageParam, pageSize),
     initialPageParam: 1,
