@@ -64,9 +64,9 @@ export default function NotificationBell() {
         </div>
 
         {showNotifications && (
-          <div className="absolute right-0 mt-2 w-72 min-h-[300px] max-h-[480px] md:w-96 bg-white border rounded-lg shadow-lg overflow-hidden z-50 flex flex-col">
+          <div className="absolute -right-4 mt-2 w-72 min-h-[300px] max-h-[480px] md:w-96 bg-white border rounded-lg shadow-lg overflow-hidden z-50 flex flex-col">
             <div className="p-4 border-b flex justify-between items-center bg-gray-50">
-              <h3 className="font-bold text-gray-900">Notifications</h3>
+              <h5 className="font-bold text-gray-900">Notifications</h5>
               {unreadCount > 0 && (
                 <span className="text-xs text-blue-600 font-medium">
                   {unreadCount} unread

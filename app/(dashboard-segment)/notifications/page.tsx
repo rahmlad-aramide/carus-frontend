@@ -2,7 +2,7 @@
 
 import { useInfiniteNotifications, useMarkAsRead } from "@/queries/notifications";
 import { formatDistanceToNow } from "date-fns";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Empty } from "@/components/empty";
 
 export default function NotificationsPage() {
@@ -38,8 +38,10 @@ export default function NotificationsPage() {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const allNotifications = data?.pages.flatMap((page) => page.data.notifications) || [];
-
+const allNotifications = useMemo(
+  () => data?.pages.flatMap((page) => page.data.notifications) ?? [],
+  [data],
+);
   return (
     <div className="md:mt-30 mt-20">
       <div className="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-hidden min-h-[70vh]">

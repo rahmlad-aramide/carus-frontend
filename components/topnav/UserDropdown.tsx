@@ -59,10 +59,10 @@ export default function UserDropdown() {
         className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border bg-white p-3"
       >
         <div>
-          <span className="block font-medium">
+          <span className="block font-medium truncate">
             {data?.data?.first_name} {data?.data?.last_name}
           </span>
-          <span className="mt-0.5 block">{data?.data?.email}</span>
+          <span className="mt-0.5 block truncate">{data?.data?.email}</span>
         </div>
 
         <ul className="flex flex-col gap-1 pt-4 pb-3">
