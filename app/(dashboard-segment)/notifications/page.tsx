@@ -1,18 +1,16 @@
 "use client";
 
-import { useInfiniteNotifications, useMarkAsRead } from "@/queries/notifications";
+import {
+  useInfiniteNotifications,
+  useMarkAsRead,
+} from "@/queries/notifications";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useMemo, useRef } from "react";
 import { Empty } from "@/components/empty";
 
 export default function NotificationsPage() {
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteNotifications(15);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteNotifications(15);
 
   const { mutate: markAsRead } = useMarkAsRead();
 
@@ -28,7 +26,7 @@ export default function NotificationsPage() {
           fetchNextPage();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(target);
@@ -38,10 +36,10 @@ export default function NotificationsPage() {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-const allNotifications = useMemo(
-  () => data?.pages.flatMap((page) => page.data.notifications) ?? [],
-  [data],
-);
+  const allNotifications = useMemo(
+    () => data?.pages.flatMap((page) => page.data.notifications) ?? [],
+    [data],
+  );
   return (
     <div className="md:mt-30 mt-20">
       <div className="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-hidden min-h-[70vh]">
@@ -59,18 +57,24 @@ const allNotifications = useMemo(
               {allNotifications.map((notification) => (
                 <div
                   key={notification.id}
-                  onClick={() => !notification.isRead && markAsRead(notification.id)}
+                  onClick={() =>
+                    !notification.isRead && markAsRead(notification.id)
+                  }
                   className={`p-5 md:p-7 hover:bg-gray-50 transition-colors cursor-pointer flex gap-4 ${
                     !notification.isRead ? "bg-primary-10/20" : ""
                   }`}
                 >
                   <div className="flex-1">
                     <div className="flex justify-between items-start mb-1">
-                      <h3 className={`text-sm md:text-base ${!notification.isRead ? "font-bold text-grey-90" : "text-grey-40"}`}>
+                      <h3
+                        className={`text-sm md:text-base ${!notification.isRead ? "font-bold text-grey-90" : "text-grey-40"}`}
+                      >
                         {notification.title}
                       </h3>
                       <span className="text-[10px] md:text-xs text-grey-40 whitespace-nowrap ml-4">
-                        {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
+                        {formatDistanceToNow(new Date(notification.createdAt), {
+                          addSuffix: true,
+                        })}
                       </span>
                     </div>
                     <p className="text-xs md:text-sm text-grey-40 leading-relaxed">
@@ -95,7 +99,9 @@ const allNotifications = useMemo(
               ) : hasNextPage ? (
                 <p className="text-xs text-grey-40">Scroll to load more</p>
               ) : (
-                <p className="text-xs text-grey-40">You&apos;ve reached the end of your notifications.</p>
+                <p className="text-xs text-grey-40">
+                  You&apos;ve reached the end of your notifications.
+                </p>
               )}
             </div>
           </div>
