@@ -1,21 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import { CalendarTick, Home, Setting2, Wallet } from "iconsax-react";
+import { Bell, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarTick, Home, Setting2, Wallet } from "iconsax-react";
+import React, { useState } from "react";
+
 import { httpLogout } from "@/services/http";
-import { Menu } from "lucide-react";
+import { useNotifications } from "@/queries/notifications";
 
 export default function SideNav() {
   const pathname = usePathname();
   const [sideBarOpen, setSideBarOpen] = useState(false);
+  const { data: notificationsData, isLoading } = useNotifications();
+  const unreadCount = notificationsData?.data?.unreadCount || 0;
 
   const navLinks = [
     { href: "/dashboard", label: "Home", icon: Home },
     { href: "/schedule", label: "Schedule", icon: CalendarTick },
     { href: "/wallet", label: "Wallet", icon: Wallet },
+    { href: "/notifications", label: "Notifications", icon: Bell },
     { href: "/settings", label: "Settings", icon: Setting2 },
   ];
 
@@ -39,7 +44,7 @@ export default function SideNav() {
 
       {/* Sidebar */}
       <aside
-        className={`min-h-screen w-[183px] md:w-[266px] bg-[#F3F3F3] text-grey-40 
+        className={`min-h-screen w-[215px] md:w-[266px] bg-[#F3F3F3] text-grey-40 
           z-50 fixed top-0 left-0 transform transition-transform duration-300 ease-in-out
           ${sideBarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 flex flex-col justify-between`}
       >
@@ -57,17 +62,18 @@ export default function SideNav() {
             </Link>
           </div>
 
-          <nav className="flex flex-col justify-center space-y-8 mt-8 md:mt-15 pl-4 pr-2 md:px-12">
+          <nav className="flex flex-col justify-center space-y-8 mt-8 md:mt-15 pl-4 pr-2 md:px-8">
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isActive =
                 pathname === href || pathname.startsWith(`${href}`);
+              const isNotifications = href === "/notifications";
 
               return (
                 <Link
                   key={href}
                   href={href}
                   onClick={() => setSideBarOpen(false)}
-                  className={`flex items-center gap-4 transition transform duration-200 px-3 pr-10 py-2 text-base md:text-xl rounded-[10px] 
+                  className={`flex relative items-center gap-4 transition transform duration-200 px-3 pr-10 py-2 text-base md:text-xl rounded-[10px] 
                   ${
                     isActive
                       ? "bg-white text-primary-60 cursor-default"
@@ -80,6 +86,11 @@ export default function SideNav() {
                     <Icon size={24} color="#6D6D6D" />
                   )}{" "}
                   {label}
+                  {isNotifications && unreadCount > 0 ? (
+                    <span className="md:hidden absolute right-3 bg-red-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center">
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </span>
+                  ) : null}
                 </Link>
               );
             })}

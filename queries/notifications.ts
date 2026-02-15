@@ -61,7 +61,9 @@ export function useMarkAsRead(
     ...restOptions,
     mutationFn: (id: string) => markNotificationAsRead(id),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: notificationKeys.all });
+      queryClient.invalidateQueries({
+        queryKey: [...notificationKeys.all, "infinite"],
+      });
       if (onSuccess) {
         onSuccess(data, variables, context);
       }
