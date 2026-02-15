@@ -41,7 +41,7 @@ export default function ConvertPoints({ onBack }: ConvertPointsProps) {
       phone: "",
     },
   });
-  const [isPending, setIsPending] = useState(false);
+  const [isPending] = useState(false);
   const { data: pointRate, isLoading: rateLoading } = usePointToNaira();
   const { data: wallet, isLoading: walletLoading } = useWallet();
 
