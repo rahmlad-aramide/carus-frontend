@@ -5,9 +5,7 @@ import { FaLinkedin, FaTwitter, FaInstagram, FaFacebook } from "react-icons/fa";
 export default function Footer() {
   return (
     <div className="" id="contact">
-      {/* flex form and bg image */}
       <div className="w-full flex flex-col md:flex-row md:px-10 lg:px-15 md:gap-20 lg:gap-40 mt-15 md:mt-30">
-        {/* Logo + text */}
         <div className="md:w-3/5 mb-10 md:mb-0 px-7 md:px-0">
           <Image
             aria-hidden={false}
@@ -106,7 +104,15 @@ export default function Footer() {
       </div>
 
       <p className="mt-7 mb-15 text-primary-60 px-7 md:px-10 lg:px-15">
-        Copyright © Carus 2025.
+        © Carus 2025. Developed by{" "}
+        <Link
+          href="https://rahmlad.com"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="hover:underline"
+        >
+          Rahmlad Solutions
+        </Link>
       </p>
     </div>
   );

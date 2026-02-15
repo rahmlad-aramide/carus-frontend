@@ -75,7 +75,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="flex min-h-screen">
+      <section className="flex min-h-screen">
         {/* flex form and bg image */}
         <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col py-10 bg-white">
           {/* Logo */}
@@ -218,7 +218,15 @@ export default function LoginForm() {
           </div>
         </div>
 
-        <div className="relative hidden md:flex md:w-1/3 lg:w-1/2  overflow-hidden bg-gradient-to-t from-[#C7DCD2] via-[#E5EFEA] to-[#F9FBFA]">
+        <aside className="relative hidden md:flex md:w-1/3 lg:w-1/2  overflow-hidden bg-gradient-to-t from-[#C7DCD2] via-[#E5EFEA] to-[#F9FBFA]">
+          <div className="px-10 mt-20 z-10">
+            <p className="text-primary mt-3 leading-relaxed">
+              Ready to make a difference? Log in to continue your journey toward
+              a greener planet. Remember, every scheduled pickup of plastics or
+              electronics contributes to a cleaner environment and puts rewards
+              in your wallet.
+            </p>
+          </div>
           <div className="absolute bottom-0 md:right-0 xl:left-1/2 xl:-translate-x-1/2">
             <Image
               src="/wastecan.png"
@@ -228,8 +236,8 @@ export default function LoginForm() {
               className="object-contain md:w-[280px] lg:w-[350px] xl:w-[500px]"
             />
           </div>
-        </div>
-      </div>
+        </aside>
+      </section>
     </>
   );
 }

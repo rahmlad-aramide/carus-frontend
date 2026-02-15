@@ -1,26 +1,11 @@
-"use client";
+import LoginClient from "./login-client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/services/useAuth";
-import LoginForm from "@/components/login";
-import Loading from "@/components/loading";
+export const metadata = {
+  title: "Login | Carus Recycling",
+  description:
+    "Sign in to your Carus account to manage your waste collection schedules, track your recycling impact, and check your earned reward points.",
+};
 
 export default function LoginPage() {
-  const router = useRouter();
-  const { user, isLoading } = useAuth();
-
-  useEffect(() => {
-    if (!isLoading && user) {
-      router.replace("/dashboard");
-    }
-  }, [user, isLoading, router]);
-
-  if (isLoading || user) return <Loading />;
-
-  return (
-    <div>
-      <LoginForm />
-    </div>
-  );
+  return <LoginClient />;
 }

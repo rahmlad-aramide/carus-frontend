@@ -163,7 +163,7 @@ export default function SignupForm() {
         <div className="flex-1 flex items-center justify-center px-4 sm:px-5 md:px-20">
           <div className="w-full max-w-sm">
             <h1 className="text-xl md:text-[28px] font-bold pb-5">
-              Register An Account
+              Create Your Carus Recycling Account
             </h1>
 
             <div className="w-full flex gap-2 md:gap-4 items-center justify-between rounded-full bg-[#F3F3F3] h-[56px] px-3 py-2 mb-5">
